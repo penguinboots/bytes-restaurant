@@ -1,10 +1,27 @@
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   min-height: 100vh;
 
   background: #c5bdaa;
 
+  header {
+    height: 400px;
+    top: 0px;
+    left: 0px;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  main {
+    width: 90%;
+    background-color: #dfd6c0;
+
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
 }
