@@ -7,6 +7,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
     <link rel="stylesheet" href="/vendor/border-box.css" />
     <link rel="stylesheet" href="/styles/main.css" />
@@ -18,20 +33,16 @@
   </head>
 
   <body>
-    <nav class="nav-bar">
-      <div class="left-menu">
-        <div class="nav-logo">
-          <span>🤖 a byte to eat</span>
-        </div>
-        <ul>
-          <li><span>ABOUT US</span></li>
-          <li><span>MENU</span></li>
-        </ul>
-      </div>
+    <%- include('./partials/_header.ejs') %>
+    <header></header>
+    <main>
+      <h1>BYTES</h1>
+      <h2>for when a nibble just isn't enough</h2>
+      <h2>**</h2>
 
-      <button id="login" type="button">LOGIN</button>
-    </nav>
-
-    <h1>Have fun! 🥔</h1>
+      <button>
+        ORDER NOW
+      </button>
+    </main>
   </body>
 </html>
