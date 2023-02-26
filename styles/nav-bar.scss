@@ -1,0 +1,47 @@
+.nav-bar {
+  background-color:#57514c;
+  color: white;
+  height: 120px;
+  width: 100%;
+  padding: 2em;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .left-menu {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .nav-logo {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 24px;
+
+    padding-right: 36px;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      float: left;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    span {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background-color:#817973;
+    }
+  }
+}
