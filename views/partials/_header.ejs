@@ -7,13 +7,27 @@
       <ul>
         <li><span>ABOUT US</span></li>
         <li><span>MENU</span></li>
+        <% if(user==="1") { %>
+          <li><span>MANAGE ORDERS</span></li>
+          <li><span>MANAGE MENU</span></li>
+        <% } else if (user) { %>
+          <li><span>MY ORDERS</span></li>
+          <li><span>ORDER NOW</span></li>
+        <% } %>
       </ul>
     </div>
     <div class="right-nav">
+      <% if (!user) { %>
       <button id="login" type="button">
         <span><i class="fa-sharp fa-solid fa-user"></i></span>
-        <span>LOGIN</span>
+        <span>LOG IN</span>
       </button>
+      <% } else { %>
+      <button id="logout" type="button">
+        <span><i class="fa-sharp fa-solid fa-user"></i></span>
+        <span>LOG OUT</span>
+      </button>
+      <% } %>
     </div>
   </nav>
 </header>
