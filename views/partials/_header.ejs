@@ -2,18 +2,40 @@
   <nav class="nav-bar">
     <div class="left-nav">
       <div class="nav-logo">
-        <span>🤖 BYTES</span>
+        <a class="nav-link" href="/">
+          <span><i class="fa-solid fa-robot"></i> BYTES</span>
+        </a>
       </div>
       <ul>
-        <li><span>ABOUT US</span></li>
-        <li><span>MENU</span></li>
+        <li class="nav-link"><a href="/about">ABOUT US</a></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/menu">MENU</a></li>
+        <% let user = "1"; %> <!-- setting user id -->
+        <% if(user==="1") { %>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/management/orders">MANAGE ORDERS</a></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/management/menu">MANAGE MENU</a></li>
+        <% } else if (user) { %>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/user/orders">MY ORDERS</a></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/order">ORDER NOW</a></li>
+        <% } %>
       </ul>
     </div>
     <div class="right-nav">
+      <% if (!user) { %>
       <button id="login" type="button">
         <span><i class="fa-sharp fa-solid fa-user"></i></span>
-        <span>LOGIN</span>
+        <span>LOG IN</span>
       </button>
+      <% } else { %>
+      <button id="logout" type="button">
+        <span><i class="fa-sharp fa-solid fa-user"></i></span>
+        <span>LOG OUT</span>
+      </button>
+      <% } %>
     </div>
   </nav>
 </header>
