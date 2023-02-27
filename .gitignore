@@ -3,3 +3,5 @@ public/styles
 .env
 *.log
 *.sqlite3
+message_sandbox.js
+server_sandbox.js

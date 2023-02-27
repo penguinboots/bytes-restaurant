@@ -1,4 +1,9 @@
 
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+// const authToken = process.env.TWILIO_AUTH_TOKEN;
+// const client = require('twilio')(accountSid, authToken);
+// const { MessagingResponse } = require('twilio').twiml;
+
 module.exports = function(router, database) {
 
   // Full menu retrieval
@@ -121,7 +126,10 @@ module.exports = function(router, database) {
     }
 
     database.addOrder({ ...req.body, customer_id: userId })
-      .then(order => res.send(order));
+      .then(order => {
+        res.send(order);
+      }
+        );
       })
       .catch(e => {
         console.error(e);
