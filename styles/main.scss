@@ -1,7 +1,8 @@
+$shadow-col: #000000;
+
 html {
   height: 100%;
 }
-
 
 body {
   display: flex;
@@ -10,10 +11,15 @@ body {
 
   padding-top: 60px;
 
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url(../images/ph-background.jpeg);
+  background: url(../images/ph-robot.png), linear-gradient(
+    0deg,
+    #271f19 0%,
+    #534337 35%,
+    #887767 100%
+  );
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: local;
 
   header {
     margin-top: 60px;
@@ -39,8 +45,8 @@ body {
 
       padding: 0px;
 
-      text-shadow: -4px 0px 0px #57514c, 4px 0px 0px #57514c,
-        0px -4px 0px #57514c, 0px 4px 0px #57514c;
+      text-shadow: -4px 0px 0px $shadow-col, 4px 0px 0px $shadow-col,
+        0px -4px 0px $shadow-col, 0px 4px 0px $shadow-col;
     }
 
     h2 {
@@ -52,8 +58,8 @@ body {
 
       padding: 12px;
 
-      text-shadow: -2px 0px 0px #57514c, 2px 0px 0px #57514c,
-        0px -2px 0px #57514c, 0px 2px 0px #57514c;
+      text-shadow: -2px 0px 0px $shadow-col, 2px 0px 0px $shadow-col,
+        0px -2px 0px $shadow-col, 0px 2px 0px $shadow-col;
     }
 
     button {
