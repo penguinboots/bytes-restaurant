@@ -60,6 +60,30 @@ module.exports = function(router, database) {
     res.send({});
   });
 
+  // Get all orders
+  router.get('/:id/orders', (req, res) => {
+    const userId = req.session.userId;
+
+    if (!userId) {
+      res
+        .status(401)
+        .send("No currently logged in user detected");
+      return;
+    }
+
+    database.getAllUserOrders(userId)()
+      .then(orders => {
+        const templateVars = {
+          orders: orders,
+          userId: userId
+        }
+        res.render('user-orders', templateVars);
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
+
   return router;
 
 }

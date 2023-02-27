@@ -6,6 +6,11 @@ const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
 
+// Temp placeholder for db
+const database = require('database.js');
+
+const cookieSession = require('cookie-session');
+
 const PORT = process.env.PORT || 8080;
 const app = express();
 
@@ -25,12 +30,17 @@ app.use(
   })
 );
 app.use(express.static('public'));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1']
+}));
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const userApiRoutes = require('./routes/users-api');
 const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
+const managementRoutes = require('./routes/management')
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -38,7 +48,9 @@ const usersRoutes = require('./routes/users');
 app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
+app.use('/management', managementRoutes);
 // Note: mount other resources here, using the same pattern above
+
 
 // Home page
 // Warning: avoid creating more routes in this file!
@@ -46,6 +58,89 @@ app.use('/users', usersRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
+});
+
+//TODO: to be refactored -- testing purposes only
+
+app.get('/menu', (req, res) => {
+
+  const userId = req.session.userId;
+
+  //! Privileged account check
+  if (userId === 1) {
+
+    database.getFullMenu()
+      .then(menu => {
+        const templateVars = {
+          menu
+        };
+        res.render("edit-menu", templateVars);
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
+  }
+
+  database.getFullMenu(req.query)
+    .then(menu => {
+      const templateVars = {
+        menu
+      };
+      res.render("menu", templateVars);
+    })
+    .catch(e => {
+      console.error(e);
+      res.send(e);
+    });
+
+});
+
+app.get('/orders', (req, res) => {
+  const userId = req.session.userId;
+
+  if (!userId) {
+    res
+      .status(401)
+      .send("No currently logged in user detected");
+    return;
+  }
+
+  //! Privileged account check
+  if (userId === 1) {
+
+    database.getAllOrders()
+      .then(orders => {
+        const templateVars = {
+          orders
+        };
+        res.render("orders", templateVars);
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
+  }
+
+  database.getAllUserOrders(userId)()
+    .then(orders => {
+      const templateVars = {
+        orders
+      };
+      res.render("orders", templateVars);
+    })
+    .catch(e => {
+      console.error(e);
+      res.send(e);
+    });
+
+  });
+
+
+app.get('/about', (req, res) => {
+
+  res.render('about');
+
 });
 
 app.listen(PORT, () => {
