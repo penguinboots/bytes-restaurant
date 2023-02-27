@@ -2,17 +2,25 @@
   <nav class="nav-bar">
     <div class="left-nav">
       <div class="nav-logo">
-        <span>🤖 BYTES</span>
+        <a class="nav-link" href="/">
+          <span><i class="fa-solid fa-robot"></i> BYTES</span>
+        </a>
       </div>
       <ul>
-        <li><span>ABOUT US</span></li>
-        <li><span>MENU</span></li>
+        <li class="nav-link"><a href="/about">ABOUT US</a></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/menu">MENU</a></li>
+        <% let user = "1"; %> <!-- setting user id -->
         <% if(user==="1") { %>
-          <li><span>MANAGE ORDERS</span></li>
-          <li><span>MANAGE MENU</span></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/management/orders">MANAGE ORDERS</a></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/management/menu">MANAGE MENU</a></li>
         <% } else if (user) { %>
-          <li><span>MY ORDERS</span></li>
-          <li><span>ORDER NOW</span></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/user/orders">MY ORDERS</a></li>
+        <li class="divider">|</li>
+        <li class="nav-link"><a href="/order">ORDER NOW</a></li>
         <% } %>
       </ul>
     </div>
