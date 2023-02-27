@@ -1,4 +1,5 @@
 $shadow-col: #000000;
+$base-col: #57514c;
 
 html {
   height: 100%;
@@ -11,12 +12,7 @@ body {
 
   padding-top: 60px;
 
-  background: url(../images/ph-robot.png), linear-gradient(
-    0deg,
-    #271f19 0%,
-    #534337 35%,
-    #887767 100%
-  );
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/ph-robot.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: local;
