@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home Page</title>
+    <title>Orders</title>
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -32,17 +32,30 @@
     <script defer src="/scripts/app.js"></script>
   </head>
 
-  <body class="">
+  <body>
     <%- include('./partials/_header.ejs') %>
-    <header></header>
+    <header>
+      <!-- image header here -->
+    </header>
     <main>
-      <h1>BYTES</h1>
-      <h2>for when a nibble just isn't enough</h2>
-      <h2>**</h2>
-
-      <button>
-        ORDER NOW
-      </button>
+      <h2>My Orders</h2>
+      <thead>
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Placed</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- accepts array of order objects containing order_id, placed_at, status -->
+        <% for (let orderID in orders) { %>
+        <tr>
+          <td><a href="/orders/<%= orderID %>"></a><%= orderID %></td>
+          <td><%= orders[order].placed_at %></td>
+          <td><%= orders[order].status %></td>
+        </tr>
+        <% } %>
+      </tbody>
     </main>
   </body>
 </html>
