@@ -1,22 +1,26 @@
 $base-font: "Courier Prime", monospace;
+$hover-color: #ffe4c4;
+$base-col: #57514c;
 
 .nav-link {
   text-decoration: none;
   color: white;
-  :hover {
-    color: #ffe4c4;
-  }
+  cursor: pointer;
+
   a {
     text-decoration: none;
     color: white;
-    :hover {
-      color: #ffe4c4;
-    }
   }
+  a:hover {
+    color: $hover-color;
+  }
+}
+.nav-link:hover {
+  color: $hover-color;
 }
 
 .nav-bar {
-  background-color: #57514c;
+  background-color: $base-col;
   color: white;
   height: 120px;
   width: 100%;
@@ -74,7 +78,7 @@ $base-font: "Courier Prime", monospace;
       display: flex;
       justify-content: space-between;
       padding: 8px;
-      background-color: #817973;
+      background-color: $base-col;
     }
   }
 
@@ -84,5 +88,11 @@ $base-font: "Courier Prime", monospace;
     border-radius: 24px;
 
     font-size: 24px;
+
+    cursor: pointer;
+    color: $base-col;
+  }
+  button:hover {
+    background-color: $hover-color;
   }
 }
