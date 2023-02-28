@@ -64,25 +64,7 @@ app.get('/', (req, res) => {
 
 app.get('/menu', (req, res) => {
 
-  const userId = req.session.userId;
-
-  //! Privileged account check
-  if (userId === 1) {
-
-    database.getFullMenu()
-      .then(menu => {
-        const templateVars = {
-          menu
-        };
-        res.render("edit-menu", templateVars);
-      })
-      .catch(e => {
-        console.error(e);
-        res.send(e);
-      });
-  }
-
-  database.getFullMenu(req.query)
+  database.getFullMenu()
     .then(menu => {
       const templateVars = {
         menu
@@ -95,47 +77,6 @@ app.get('/menu', (req, res) => {
     });
 
 });
-
-app.get('/orders', (req, res) => {
-  const userId = req.session.userId;
-
-  if (!userId) {
-    res
-      .status(401)
-      .send("No currently logged in user detected");
-    return;
-  }
-
-  //! Privileged account check
-  if (userId === 1) {
-
-    database.getAllOrders()
-      .then(orders => {
-        const templateVars = {
-          orders
-        };
-        res.render("orders", templateVars);
-      })
-      .catch(e => {
-        console.error(e);
-        res.send(e);
-      });
-  }
-
-  database.getAllUserOrders(userId)()
-    .then(orders => {
-      const templateVars = {
-        orders
-      };
-      res.render("orders", templateVars);
-    })
-    .catch(e => {
-      console.error(e);
-      res.send(e);
-    });
-
-  });
-
 
 app.get('/about', (req, res) => {
 
