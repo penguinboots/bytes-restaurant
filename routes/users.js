@@ -8,19 +8,20 @@ module.exports = function(router, database) {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 12);
     database.addUser(user)
-    .then(user => {
-  
-      //TODO: revisit handling this error
-      if (!user) {
-        res
-          .status(500) 
-          .send("User creation unsuccessful");
-        return;
-      }
-      req.session.userId = user.id;
-      res.send("User successfully created!");
-    })
-    .catch(e => res.send(e));
+      .then(user => {
+
+        //TODO: revisit handling this error
+        if (!user) {
+          res
+            .status(500)
+            .send("User creation unsuccessful");
+          return;
+        }
+        // // req.session.username = user.id;
+
+        res.send("User successfully created!");
+      })
+      .catch(e => res.send(e));
   });
 
   /**
@@ -28,19 +29,19 @@ module.exports = function(router, database) {
    * @param {String} email
    * @param {String} password encrypted
    */
-  const login =  function(email, password) {
+  const login = function(email, password) {
     return database.getUserWithEmail(email)
-    .then(user => {
-      if (bcrypt.compareSync(password, user.password)) {
-        return user;
-      }
-      return null;
-    });
-  }
+      .then(user => {
+        if (bcrypt.compareSync(password, user.password)) {
+          return user;
+        }
+        return null;
+      });
+  };
   exports.login = login;
 
   router.post('/login', (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     login(email, password)
       .then(user => {
         if (!user) {
@@ -49,34 +50,37 @@ module.exports = function(router, database) {
             .send("User doesn't exist!");
           return;
         }
-        req.session.userId = user.id;
-        res.send({user: {name: user.name, email: user.email, id: user.id}});
+        // req.session.username = user.id;
+        res.cookie('username', email);
+
+        res.send({ user: { name: user.name, email: user.email, id: user.id } });
       })
       .catch(e => res.send(e));
   });
-  
+
   router.post('/logout', (req, res) => {
-    req.session.userId = null;
+    // req.session.username = null;
+    res.clearCookie('username');
     res.send({});
   });
 
   // Get all orders
   router.get('/:id/orders', (req, res) => {
-    const userId = req.session.userId;
+    const username = req.cookies["username"];
 
-    if (!userId) {
-      res
-        .status(401)
-        .send("No currently logged in user detected");
-      return;
-    }
+    // if (!username) {
+    //   res
+    //     .status(401)
+    //     .send("No currently logged in user detected");
+    //   return;
+    // }
 
-    database.getAllUserOrders(userId)()
+    database.getAllUserOrders(username)()
       .then(orders => {
         const templateVars = {
           orders: orders,
-          userId: userId
-        }
+          username: username
+        };
         res.render('user-orders', templateVars);
       })
       .catch(e => {
@@ -84,37 +88,37 @@ module.exports = function(router, database) {
         res.send(e);
       });
 
-    });
+  });
 
   // Order form
   router.get('/ordering', (req, res) => {
-    const userId = req.session.userId;
+    const username = req.cookies["username"];
 
-    if (!userId) {
-      res
-        .status(401)
-        .send("No currently logged in user detected");
-      return;
-    }
+    // if (!username) {
+    //   res
+    //     .status(401)
+    //     .send("No currently logged in user detected");
+    //   return;
+    // }
 
     const templateVars = {
-      userId,
-    }
+      username,
+    };
 
-   res.render('ordering', templateVars);
+    res.render('ordering', templateVars);
 
-    });
+  });
 
   // Create an order
   router.post('/orders', (req, res) => {
-    const userId = req.session.userId;
+    const username = req.cookies["username"];
 
-    if (!userId) {
-      res
-        .status(401)
-        .send("No currently logged in user detected");
-      return;
-    }
+    // if (!username) {
+    //   res
+    //     .status(401)
+    //     .send("No currently logged in user detected");
+    //   return;
+    // }
 
     database.addOrder({ ...req.body })
       .then(order => res.send(order))
@@ -123,8 +127,8 @@ module.exports = function(router, database) {
         res.send(e);
       });
 
-    });
+  });
 
   return router;
 
-}
+};
