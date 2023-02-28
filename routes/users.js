@@ -149,6 +149,21 @@ module.exports = function(router, database) {
 
   });
 
+  // Get user orders
+  router.get('/orders', (req, res) => {
+    const username = req.cookies["username"];
+
+    // if (!username) {
+    //   res
+    //     .status(401)
+    //     .send("No currently logged in user detected");
+    //   return;
+    // }
+
+    
+
+  });
+
   return router;
 
 };

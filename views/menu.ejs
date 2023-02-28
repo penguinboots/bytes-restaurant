@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>About Us</title>
+    <title>Menu</title>
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -34,39 +34,26 @@
 
   <body>
     <%- include('./partials/_header.ejs') %>
-    <div class="left-stack"><img src="./images/ph-stack-left.png"></div>
-    <main class="text-container">
-      <img src="./images/ph-banner.jpeg" />
-      <h1>
-        <i class="fa-solid fa-robot"></i> Welcome to BYTES
-        <i class="fa-solid fa-robot"></i>
-      </h1>
-      <p>
-        We are proud to be Canada's #1 lunch destination for discerning robots
-        on the go! Our farm-to-table offerings are perfect for anything from a
-        quick bite to an extended dining experience. We blend cozy comfort foods
-        with modern innovation to create a unique dining experience like no
-        other.
-      </p>
-      <p>
-        Our menu is inspired by the rich and diverse culinary traditions of
-        Canada, featuring hearty and comforting dishes made with fresh,
-        locally-sourced ingredients. From classic poutine to gourmet mac and
-        cheese, our menu offers a modern twist on traditional Canadian
-        favorites. Our cozy and inviting atmosphere provides the perfect
-        backdrop for enjoying a delicious meal with family and friends.
-      </p>
-      <p>
-        Whether you're looking for a quick lunch or a leisurely dinner, we
-        invite you to join us and savorr the flavorrs of Canada with a modern
-        twist.
-      </p>
-      <p>
-        Our new, online takeout system makes it easier than ever to place an
-        order. With a focus on guest satisfaction and a commitment to
-        innovation, we invite you to dine with us and experience the ultimate in
-        convenience, quality, and happiness.
-      </p>
+    <header>
+      <!-- image header here -->
+    </header>
+    <main>
+      <h2>Our Menu</h2>
+      <table>
+        <tr>
+          <th scope="col">X</th>
+          <th scope="col">Y</th>
+          <th scope="col">Z</th>
+        </tr>
+        <!-- accepts array of order objects containing order_id, placed_at, status -->
+        <% for (let item in menu) { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.description %></td>
+          <td><%= item.price %></td>
+        </tr>
+        <% } %>
+      </table>
     </main>
   </body>
 </html>
