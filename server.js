@@ -77,7 +77,13 @@ app.use('/api', apiRouter);
 // Separate them into separate routes files (see above).
 
 app.get('/', (req, res) => {
-  res.render('index');
+
+  const user = req.cookies["user"];
+
+  const templateVars = {
+    user
+  }
+  res.render('index', templateVars);
 });
 
 //TODO: to be refactored -- testing purposes only
@@ -107,19 +113,19 @@ app.get('/about', (req, res) => {
 
 app.post('/login/1', (req, res) => {
 
-  res.cookie('username', 1)
+  res.cookie('user', 1);
 
 });
 
 app.post('/login/2', (req, res) => {
 
-  res.cookie('username', 2)
+  res.cookie('user', 2);
 
 });
 
 app.post('/logout', (req, res) => {
 
-  res.clearCookie('username');
+  res.clearCookie('user');
   res.send({});
 
 });
