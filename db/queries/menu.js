@@ -1,4 +1,8 @@
 const db = require('../connection');
+//utilities
+const Utils = {};
+Utils.isObject = x => x !== null && typeof x === "object";
+Utils.isObjEmpty = obj => Utils.isObject(obj) && Object.keys(obj).length === 0;
 
 // GET /menu
 const getFullMenu = () => {
@@ -7,7 +11,7 @@ const getFullMenu = () => {
 };
 // GET /menu/:id
 const getMenu = (id) => {
-  const queryString = `SELECT * FROM menu_items WHERE name = $1;`;
+  const queryString = `SELECT * FROM menu_items WHERE id = $1;`;
   const values = [id];
   return db.query(queryString, values)
     .then(data => data.rows);
@@ -26,5 +30,46 @@ const createMenu = (params) => {
     .then(data => data.rows[0]);
 };
 
+/**
+ * tableName: `menu`
+ * conditions: { id: 'menu_item_id: 3', ... }
+ * data: { price: 299 }
+ *
+ *  "UPDATE users SET field_1 = $1, field_2 = $2, field_3 = $3, ... ( WHERE ...) RETURNING *";
+ */
 
-module.exports = { getFullMenu, getMenu, createMenu };
+const updateMenu = (conditions, data) => {
+  const conditions1 = {id: 3};
+  const data1 = { price: 500};
+
+  const dKeys = Object.keys(data1);
+  const dataTuples = dKeys.map((k, index) => `${k} = $${index + 1}`);
+  const updates = dataTuples.join(", ");
+  const len = Object.keys(data1).length;
+
+  let queryString = `UPDATE menu_items SET ${updates} `;
+
+  if (!Utils.isObjEmpty(conditions1)) {
+    const keys = Object.keys(conditions1);
+    const condTuples = keys.map((k, index) => `${k} = $${index + 1 + len} `);
+    const condPlaceholders = condTuples.join(" AND ");
+
+    queryString += ` WHERE ${condPlaceholders} RETURNING *`;
+  }
+
+  const values = [];
+  Object.keys(data1).forEach(key => {
+    values.push(data1[key]);
+  });
+  Object.keys(conditions1).forEach(key => {
+    values.push(conditions1[key]);
+  });
+
+  console.log(queryString, values);
+
+  return db.query(queryString, values)
+    .then(data => data.rows[0]);
+};
+
+
+module.exports = { getFullMenu, getMenu, createMenu, updateMenu };
