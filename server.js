@@ -105,6 +105,25 @@ app.get('/about', (req, res) => {
 
 });
 
+app.post('/login/1', (req, res) => {
+
+  res.cookie('username', 1)
+
+});
+
+app.post('/login/2', (req, res) => {
+
+  res.cookie('username', 2)
+
+});
+
+app.post('/logout', (req, res) => {
+
+  res.clearCookie('username');
+  res.send({});
+
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
