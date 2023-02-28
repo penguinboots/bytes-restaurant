@@ -151,7 +151,7 @@ module.exports = function(router, database) {
 
   // Get user orders
   router.get('/orders', (req, res) => {
-    const username = req.cookies["username"];
+    const user = req.cookies["user"];
 
     // if (!username) {
     //   res
@@ -160,7 +160,17 @@ module.exports = function(router, database) {
     //   return;
     // }
 
-    
+    database.getUserOrders(user)
+      .then(orders => {
+        const templateVars = {
+          user, orders
+        };
+        res.render("user-orders", templateVars);
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
 
   });
 
