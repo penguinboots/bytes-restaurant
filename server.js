@@ -9,8 +9,7 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 
 // Temp placeholder for db
-const database = require('database.js');
-
+const database = require('./db');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -80,6 +79,7 @@ app.get('/menu', (req, res) => {
 
   database.getFullMenu()
     .then(menu => {
+      console.log(menu);
       const templateVars = {
         menu
       };
