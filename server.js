@@ -45,6 +45,7 @@ const userApiRoutes = require('./routes/users-api');
 const widgetApiRoutes = require('./routes/widgets-api');
 const userRoutes = require('./routes/users');
 const managementRoutes = require('./routes/management');
+const apiRoutes = require('./routes/combined-api');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -64,6 +65,10 @@ app.use('/api/widgets', widgetApiRouter);
 const managementRouter = express.Router();
 managementRoutes(managementRouter, database);
 app.use('/management', managementRouter);
+
+const apiRouter = express.Router();
+apiRoutes(apiRouter, database);
+app.use('/api', apiRouter);
 // Note: mount other resources here, using the same pattern above
 
 
