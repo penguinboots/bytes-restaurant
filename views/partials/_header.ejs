@@ -27,10 +27,16 @@
     </div>
     <div class="right-nav">
       <% if (!user) { %>
-      <form method="POST" action="/login">
+      <form method="POST" action="/login/1">
         <button id="login" type="submit">
           <span><i class="fa-sharp fa-solid fa-user"></i></span>
-          <span>LOG IN</span>
+          <span>LOG IN CUSTOMER</span>
+        </button>
+      </form>
+      <form method="POST" action="/login/2">
+        <button id="login" type="submit">
+          <span><i class="fa-sharp fa-solid fa-user"></i></span>
+          <span>LOG IN VENDOR</span>
         </button>
       </form>
       <% } else { %>
