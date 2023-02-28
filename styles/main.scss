@@ -1,4 +1,6 @@
 $shadow-col: #000000;
+$base-font: "Courier Prime", monospace;
+$hover-col: #ffe4c4;
 $base-col: #57514c;
 
 html {
@@ -12,16 +14,14 @@ body {
 
   padding-top: 60px;
 
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/ph-robot.png);
+  background: url(../images/ph-robot.png);
+  background-color: #302b26;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: local;
 
   header {
     margin-top: 60px;
-    img {
-      max-width: 100%;
-    }
   }
 
   main {
@@ -31,55 +31,87 @@ body {
     flex-direction: column;
     align-items: center;
 
+    font-family: $base-font;
+
     h1 {
-      font-family: "Courier Prime", monospace;
       font-size: 160px;
       font-weight: 700;
       color: white;
-      margin: 0px;
-      margin-top: 60px;
-
-      padding: 0px;
-
-      text-shadow: -4px 0px 0px $shadow-col, 4px 0px 0px $shadow-col,
-        0px -4px 0px $shadow-col, 0px 4px 0px $shadow-col;
     }
-
     h2 {
-      font-family: "Courier Prime", monospace;
       font-size: 36px;
       font-weight: 400;
       color: white;
-      margin: 0px;
-
-      padding: 12px;
-
-      text-shadow: -2px 0px 0px $shadow-col, 2px 0px 0px $shadow-col,
-        0px -2px 0px $shadow-col, 0px 2px 0px $shadow-col;
     }
-
-    button {
-      background-color: white;
-      border: 1px;
-      border-radius: 24px;
-      color: #57514c;
-
-      text-align: center;
-
-      font-family: "Courier Prime", monospace;
-      font-size: 48px;
-
-      width: 360px;
-      height: 96px;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    p {
+      font-size: 24px;
     }
+  }
+}
 
-    button:hover {
-      background-color: #c2b5ab;
-    }
+.text-container {
+  width: 60%;
+  background: rgba(53, 49, 46, 0.8);
+  padding-bottom: 120px;
+
+  color: white;
+
+  img {
+    width: 100%;
+    margin-bottom: 36px;
+  }
+  p {
+    width: 80%;
+    font-family: $base-font;
+    font-size: 22px;
+    text-align: justify;
+    text-indent: 48px;
+  }
+  h1 {
+    font-size: 48px;
+  }
+}
+
+.home {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(../images/ph-robot.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: local;
+
+  h1 {
+    margin: 0px;
+    margin-top: 60px;
+    padding: 0px;
+    text-shadow: -4px 0px 0px $shadow-col, 4px 0px 0px $shadow-col,
+      0px -4px 0px $shadow-col, 0px 4px 0px $shadow-col;
+  }
+  h2 {
+    margin: 0px;
+    padding: 12px;
+    text-shadow: -2px 0px 0px $shadow-col, 2px 0px 0px $shadow-col,
+      0px -2px 0px $shadow-col, 0px 2px 0px $shadow-col;
+  }
+  button {
+    background-color: white;
+    color: #57514c;
+    border: 2px solid $base-col;
+
+    width: 360px;
+    height: 96px;
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    font-family: $base-font;
+    font-size: 48px;
+  }
+
+  button:hover {
+    background-color: $hover-col;
   }
 }
