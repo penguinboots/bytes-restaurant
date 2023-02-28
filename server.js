@@ -90,11 +90,13 @@ app.get('/', (req, res) => {
 
 app.get('/menu', (req, res) => {
 
+  const user = req.cookies["user"];
+
   database.getFullMenu()
     .then(menu => {
       console.log(menu);
       const templateVars = {
-        menu
+        menu, user
       };
       res.render("menu", templateVars);
     })
@@ -107,7 +109,13 @@ app.get('/menu', (req, res) => {
 
 app.get('/about', (req, res) => {
 
-  res.render('about');
+  const user = req.cookies["user"];
+
+  const templateVars = {
+    user
+  }
+
+  res.render('about', templateVars);
 
 });
 
