@@ -48,3 +48,52 @@ VALUES
 (9, 6, 2),
 (7, 7, 1),
 (10, 8, 2);
+
+-- orders table
+INSERT INTO orders (customer_id, status, total, created_at, accepted_at, estimated_end_time, completed_at)
+VALUES
+(1, 1, 1597, '2022-02-20 12:34:56', NULL, NULL, NULL),
+(2, 1, 2097, '2022-02-21 10:11:12', NULL, NULL, NULL),
+(3, 2, 1198, '2022-02-22 14:15:16', NULL, NULL, NULL),
+(4, 3, 399, '2022-02-23 16:17:18', NULL, NULL, NULL),
+(5, 1, 1397, '2022-02-24 18:19:20', NULL, NULL, NULL),
+(6, 2, 599, '2022-02-25 20:21:22', NULL, NULL, NULL),
+(7, 3, 1399, '2022-02-26 22:23:24', NULL, NULL, NULL),
+(8, 4, 899, '2022-02-27 00:00:00', NULL, NULL, NULL),
+(9, 5, 499, '2022-02-28 12:00:00', NULL, NULL, NULL),
+(10, 1, 1099, '2022-03-01 18:00:00', NULL, NULL, NULL);
+
+-- order_items table
+INSERT INTO order_items (order_id, menu_items_id)
+VALUES
+(1, 1),
+(1, 5),
+(1, 8),
+(2, 2),
+(2, 4),
+(2, 6),
+(2, 9),
+(3, 2),
+(3, 3),
+(3, 7),
+(4, 4),
+(4, 6),
+(4, 10),
+(5, 1),
+(5, 5),
+(5, 6),
+(6, 2),
+(6, 7),
+(6, 9),
+(7, 3),
+(7, 5),
+(7, 10),
+(8, 1),
+(8, 3),
+(8, 7),
+(9, 2),
+(9, 4),
+(10, 1),
+(10, 5),
+(10, 6),
+(10, 9);
