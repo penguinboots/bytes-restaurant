@@ -1,5 +1,5 @@
 $base-font: "Courier Prime", monospace;
-$hover-color: #ffe4c4;
+$hover-col: #ffe4c4;
 $base-col: #57514c;
 
 .nav-link {
@@ -12,11 +12,11 @@ $base-col: #57514c;
     color: white;
   }
   a:hover {
-    color: $hover-color;
+    color: $hover-col;
   }
 }
 .nav-link:hover {
-  color: $hover-color;
+  color: $hover-col;
 }
 
 .nav-bar {
@@ -93,6 +93,6 @@ $base-col: #57514c;
     color: $base-col;
   }
   button:hover {
-    background-color: $hover-color;
+    background-color: $hover-col
   }
 }
