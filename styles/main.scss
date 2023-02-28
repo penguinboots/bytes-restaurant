@@ -13,7 +13,7 @@ body {
   align-items: center;
 
   padding-top: 60px;
-  background-image: url('../images/bg-tile.png');
+  background-image: url("../images/bg-tile.png");
   background-repeat: repeat;
 
   header {
@@ -28,16 +28,15 @@ body {
     align-items: center;
 
     font-family: $base-font;
+    color: white;
 
     h1 {
       font-size: 160px;
       font-weight: 700;
-      color: white;
     }
     h2 {
       font-size: 36px;
       font-weight: 400;
-      color: white;
     }
     p {
       font-size: 24px;
@@ -49,8 +48,6 @@ body {
   width: 60%;
   background: rgba(53, 49, 46, 0.8);
   padding-bottom: 120px;
-
-  color: white;
 
   img {
     width: 100%;
@@ -111,7 +108,7 @@ body {
   position: fixed;
   z-index: -1;
   top: 130px;
-  left: 130px;;
+  left: 130px;
   img {
     width: 50%;
   }
