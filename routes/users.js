@@ -51,7 +51,7 @@ module.exports = function(router, database) {
           return;
         }
         // req.session.username = user.id;
-        res.cookie('username', email);
+        res.cookie('username', user.id);
 
         res.send({ user: { name: user.name, email: user.email, id: user.id } });
       })
@@ -106,6 +106,26 @@ module.exports = function(router, database) {
     };
 
     res.render('ordering', templateVars);
+
+  });
+
+  // Get user orders
+  router.post('/orders', (req, res) => {
+    const username = req.cookies["username"];
+
+    // if (!username) {
+    //   res
+    //     .status(401)
+    //     .send("No currently logged in user detected");
+    //   return;
+    // }
+
+    database.getAllUserOrders(username)
+      .then(order => res.send(order))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
 
   });
 
