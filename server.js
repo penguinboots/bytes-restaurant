@@ -94,9 +94,9 @@ app.get('/menu', (req, res) => {
 
   database.getFullMenu()
     .then(menu => {
-      console.log(menu);
+      
       const templateVars = {
-        menu, user
+        menu:menu, user:user
       };
       res.render("menu", templateVars);
     })
