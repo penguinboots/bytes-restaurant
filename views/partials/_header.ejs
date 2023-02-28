@@ -10,7 +10,8 @@
         <li class="nav-link"><a href="/about">ABOUT US</a></li>
         <li class="divider">|</li>
         <li class="nav-link"><a href="/menu">MENU</a></li>
-        <% let user = 1; %> <!-- setting user id -->
+        <% let user = null; %>
+        <!-- setting user id -->
         <% if(user===1) { %>
         <li class="divider">|</li>
         <li class="nav-link"><a href="/management/orders">MANAGE ORDERS</a></li>
@@ -26,15 +27,19 @@
     </div>
     <div class="right-nav">
       <% if (!user) { %>
-      <button id="login" type="button">
-        <span><i class="fa-sharp fa-solid fa-user"></i></span>
-        <span>LOG IN</span>
-      </button>
+      <form method="POST" action="/login">
+        <button id="login" type="submit">
+          <span><i class="fa-sharp fa-solid fa-user"></i></span>
+          <span>LOG IN</span>
+        </button>
+      </form>
       <% } else { %>
-      <button id="logout" type="button">
-        <span><i class="fa-sharp fa-solid fa-user"></i></span>
-        <span>LOG OUT</span>
-      </button>
+      <form method="POST" action="/logout">
+        <button id="logout" type="submit">
+          <span><i class="fa-sharp fa-solid fa-user"></i></span>
+          <span>LOG OUT</span>
+        </button>
+      </form>
       <% } %>
     </div>
   </nav>
