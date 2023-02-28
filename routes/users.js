@@ -84,6 +84,47 @@ module.exports = function(router, database) {
         res.send(e);
       });
 
+    });
+
+  // Order form
+  router.get('/ordering', (req, res) => {
+    const userId = req.session.userId;
+
+    if (!userId) {
+      res
+        .status(401)
+        .send("No currently logged in user detected");
+      return;
+    }
+
+    const templateVars = {
+      userId,
+    }
+
+   res.render('ordering', templateVars);
+
+    });
+
+  // Create an order
+  router.post('/orders', (req, res) => {
+    const userId = req.session.userId;
+
+    if (!userId) {
+      res
+        .status(401)
+        .send("No currently logged in user detected");
+      return;
+    }
+
+    database.addOrder({ ...req.body })
+      .then(order => res.send(order))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
+
+    });
+
   return router;
 
 }
