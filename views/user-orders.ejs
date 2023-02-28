@@ -39,14 +39,12 @@
     </header>
     <main>
       <h2>My Orders</h2>
-      <thead>
+      <table>
         <tr>
           <th scope="col">Order ID</th>
           <th scope="col">Placed</th>
           <th scope="col">Status</th>
         </tr>
-      </thead>
-      <tbody>
         <!-- accepts array of order objects containing order_id, placed_at, status -->
         <% for (let orderID in orders) { %>
         <tr>
@@ -55,7 +53,7 @@
           <td><%= orders[order].status %></td>
         </tr>
         <% } %>
-      </tbody>
+      </table>
     </main>
   </body>
 </html>
