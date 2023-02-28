@@ -46,7 +46,7 @@
           <th scope="col">Z</th>
         </tr>
         <!-- accepts array of order objects containing order_id, placed_at, status -->
-        <% for (let item in menu) { %>
+        <% for (let item of menu) { %>
         <tr>
           <td><%= item.name %></td>
           <td><%= item.description %></td>
