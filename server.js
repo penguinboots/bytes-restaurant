@@ -128,7 +128,7 @@ app.post('/login/2', (req, res) => {
 app.post('/logout', (req, res) => {
 
   res.clearCookie('user');
-  res.send({});
+  res.redirect('/');
 
 });
 
