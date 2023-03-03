@@ -34,8 +34,34 @@
 
   <body>
     <%- include('./partials/_header.ejs') %>
-    <main>
-      <h1>PLACE NEW ORDER</h1>
+    <header>
+      <h2>PLACE NEW ORDER</h2>
+    </header>
+    <main class="new-order">
+      <section class="order-menu">
+        <table>
+          <% for (let item of menu) { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td><%= item.description %></td>
+            <td><%= item.price %></td>
+          </tr>
+          <% } %>
+        </table>
+      </section>
+      <section class="cart">
+        <div>
+          <h2>PLACEHOLDER CART</h2>
+          <div class="cart-items">
+            <h3>PLACEHOLDER ITEMS</h3>
+          </div>
+        </div>
+        <form method="POST" action="/orders">
+          <button id="place-order" type="submit">
+            <span>PLACE ORDER</span>
+          </button>
+        </form>
+      </section>
     </main>
   </body>
 </html>
