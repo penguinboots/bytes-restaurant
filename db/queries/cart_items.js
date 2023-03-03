@@ -1,54 +1,50 @@
 const db = require('../connection');
+
 //utilities
 const Utils = {};
 Utils.isObject = x => x !== null && typeof x === "object";
 Utils.isObjEmpty = obj => Utils.isObject(obj) && Object.keys(obj).length === 0;
 
-// GET /menu
-const getFullMenu = () => {
-  return db.query('SELECT * FROM menu_items;')
-    .then(data => data.rows);
-};
-
-// GET /menu/:id
-const getMenu = (id) => {
-  const queryString = `SELECT * FROM menu_items WHERE id = $1;`;
-  const values = [id];
+// GET /orders/menu
+const getCartItembyUserID = (userID) => {
+  const queryString = `
+    SELECT cart_items.id, name, price, quantity FROM cart_items join menu_items on menu_items.id = item_id where customer_id = $1;
+  `;
+  const values = [userID];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
 
-/** POST /menu
- *
+/** POST /carts
  * params: {
- *  name: str,
- *  description: str,
- *  price: money,
- *  image_url: str
+ *  item_id: integer ref(menu_items),
+ *  user_id: integer ref(users),
+ *  quantity: 4.5,
  * }
  */
-const createMenu = (params) => {
-  const queryString = `INSERT INTO menu_items ( name, description, price, image_url) VALUES ($1, $2, $3, $4) RETURNING *;`;
-  const values = [params.name, params.description, params.price, params.image_url];
+const createCartItem = (params) => {
+  const queryString = `INSERT INTO cart_items (item_id, user_id, quantity) VALUES ($1, $2, $3) RETURNING *;`;
+  const values = [params.item_id, params.user_id, params.quantity];
   return db.query(queryString, values)
     .then(data => data.rows[0]);
 };
 
 /**
- * tableName: `menu`
- * conditions: { id: 'menu_item_id: 3', ... }
- * data: { price: 299 }
+ * tableName: `cart_items`
+ * conditions: { user_id, item_id ref (menu_items id) }
+ * data: { quantity: integer }
  *
- *  "UPDATE menu_items SET field_1 = $1, field_2 = $2, field_3 = $3, ... ( WHERE ...) RETURNING *";
+ *  "UPDATE cart_items SET quantity = 2 where item_id = 3 and user_id = 2 RETURNING *";
  */
 
-const updateMenu = (conditions, data) => {
+const updateCartItems = (conditions, data) => {
+
   const dKeys = Object.keys(data);
   const dataTuples = dKeys.map((k, index) => `${k} = $${index + 1}`);
   const updates = dataTuples.join(", ");
   const len = Object.keys(data).length;
 
-  let queryString = `UPDATE menu_items SET ${updates} `;
+  let queryString = `UPDATE cart_items SET ${updates} `;
 
   if (!Utils.isObjEmpty(conditions)) {
     const keys = Object.keys(conditions);
@@ -72,5 +68,4 @@ const updateMenu = (conditions, data) => {
     .then(data => data.rows[0]);
 };
 
-
-module.exports = { getFullMenu, getMenu, createMenu, updateMenu };
+module.exports = { getCartItembyUserID, createCartItem, updateCartItems };
