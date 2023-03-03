@@ -21,6 +21,7 @@ $(document).ready(() => {
     }
   };
 
+  // get request to /cart, render cart on success
   const loadCart = function() {
     $.ajax({
       url: '/cart',
