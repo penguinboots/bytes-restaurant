@@ -56,7 +56,7 @@ module.exports = function(router, database) {
         const templateVars = {
           orders
         };
-        res.render("orders", templateVars);
+        res.render("vendor-orders", templateVars);
         return;
       })
       .catch(e => {
