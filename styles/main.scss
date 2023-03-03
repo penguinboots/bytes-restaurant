@@ -126,13 +126,92 @@ body {
 
 .cart {
   width: 20%;
-  height: 500px;
-  background-color: $shadow-col;
+  height: 85%;
+  background-color: white;
+  border-radius: 20px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+
+  color: $shadow-col;
+
+  .cart-header {
+    margin: auto;
+    width: 90%;
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    .action {
+      color: red;
+      cursor: pointer;
+      border-bottom: 1px solid red;
+      font-size: 16px;
+    }
+  }
+
+  .cart-items {
+    margin: auto;
+    width: 90%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+
+    .item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .about {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+
+        img {
+          width: 15%;
+          text-align: center;
+        }
+
+        h1 {
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 10px;
+        }
+      }
+
+      .counter {
+        width: 15%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .btn {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background-color: #d9d9d9;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 20px;
+          color: #202020;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .prices {
+      text-align: right;
+
+    }
+  }
 
   button {
     width: 240px;

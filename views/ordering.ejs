@@ -49,13 +49,37 @@
           <% } %>
         </table>
       </section>
+
       <section class="cart">
-        <div>
-          <h2>PLACEHOLDER CART</h2>
-          <div class="cart-items">
-            <h3>PLACEHOLDER ITEMS</h3>
-          </div>
+        <div class="cart-header">
+          <h1>Cart</h1>
+          <form action="/cart" method="POST">
+            <button type="submit">Remove All</button>
+          </form>
         </div>
+
+        <div class="cart-items">
+          <article class="item">
+            <div class="about">
+              <img
+                src="https://dummyimage.com/100x100/ffe4c4/000000.jpg&text=espresso"
+              />
+              <h1 class="item-title">Espresso</h1>
+            </div>
+
+            <div class="counter">
+              <div class="btn">-</div>
+              <div class="count">2</div>
+              <div class="btn">+</div>
+            </div>
+
+            <div class="prices">
+              <div>$2.99</div>
+              <div>Remove</div>
+            </div>
+          </article>
+        </div>
+
         <form method="POST" action="/orders">
           <button id="place-order" type="submit">
             <span>PLACE ORDER</span>
