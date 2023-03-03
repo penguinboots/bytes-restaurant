@@ -4,11 +4,25 @@ $(document).ready(() => {
   // create menu article element given raw menu data
   const createCartElement = function(cartItem) {
     const menuElement = $(`
-      <article class="cart-item">
-        <div>${cartItem.name}</div>
-        <div>${cartItem.price}</div>
-        <div>${cartItem.quantity}</div>
-      </article>
+      <article class="item">
+            <div class="about">
+              <img
+                src="https://dummyimage.com/50x50/ffe4c4/000000.jpg&text=${cartItem.name}"
+              />
+              <h1 class="item-title">${cartItem.name}</h1>
+            </div>
+            <div class="mod-item">
+              <div>${cartItem.price}</div>
+              <div class="counter">
+                <button>-</button>
+                <div class="count">${cartItem.quantity}</div>
+                <button>+</button>
+              </div>
+              <form action="/cart" method="POST">
+                <button class="remove-item" type="submit">Remove</button>
+              </form>
+            </div>
+          </article>
     `);
     return menuElement;
   };
