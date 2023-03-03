@@ -54,11 +54,11 @@
         <div class="cart-header">
           <h1>Cart</h1>
           <form action="/cart" method="POST">
-            <button type="submit">Remove All</button>
+            <button class="empty-cart" type="submit">Remove All</button>
           </form>
         </div>
 
-        <div class="cart-items">
+        <div class="item-container">
           <article class="item">
             <div class="about">
               <img
@@ -66,16 +66,16 @@
               />
               <h1 class="item-title">Espresso</h1>
             </div>
-
-            <div class="counter">
-              <div class="btn">-</div>
-              <div class="count">2</div>
-              <div class="btn">+</div>
-            </div>
-
-            <div class="prices">
+            <div class="mod-item">
               <div>$2.99</div>
-              <div>Remove</div>
+              <div class="counter">
+                <button>-</button>
+                <div class="count">2</div>
+                <button>+</button>
+              </div>
+              <form action="/cart" method="POST">
+                <button class="remove-item" type="submit">Remove</button>
+              </form>
             </div>
           </article>
         </div>
