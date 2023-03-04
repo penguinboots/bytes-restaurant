@@ -80,7 +80,7 @@ const testCart = [];
 
 app.get('/', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"]
 
   const templateVars = {
     user
@@ -92,7 +92,7 @@ app.get('/', (req, res) => {
 
 app.get('/menu', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"]
 
   database.getFullMenu()
     .then(menu => {
@@ -111,7 +111,7 @@ app.get('/menu', (req, res) => {
 
 app.get('/about', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"]
 
   const templateVars = {
     user
@@ -165,7 +165,7 @@ app.listen(PORT, () => {
 
 app.get('/ordering', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"]
 
   database.getFullMenu()
     .then(menu => {
