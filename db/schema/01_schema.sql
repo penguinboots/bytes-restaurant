@@ -40,9 +40,9 @@ CREATE TABLE orders (
   status INTEGER REFERENCES status(id) ON DELETE CASCADE,
   total money NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
-  accepted_at DATE,
-  estimated_end_time DATE,
-  completed_at DATE
+  accepted_at TIMESTAMP,
+  estimated_end_time TIMESTAMP,
+  completed_at TIMESTAMP
 );
 
 CREATE TABLE order_items (
