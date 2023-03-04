@@ -14,7 +14,7 @@ $(document).ready(() => {
               <h1 class="item-title">${cartItem.name}</h1>
             </div>
             <div class="mod-item">
-              <div>${cartItem.price}</div>
+              <div>$${cartItem.price / 100 * cartItem.quantity}</div>
               <div class="counter">
                 <button>-</button>
                 <div class="count">${cartItem.quantity}</div>
@@ -42,8 +42,8 @@ $(document).ready(() => {
   // get request to /cart, render cart on success
   const loadCart = function() {
     $.ajax({
-      // url: '/api/cart',
       url: '/cart',
+      //url: '/api/cart',
       method: 'GET',
       success: (cart) => {
         renderCart(cart);
@@ -56,12 +56,11 @@ $(document).ready(() => {
 
   loadCart();
 
-
   $(".form-add-item").submit(function(event) {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
-    $.post("/cart/add", serializedData)
+    $.post("/cart/add" /*"/cart/add"*/ , serializedData)
       .then(() => {
         console.log("data sent");
         loadCart();
