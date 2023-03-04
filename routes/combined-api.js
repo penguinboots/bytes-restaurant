@@ -68,13 +68,12 @@ module.exports = function(router, database) {
   // Adding to cart (increment and initial placement)
   router.post('/cart/add', (req, res) => {
 
-    const userId = req.cookies["user"];
+    const userId = req.cookies["userId"]
 
-    //TODO: control flow for checking duplicates, route to respective query
     database.getQuantityInCart(req.cookies["user"], req.body.itemId)
       .then(quantityArray => {
 
-        let quantity = Number(quantityArray[0]["quantity"]);
+        let quantity = quantityArray[0];
         const constructed_cart_item = { name: req.body.itemName, price: req.body.itemPrice, quantity: 0 };
 
         if (!quantity) {
@@ -95,6 +94,8 @@ module.exports = function(router, database) {
           return;
         }
 
+        quantity = quantity["quantity"];
+        
         // Increment the cart
         quantity++;
         database.updateCartItems({ user_id: userId, item_id: req.body.itemId, }, { quantity: quantity });
@@ -113,7 +114,7 @@ module.exports = function(router, database) {
 
   //       if (!quantity) {
 
-  //         const userId = req.cookies["user"];
+  //         const userId = req.cookies["userId"]
 
   //         // // Look up item name and price in menu
   //         // const menu_item = getItemById(req.body.itemId, database);
