@@ -80,11 +80,11 @@ const testCart = [];
 
 app.get('/', (req, res) => {
 
-  const user = req.cookies["userId"]
+  const user = req.cookies["userId"];
 
   const templateVars = {
     user
-  }
+  };
   res.render('index', templateVars);
 });
 
@@ -92,13 +92,13 @@ app.get('/', (req, res) => {
 
 app.get('/menu', (req, res) => {
 
-  const user = req.cookies["userId"]
+  const user = req.cookies["userId"];
 
   database.getFullMenu()
     .then(menu => {
-      
+
       const templateVars = {
-        menu:menu, user:user
+        menu: menu, user: user
       };
       res.render("menu", templateVars);
     })
@@ -111,11 +111,11 @@ app.get('/menu', (req, res) => {
 
 app.get('/about', (req, res) => {
 
-  const user = req.cookies["userId"]
+  const user = req.cookies["userId"];
 
   const templateVars = {
     user
-  }
+  };
 
   res.render('about', templateVars);
 
@@ -123,110 +123,26 @@ app.get('/about', (req, res) => {
 
 app.post('/login/1', (req, res) => {
 
-  res.cookie('user', 1);
-  res.redirect('back');
+  res.cookie('userId', 1);
+  res.redirect('/');
 
 });
 
 app.post('/login/2', (req, res) => {
 
-  res.cookie('user', 2);
-  res.redirect('back');
+  res.cookie('userId', 2);
+  res.redirect('/');
 
 });
 
 app.post('/logout', (req, res) => {
 
-  res.clearCookie('user');
-  res.redirect('back');
+  res.clearCookie('userId');
+  res.redirect('/');
 
 });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
-});
-
-// app.post('/cart/add', (req, res) => {
-//   const testItem = {
-//     name: req.body.itemName,
-//     price: req.body.itemPrice,
-//     quantity: 1
-//   };
-//   testCart.push(testItem);
-//   res.send(testCart);
-// });
-
-
-
-// app.get('/cart', (req, res) => {
-//   console.log(testCart);
-//   res.send(testCart);
-// });
-
-app.get('/ordering', (req, res) => {
-
-  const user = req.cookies["userId"]
-
-  database.getFullMenu()
-    .then(menu => {
-
-      const templateVars = {
-        menu: menu, user: user
-      };
-      res.render("ordering", templateVars);
-    })
-    .catch(e => {
-      console.error(e);
-      res.send(e);
-    });
-
-});
-
-app.post('/cart/add', (req, res) => {
-
-  database.getQuantityInCart(req.cookies["username"], req.body.itemId)
-      .then(quantityArray => {
-
-        const quantity = quantityArray[0];
-
-        if (!quantity) {
-          
-          //The cookie isn't accessible here for some reason, returns 'undefined' 
-          const userId = req.cookies["username"];
-          const constructed_cart_item = { name: req.body.itemName, price: req.body.itemPrice, quantity };
-
-          if (quantity === 0) {
-            // Update existing zeroed cart item with 1
-            // The update function is not passing in the userId in the DB for some reason
-            database.updateCartItems({ userId: userId, item_id: req.body.itemId, }, 1);
-            ++constructed_cart_item.quantity;
-            res.send(constructed_cart_item);
-            return;
-          }
-
-          // Pass into database to create new cart item (initial add)
-          database.createCartItem({ item_id: req.body.itemId, userId: userId, quantity: 1 });
-          constructed_cart_item.quantity = 1;
-          res.send(constructed_cart_item);
-          return;
-        }
-
-        // Increment the cart
-        database.updateCartItems({ userId: userId, item_id: req.body.itemId, }, ++quantity);
-        ++constructed_cart_item.quantity;
-        res.send(constructed_cart_item);
-        return;
-      });
-});
-
-app.get('/cart', (req, res) => {
-
-  database.getCartItemsbyUserID(req.cookies["username"])
-      .then(cart => res.send(cart))
-      .catch(e => {
-        console.error(e, "I messed up here!");
-        res.send(e);
-      });
-
 });
 

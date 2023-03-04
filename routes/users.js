@@ -66,7 +66,7 @@ module.exports = function(router, database) {
 
   // Get all orders
   router.get('/:id/orders', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -90,28 +90,29 @@ module.exports = function(router, database) {
 
   });
 
-  // Order form
+  //Order form
   router.get('/ordering', (req, res) => {
-    const username = req.cookies["username"];
 
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
+    const user = req.cookies["userId"];
 
-    const templateVars = {
-      username,
-    };
+    database.getFullMenu()
+      .then(menu => {
 
-    res.render('ordering', templateVars);
+        const templateVars = {
+          menu: menu, user: user
+        };
+        res.render("ordering", templateVars);
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
 
   });
 
   // Get user orders
   router.post('/orders', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -131,7 +132,7 @@ module.exports = function(router, database) {
 
   // Create an order
   router.post('/orders', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -151,7 +152,7 @@ module.exports = function(router, database) {
 
   // Get user orders
   router.get('/orders', (req, res) => {
-    const user = req.cookies["user"];
+    const user = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -176,7 +177,7 @@ module.exports = function(router, database) {
 
   // Adding to cart
   router.post('/cart', (req, res) => {
-    database.addToCart(req.cookies["username"])
+    database.addToCart(req.cookies["userId"])
       .then(cart => res.send(cart))
       .catch(e => {
         console.error(e);
@@ -186,7 +187,7 @@ module.exports = function(router, database) {
 
   // // Purging cart
   // router.post('/cart/delete', (req, res) => {
-  //   database.deleteCart(req.cookies["username"])
+  //   database.deleteCart(req.cookies["userId"])
   //     .then(cart => res.send(cart))
   //     .catch(e => {
   //       console.error(e);
