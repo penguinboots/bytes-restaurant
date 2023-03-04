@@ -45,7 +45,7 @@
             <tr>
               <td><%= item.name %></td>
               <td><%= item.description %></td>
-              <td><%= item.price %></td>
+              <td>$<%= item.price /100 %></td>
               <input name="itemId" value="<%= item.id %>" type="hidden">
               <input name="itemName" value="<%= item.name %>" type="hidden">
               <input name="itemPrice" value="<%= item.price %>" type="hidden">
