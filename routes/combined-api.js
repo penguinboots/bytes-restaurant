@@ -47,6 +47,18 @@ module.exports = function(router, database) {
       });
   });
 
+   // Cart retrieval
+   router.get('/cart', (req, res) => {
+    database.getCartItembyUserID(req.cookies["username"])
+      .then(cart => res.send(cart))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
+  });
+
+
+
   return router;
 
 }

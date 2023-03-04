@@ -122,21 +122,21 @@ app.get('/about', (req, res) => {
 app.post('/login/1', (req, res) => {
 
   res.cookie('user', 1);
-  res.redirect('/');
+  res.redirect('back');
 
 });
 
 app.post('/login/2', (req, res) => {
 
   res.cookie('user', 2);
-  res.redirect('/');
+  res.redirect('back');
 
 });
 
 app.post('/logout', (req, res) => {
 
   res.clearCookie('user');
-  res.redirect('/');
+  res.redirect('back');
 
 });
 
