@@ -69,8 +69,10 @@ app.use('/management', managementRouter);
 const apiRouter = express.Router();
 apiRoutes(apiRouter, database);
 app.use('/api', apiRouter);
+
 // Note: mount other resources here, using the same pattern above
 
+const testCart = [];
 
 // Home page
 // Warning: avoid creating more routes in this file!
@@ -144,22 +146,22 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
 
-app.post('/cart/add', (req, res) => {
-  const testItem = {
-    name: req.body.itemName,
-    price: req.body.itemPrice,
-    quantity: 1
-  };
-  testCart.push(testItem);
-  res.send(testCart);
-});
+// app.post('/cart/add', (req, res) => {
+//   const testItem = {
+//     name: req.body.itemName,
+//     price: req.body.itemPrice,
+//     quantity: 1
+//   };
+//   testCart.push(testItem);
+//   res.send(testCart);
+// });
 
 
 
-app.get('/cart', (req, res) => {
-  console.log(testCart);
-  res.send(testCart);
-});
+// app.get('/cart', (req, res) => {
+//   console.log(testCart);
+//   res.send(testCart);
+// });
 
 app.get('/ordering', (req, res) => {
 
@@ -179,3 +181,52 @@ app.get('/ordering', (req, res) => {
     });
 
 });
+
+app.post('/cart/add', (req, res) => {
+
+  database.getQuantityInCart(req.cookies["username"], req.body.itemId)
+      .then(quantityArray => {
+
+        const quantity = quantityArray[0];
+
+        if (!quantity) {
+          
+          //The cookie isn't accessible here for some reason, returns 'undefined' 
+          const userId = req.cookies["username"];
+          const constructed_cart_item = { name: req.body.itemName, price: req.body.itemPrice, quantity };
+
+          if (quantity === 0) {
+            // Update existing zeroed cart item with 1
+            // The update function is not passing in the userId in the DB for some reason
+            database.updateCartItems({ userId: userId, item_id: req.body.itemId, }, 1);
+            ++constructed_cart_item.quantity;
+            res.send(constructed_cart_item);
+            return;
+          }
+
+          // Pass into database to create new cart item (initial add)
+          database.createCartItem({ item_id: req.body.itemId, userId: userId, quantity: 1 });
+          constructed_cart_item.quantity = 1;
+          res.send(constructed_cart_item);
+          return;
+        }
+
+        // Increment the cart
+        database.updateCartItems({ userId: userId, item_id: req.body.itemId, }, ++quantity);
+        ++constructed_cart_item.quantity;
+        res.send(constructed_cart_item);
+        return;
+      });
+});
+
+app.get('/cart', (req, res) => {
+
+  database.getCartItemsbyUserID(req.cookies["username"])
+      .then(cart => res.send(cart))
+      .catch(e => {
+        console.error(e, "I messed up here!");
+        res.send(e);
+      });
+
+});
+

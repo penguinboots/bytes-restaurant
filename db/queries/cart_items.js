@@ -6,11 +6,20 @@ Utils.isObject = x => x !== null && typeof x === "object";
 Utils.isObjEmpty = obj => Utils.isObject(obj) && Object.keys(obj).length === 0;
 
 // GET /orders/menu
-const getCartItembyUserID = (userID) => {
+const getCartItemsbyUserID = (userID) => {
   const queryString = `
-    SELECT cart_items.id, name, price, quantity FROM cart_items join menu_items on menu_items.id = item_id where customer_id = $1;
+    SELECT cart_items.id, name, price, quantity FROM cart_items join menu_items on menu_items.id = item_id where user_id = $1;
   `;
   const values = [userID];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+const getQuantityInCart = (userID, itemID) => {
+  const queryString = `
+    SELECT quantity FROM cart_items join menu_items on menu_items.id = item_id WHERE user_id = $1 AND item_id = $2;
+  `;
+  const values = [userID, itemID];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
@@ -68,4 +77,4 @@ const updateCartItems = (conditions, data) => {
     .then(data => data.rows[0]);
 };
 
-module.exports = { getCartItembyUserID, createCartItem, updateCartItems };
+module.exports = { getCartItemsbyUserID, createCartItem, updateCartItems, getQuantityInCart };
