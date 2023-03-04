@@ -41,11 +41,17 @@
       <section class="order-menu">
         <table>
           <% for (let item of menu) { %>
-          <tr>
-            <td><%= item.name %></td>
-            <td><%= item.description %></td>
-            <td><%= item.price %></td>
-          </tr>
+          <form class="form-add-item">
+            <tr>
+              <td><%= item.name %></td>
+              <td><%= item.description %></td>
+              <td><%= item.price %></td>
+              <input name="itemId" value="<%= item.id %>" type="hidden">
+              <input name="itemName" value="<%= item.name %>" type="hidden">
+              <input name="itemPrice" value="<%= item.price %>" type="hidden">
+              <td><button class="add-item" type="submit">+</button></td>
+            </tr>
+          </form>
           <% } %>
         </table>
       </section>
@@ -53,7 +59,7 @@
       <section class="cart">
         <div class="cart-header">
           <h1>Cart</h1>
-          <form action="/cart" method="POST">
+          <form action="/cart/delete" method="POST">
             <button class="empty-cart" type="submit">Remove All</button>
           </form>
         </div>
@@ -69,9 +75,9 @@
             <div class="mod-item">
               <div>$2.99</div>
               <div class="counter">
-                <button>-</button>
+                <button class="decQ">-</button>
                 <div class="count">2</div>
-                <button>+</button>
+                <button class="incQ">+</button>
               </div>
               <form action="/cart" method="POST">
                 <button class="remove-item" type="submit">Remove</button>
