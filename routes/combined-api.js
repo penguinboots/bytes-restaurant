@@ -1,3 +1,11 @@
+const getItemById = function(itemId, database) {
+  database.getMenu(itemId)
+    .then(menu_item => menu_item)
+    .catch(e => {
+      console.error(e);
+      res.send(e);
+    });
+};
 
 module.exports = function(router, database) {
 
@@ -44,6 +52,56 @@ module.exports = function(router, database) {
       .catch(e => {
         console.error(e);
         res.send(e);
+      });
+  });
+
+  // Cart retrieval
+  router.get('/cart', (req, res) => {
+    database.getCartItemsbyUserID(req.cookies["userId"])
+      .then(cart => res.send(cart))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      });
+  });
+
+  // Adding to cart (increment and initial placement)
+  router.post('/cart/add', (req, res) => {
+
+    const userId = req.cookies["userId"];
+
+    database.getQuantityInCart(req.cookies["userId"], req.body.itemId)
+      .then(quantityArray => {
+
+        let quantity = quantityArray[0];
+        const constructed_cart_item = { name: req.body.itemName, price: req.body.itemPrice, quantity: 0 };
+
+        if (!quantity) {
+
+          // Pass into database to create new cart item (initial add)
+          database.createCartItem({ item_id: req.body.itemId, user_id: userId, quantity: 1 });
+          constructed_cart_item.quantity = 1;
+          res.send(constructed_cart_item);
+          return;
+        }
+
+        quantity = quantity["quantity"];
+
+        if (quantity === 0) {
+          // Update existing zeroed cart item with 1
+          // The update function is not passing in the userId in the DB for some reason
+          database.updateCartItems({ user_id: userId, item_id: req.body.itemId, }, { quantity: 1 });
+          ++constructed_cart_item.quantity;
+          res.send(constructed_cart_item);
+          return;
+        }
+
+        // Increment the cart
+        quantity++;
+        database.updateCartItems({ user_id: userId, item_id: req.body.itemId, }, { quantity: quantity });
+        ++constructed_cart_item.quantity;
+        res.send(constructed_cart_item);
+        return;
       });
   });
 

@@ -40,12 +40,14 @@ $(document).ready(() => {
   };
 
   // get request to /cart, render cart on success
-  const loadCart = function() {
+  const loadCart = function(cart_item) {
     $.ajax({
-      url: '/cart',
-      //url: '/api/cart',
+      url: '/api/cart',
       method: 'GET',
       success: (cart) => {
+        if (cart_item) {
+          cart.push(cart_item);
+        }
         renderCart(cart);
       },
       error: (error) => {
@@ -60,10 +62,11 @@ $(document).ready(() => {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
-    $.post("/cart/add" /*"/cart/add"*/ , serializedData)
-      .then(() => {
+    $.post("/api/cart/add", serializedData)
+      .then((cart_item) => {
+
         console.log("data sent");
-        loadCart();
+        loadCart(cart_item);
       });
   });
 });

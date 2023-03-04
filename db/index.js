@@ -2,7 +2,7 @@
 const { getUsers } = require('./queries/users');
 const { getFullMenu, getMenu, createMenu, updateMenu } = require('./queries/menu');
 const { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders } = require('./queries/orders');
-const { getCartItembyUserID, createCartItem, updateCartItems } = require('./queries/cart_items');
+const { getCartItemsbyUserID, createCartItem, updateCartItems, getQuantityInCart } = require('./queries/cart_items');
 
 module.exports = {
   getUsers,
@@ -13,11 +13,9 @@ module.exports = {
   getOrders,
   getOrdersMenu,
   getOrdersbyCustomerId,
-  createOrder,
-  updateOrders,
-  getCartItembyUserID,
   createCartItem,
-  updateCartItems
+  updateCartItems,
+  getQuantityInCart
 };
 
 

@@ -56,7 +56,7 @@ app.use('/user', userRouter);
 
 const userApiRouter = express.Router();
 userApiRoutes(userApiRouter, database);
-app.use('/api/users', userApiRouter);
+app.use('/api/user', userApiRouter);
 
 const widgetApiRouter = express.Router();
 widgetApiRoutes(widgetApiRouter, database);
@@ -69,8 +69,10 @@ app.use('/management', managementRouter);
 const apiRouter = express.Router();
 apiRoutes(apiRouter, database);
 app.use('/api', apiRouter);
+
 // Note: mount other resources here, using the same pattern above
 
+const testCart = [];
 
 // Home page
 // Warning: avoid creating more routes in this file!
@@ -78,11 +80,11 @@ app.use('/api', apiRouter);
 
 app.get('/', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"];
 
   const templateVars = {
     user
-  }
+  };
   res.render('index', templateVars);
 });
 
@@ -90,13 +92,13 @@ app.get('/', (req, res) => {
 
 app.get('/menu', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"];
 
   database.getFullMenu()
     .then(menu => {
-      
+
       const templateVars = {
-        menu:menu, user:user
+        menu: menu, user: user
       };
       res.render("menu", templateVars);
     })
@@ -109,11 +111,11 @@ app.get('/menu', (req, res) => {
 
 app.get('/about', (req, res) => {
 
-  const user = req.cookies["user"];
+  const user = req.cookies["userId"];
 
   const templateVars = {
     user
-  }
+  };
 
   res.render('about', templateVars);
 
@@ -121,21 +123,21 @@ app.get('/about', (req, res) => {
 
 app.post('/login/1', (req, res) => {
 
-  res.cookie('user', 1);
+  res.cookie('userId', 1);
   res.redirect('/');
 
 });
 
 app.post('/login/2', (req, res) => {
 
-  res.cookie('user', 2);
+  res.cookie('userId', 2);
   res.redirect('/');
 
 });
 
 app.post('/logout', (req, res) => {
 
-  res.clearCookie('user');
+  res.clearCookie('userId');
   res.redirect('/');
 
 });
@@ -143,3 +145,4 @@ app.post('/logout', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
+

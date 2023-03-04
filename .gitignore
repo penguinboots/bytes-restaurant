@@ -5,3 +5,4 @@ public/styles
 *.sqlite3
 message_sandbox.js
 server_sandbox.js
+notes.js
