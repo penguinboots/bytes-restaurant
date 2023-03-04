@@ -184,16 +184,16 @@ module.exports = function(router, database) {
       });
   });
 
-  // Purging cart
-  router.post('/cart/delete', (req, res) => {
-    database.deleteCart(req.cookies["username"])
-      .then(cart => res.send(cart))
-      .catch(e => {
-        console.error(e);
-        res.send(e);
-      });
+  // // Purging cart
+  // router.post('/cart/delete', (req, res) => {
+  //   database.deleteCart(req.cookies["username"])
+  //     .then(cart => res.send(cart))
+  //     .catch(e => {
+  //       console.error(e);
+  //       res.send(e);
+  //     });
 
-  });
+  // });
 
   return router;
 

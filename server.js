@@ -56,7 +56,7 @@ app.use('/user', userRouter);
 
 const userApiRouter = express.Router();
 userApiRoutes(userApiRouter, database);
-app.use('/api/users', userApiRouter);
+app.use('/api/user', userApiRouter);
 
 const widgetApiRouter = express.Router();
 widgetApiRoutes(widgetApiRouter, database);
@@ -142,4 +142,40 @@ app.post('/logout', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
+});
+
+app.post('/cart/add', (req, res) => {
+  const testItem = {
+    name: req.body.itemName,
+    price: req.body.itemPrice,
+    quantity: 1
+  };
+  testCart.push(testItem);
+  res.send(testCart);
+});
+
+
+
+app.get('/cart', (req, res) => {
+  console.log(testCart);
+  res.send(testCart);
+});
+
+app.get('/ordering', (req, res) => {
+
+  const user = req.cookies["user"];
+
+  database.getFullMenu()
+    .then(menu => {
+
+      const templateVars = {
+        menu: menu, user: user
+      };
+      res.render("ordering", templateVars);
+    })
+    .catch(e => {
+      console.error(e);
+      res.send(e);
+    });
+
 });
