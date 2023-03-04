@@ -42,7 +42,8 @@ $(document).ready(() => {
   // get request to /cart, render cart on success
   const loadCart = function() {
     $.ajax({
-      url: '/api/cart',
+      // url: '/api/cart',
+      url: '/cart',
       method: 'GET',
       success: (cart) => {
         renderCart(cart);
@@ -55,24 +56,15 @@ $(document).ready(() => {
 
   loadCart();
 
+
   $(".form-add-item").submit(function(event) {
     event.preventDefault();
-
     const serializedData = $(this).serialize();
-    console.log(serializedData);
 
     $.post("/cart/add", serializedData)
       .then(() => {
+        console.log("data sent");
         loadCart();
       });
-
-    // const cartItem = {
-    //   name: event.target.itemName.value,
-    //   price: event.target.itemPrice.value,
-    //   quantity: 1
-    // };
-
-    // $(".cart-items-container").append(createCartElement(cartItem));
-
   });
 });
