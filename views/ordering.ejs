@@ -46,9 +46,9 @@
               <td><%= item.name %></td>
               <td><%= item.description %></td>
               <td>$<%= item.price /100 %></td>
-              <input name="itemId" value="<%= item.id %>" type="hidden">
-              <input name="itemName" value="<%= item.name %>" type="hidden">
-              <input name="itemPrice" value="<%= item.price %>" type="hidden">
+              <input name="itemId" value="<%= item.id %>" type="hidden" />
+              <input name="itemName" value="<%= item.name %>" type="hidden" />
+              <input name="itemPrice" value="<%= item.price %>" type="hidden" />
               <td><button class="add-item" type="submit">+</button></td>
             </tr>
           </form>
@@ -75,9 +75,15 @@
             <div class="mod-item">
               <div>$2.99</div>
               <div class="counter">
-                <button class="decQ">-</button>
-                <div class="count">2</div>
-                <button class="incQ">+</button>
+                <form class="item-decrease">
+                  <input name="itemID" value="" type="hidden" />
+                  <button class="inc" type="submit">-</button>
+                </form>
+                <div class="count">3</div>
+                <form class="item-increase">
+                  <input name="itemID" value="" type="hidden" />
+                  <button class="dec" type="submit">+</button>
+                </form>
               </div>
               <form action="api/cart" method="POST">
                 <button class="remove-item" type="submit">Remove</button>

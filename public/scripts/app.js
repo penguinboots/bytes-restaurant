@@ -14,13 +14,28 @@ $(document).ready(() => {
               <h1 class="item-title">${cartItem.name}</h1>
             </div>
             <div class="mod-item">
-              <div>$${cartItem.price / 100 * cartItem.quantity}</div>
+              <div>$${(cartItem.price / 100 * cartItem.quantity).toFixed(2)}</div>
               <div class="counter">
-                <button>-</button>
+                <form class="item-decrease">
+                  <input
+                    name="cartItemId"
+                    value="${cartItem.id}"
+                    type="hidden"
+                  />
+                  <button type="submit">-</button>
+                </form>
                 <div class="count">${cartItem.quantity}</div>
-                <button>+</button>
+                <form class="item-increase">
+                  <input
+                    name="cartItemId"
+                    value="${cartItem.id}"
+                    type="hidden"
+                  />
+                  <button type="submit">+</button>
+                </form>
               </div>
-              <form action="/cart" method="POST">
+              <form class="remove-item">
+                <input name="cartItemId" value="${cartItem.id}" type="hidden" />
                 <button class="remove-item" type="submit">Remove</button>
               </form>
             </div>
@@ -55,11 +70,47 @@ $(document).ready(() => {
 
   loadCart();
 
+  // handler for adding new item to cart
+  // sends itemId, itemName, itemPrice
   $(".form-add-item").submit(function(event) {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
+    console.log(serializedData);
+
     $.post("/api/cart/add", serializedData)
+      .then(() => {
+        loadCart();
+      });
+  });
+
+  // handlers for decreasing/increasing quantity and removing item from cart
+  // sends cartItemId
+  $(document.body).on('submit', '.item-decrease', function(event) {
+    event.preventDefault();
+    const serializedData = $(this).serialize();
+
+    $.post("/api/cart/mod", serializedData)
+      .then(() => {
+        loadCart();
+      });
+  });
+
+  $(document.body).on('submit', '.item-increase', function(event) {
+    event.preventDefault();
+    const serializedData = $(this).serialize();
+
+    $.post("/api/cart/mod", serializedData)
+      .then(() => {
+        loadCart();
+      });
+  });
+
+  $(document.body).on('submit', '.remove-item', function(event) {
+    event.preventDefault();
+    const serializedData = $(this).serialize();
+
+    $.post("/api/cart/mod", serializedData)
       .then(() => {
         loadCart();
       });
