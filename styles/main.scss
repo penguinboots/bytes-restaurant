@@ -188,6 +188,18 @@ body {
       }
     }
 
+    .cart-image {
+      font-size: 200px;
+      color: $base-col;
+      text-align: center;
+      opacity: 50%;
+      margin: 24px;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
     .cart-items-container {
       margin: auto;
       width: 90%;
@@ -327,5 +339,26 @@ body {
 
   td {
     padding-bottom: 12px;
+  }
+}
+
+#orders-v {
+  min-width: 600px;
+  padding-top: 36px;
+  padding-bottom: 60px;
+  table {
+    width: 95%;
+    th {
+      font-size: 22px;
+      font-weight: normal;
+    }
+    td {
+      text-align: center;
+      padding-top: 12px;
+    }
+  }
+
+  .date {
+    font-size: 14px;
   }
 }

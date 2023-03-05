@@ -35,7 +35,7 @@ module.exports = function(router, database) {
   });
 
   router.get('/orders', (req, res) => {
-    const username = req.cookies["userId"];
+    const user = req.cookies["userId"];
 
     // if (!username) {
     //   res
