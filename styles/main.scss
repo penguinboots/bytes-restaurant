@@ -188,6 +188,18 @@ body {
       }
     }
 
+    .cart-image {
+      font-size: 200px;
+      color: $base-col;
+      text-align: center;
+      opacity: 50%;
+      margin: 24px;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
     .cart-items-container {
       margin: auto;
       width: 90%;
