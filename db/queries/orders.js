@@ -6,7 +6,7 @@ Utils.isObjEmpty = obj => Utils.isObject(obj) && Object.keys(obj).length === 0;
 
 // GET /orders
 const getOrders = () => {
-  return db.query(`SELECT orders.id, orders.customer_id, status.status as status, total, created_at, accepted_at, estimated_end_time, completed_at FROM orders
+  return db.query(`SELECT * FROM orders
   JOIN status ON orders.status = status.id
   ORDER BY status.id ASC;`)
     .then(data => data.rows);
