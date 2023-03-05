@@ -8,7 +8,7 @@ Utils.isObjEmpty = obj => Utils.isObject(obj) && Object.keys(obj).length === 0;
 // GET /orders/menu
 const getCartItemsbyUserID = (userID) => {
   const queryString = `
-    SELECT cart_items.id, name, price, quantity FROM cart_items join menu_items on menu_items.id = item_id where user_id = $1;
+    SELECT cart_items.id, name, price, quantity, item_id FROM cart_items join menu_items on menu_items.id = item_id where user_id = $1;
   `;
   const values = [userID];
   return db.query(queryString, values)
