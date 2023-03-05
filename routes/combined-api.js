@@ -119,9 +119,31 @@ module.exports = function(router, database) {
 
     } catch (err) {
       console.error(err);
-      res.status(500).send("Error purging cart.");
+      res.status(500);
     }
   });
+
+  // // Increment cart item
+  // router.post('/cart/increase', async (req, res) => {
+
+  //   try {
+
+  //     const item_id = req.body["cartItemId"];
+  //     let quantity = await database.getQuantityInCart(req.cookies["userId"], item_id);
+  //     console.log(quantity);
+  //     ++quantity["quantity"];
+  //     await database.updateCartItems({ user_id: req.cookies["userId"], item_id: item_id, }, { quantity: quantity });
+  //     res.status(200);
+  //     return;
+
+  //   } catch (err) {
+
+  //     console.error(err)
+  //     res.status(500);
+
+  //   }
+
+  // });
 
   return router;
 
