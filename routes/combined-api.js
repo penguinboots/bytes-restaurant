@@ -105,6 +105,19 @@ module.exports = function(router, database) {
       });
   });
 
+  // // Purging cart
+  // router.post('/cart/delete', (req, res) => {
+
+  //   // Loop through each of the items and zero their quantiies
+  //   database.getCartItemsbyUserID(req.cookies["userId"])
+  //     .then(cart => {
+  //       for (let cart_item of cart) {
+  //         database.updateCartItems({req.cookies["userId"], cart_item})
+  //       }
+  //     });
+
+  // });
+
   return router;
 
 }
