@@ -105,6 +105,24 @@ module.exports = function(router, database) {
       });
   });
 
+  // Purging cart
+  router.post('/cart/delete', async (req, res) => {
+    try {
+      const cart = await database.getCartItemsbyUserID(req.cookies["userId"]);
+
+      const promises = cart.map(cart_item => {
+        return database.updateCartItems({user_id: req.cookies["userId"], item_id: cart_item.item_id}, {quantity: 0});
+      });
+
+      await Promise.all(promises);
+      res.status(200).redirect('back');
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error purging cart.");
+    }
+  });
+
   return router;
 
 }
