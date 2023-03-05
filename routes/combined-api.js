@@ -111,7 +111,7 @@ module.exports = function(router, database) {
       const cart = await database.getCartItemsbyUserID(req.cookies["userId"]);
 
       const promises = cart.map(cart_item => {
-        return database.updateCartItems({user_id: req.cookies["userId"], item_id: cart_item.item_id}, {quantity: 0});
+        return database.updateCartItems({ user_id: req.cookies["userId"], item_id: cart_item.item_id }, { quantity: 0 });
       });
 
       await Promise.all(promises);
@@ -119,8 +119,114 @@ module.exports = function(router, database) {
 
     } catch (err) {
       console.error(err);
-      res.status(500).send("Error purging cart.");
+      res.status(500);
     }
+  });
+
+  // Increment cart item
+  router.post('/cart/increase', async (req, res) => {
+
+    try {
+
+      const item_id = req.body["cartItemId"];
+      let menu_id;
+      let quantity;
+
+      // Try to get the menu item id to streamline this process
+      const cart_items = await database.getCartItemsbyUserID(req.cookies["userId"]);
+
+      console.log(cart_items);
+
+      for (let item of cart_items) {
+        if (item["id"] === Number(item_id)) {
+          quantity = item["quantity"];
+          menu_id = item["item_id"];
+        }
+      }
+
+      quantity++;
+      await database.updateCartItems({ user_id: req.cookies["userId"], item_id: menu_id, }, { quantity: quantity });
+
+      res.status(200).redirect('back');
+      return;
+
+    } catch (err) {
+
+      console.error(err);
+      res.status(500);
+
+    }
+
+  });
+
+   // Decrement cart item
+   router.post('/cart/decrease', async (req, res) => {
+
+    try {
+
+      const item_id = req.body["cartItemId"];
+      let menu_id;
+      let quantity;
+
+      // Try to get the menu item id to streamline this process
+      const cart_items = await database.getCartItemsbyUserID(req.cookies["userId"]);
+
+      console.log(cart_items);
+
+      for (let item of cart_items) {
+        if (item["id"] === Number(item_id)) {
+          quantity = item["quantity"];
+          menu_id = item["item_id"];
+        }
+      }
+
+      quantity--;
+      await database.updateCartItems({ user_id: req.cookies["userId"], item_id: menu_id, }, { quantity: quantity });
+
+      res.status(200).redirect('back');
+      return;
+
+    } catch (err) {
+
+      console.error(err);
+      res.status(500);
+
+    }
+
+  });
+
+   // Remove cart item
+   router.post('/cart/remove', async (req, res) => {
+
+    try {
+
+      const item_id = req.body["cartItemId"];
+      let menu_id;
+      let quantity;
+
+      // Try to get the menu item id to streamline this process
+      const cart_items = await database.getCartItemsbyUserID(req.cookies["userId"]);
+
+      console.log(cart_items);
+
+      for (let item of cart_items) {
+        if (item["id"] === Number(item_id)) {
+          menu_id = item["item_id"];
+        }
+      }
+
+      await database.updateCartItems({ user_id: req.cookies["userId"], item_id: menu_id, }, { quantity: 0 });
+
+      res.status(200).redirect('back');
+      return;
+
+    } catch (err) {
+
+      console.error(err);
+      res.status(500);
+
+    }
+
   });
 
   return router;
