@@ -44,7 +44,24 @@ $(document).ready(() => {
     return menuElement;
   };
 
-  // given array of tweets, append generated article element to tweets-container
+  // create subtotal element given cart data
+  const createSubtotal = function(cart) {
+    let subtotal = 0;
+    for (const item of cart) {
+      subtotal += item.price * item.quantity / 100;
+    }
+
+    const subtotalElement = $(`
+    <article class="subtotal">
+      <div>Subtotal: $${subtotal.toFixed(2)}</div>
+    </article>
+    `);
+
+    return subtotalElement;
+  };
+
+  // given array of items, append generated article element to cart-items-container
+  // append subtotal of cart items
   const renderCart = function(cart) {
     const $container = $(".cart-items-container");
     $container.empty();
@@ -52,6 +69,7 @@ $(document).ready(() => {
       const oneItem = createCartElement(item);
       $container.append(oneItem);
     }
+    $container.append(createSubtotal(cart));
   };
 
   // get request to /cart, render cart on success
