@@ -21,5 +21,3 @@ module.exports = {
   getQuantityInCart,
   updateCartQuantities
 };
-
-
