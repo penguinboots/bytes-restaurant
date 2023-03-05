@@ -43,14 +43,16 @@
         <tr>
           <th scope="col">Order ID</th>
           <th scope="col">Placed</th>
+          <th scope="col">Total</th>
           <th scope="col">Status</th>
         </tr>
         <!-- accepts array of order objects containing order_id, placed_at, status -->
-        <% for (let orderID in orders) { %>
+        <% for (let order in orders) { %>
         <tr>
-          <td><a href="/orders/<%= orderID %>"></a><%= orderID %></td>
-          <td><%= orders[order].placed_at %></td>
-          <td><%= orders[order].status %></td>
+          <td><a href="/orders/<%= order.id %>"></a><%= order.id %></td>
+          <td><%= order.placed_at %></td>
+          <td><%= order.total%></td>
+          <td><%= order.status %></td>
         </tr>
         <% } %>
       </table>

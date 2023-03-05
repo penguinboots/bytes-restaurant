@@ -14,13 +14,28 @@ $(document).ready(() => {
               <h1 class="item-title">${cartItem.name}</h1>
             </div>
             <div class="mod-item">
-              <div>$${cartItem.price / 100 * cartItem.quantity}</div>
+              <div>$${(cartItem.price / 100 * cartItem.quantity).toFixed(2)}</div>
               <div class="counter">
-                <button>-</button>
+                <form class="item-decrease">
+                  <input
+                    name="cartItemId"
+                    value="${cartItem.id}"
+                    type="hidden"
+                  />
+                  <button type="submit">-</button>
+                </form>
                 <div class="count">${cartItem.quantity}</div>
-                <button>+</button>
+                <form class="item-increase">
+                  <input
+                    name="cartItemId"
+                    value="${cartItem.id}"
+                    type="hidden"
+                  />
+                  <button type="submit">+</button>
+                </form>
               </div>
-              <form action="/cart" method="POST">
+              <form class="remove-item">
+                <input name="cartItemId" value="${cartItem.id}" type="hidden" />
                 <button class="remove-item" type="submit">Remove</button>
               </form>
             </div>
@@ -29,7 +44,24 @@ $(document).ready(() => {
     return menuElement;
   };
 
-  // given array of tweets, append generated article element to tweets-container
+  // create subtotal element given cart data
+  const createSubtotal = function(cart) {
+    let subtotal = 0;
+    for (const item of cart) {
+      subtotal += item.price * item.quantity / 100;
+    }
+
+    const subtotalElement = $(`
+    <div class="subtotal">
+      SUBTOTAL: $${subtotal.toFixed(2)}
+    </div>
+    `);
+
+    return subtotalElement;
+  };
+
+  // given array of items, append generated article element to cart-items-container
+  // append subtotal of cart items
   const renderCart = function(cart) {
     const $container = $(".cart-items-container");
     $container.empty();
@@ -37,6 +69,7 @@ $(document).ready(() => {
       const oneItem = createCartElement(item);
       $container.append(oneItem);
     }
+    $container.append(createSubtotal(cart));
   };
 
   // get request to /cart, render cart on success
@@ -55,11 +88,47 @@ $(document).ready(() => {
 
   loadCart();
 
+  // handler for adding new item to cart
+  // sends itemId, itemName, itemPrice
   $(".form-add-item").submit(function(event) {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
+    console.log(serializedData);
+
     $.post("/api/cart/add", serializedData)
+      .then(() => {
+        loadCart();
+      });
+  });
+
+  // handlers for decreasing/increasing quantity and removing item from cart
+  // sends cartItemId
+  $(document.body).on('submit', '.item-decrease', function(event) {
+    event.preventDefault();
+    const serializedData = $(this).serialize();
+
+    $.post("/api/cart/decrease", serializedData)
+      .then(() => {
+        loadCart();
+      });
+  });
+
+  $(document.body).on('submit', '.item-increase', function(event) {
+    event.preventDefault();
+    const serializedData = $(this).serialize();
+
+    $.post("/api/cart/increase", serializedData)
+      .then(() => {
+        loadCart();
+      });
+  });
+
+  $(document.body).on('submit', '.remove-item', function(event) {
+    event.preventDefault();
+    const serializedData = $(this).serialize();
+
+    $.post("/api/cart/remove", serializedData)
       .then(() => {
         loadCart();
       });
