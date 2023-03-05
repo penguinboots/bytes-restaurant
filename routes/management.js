@@ -2,7 +2,7 @@ module.exports = function(router, database) {
 
   router.get('/menu', (req, res) => {
 
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -35,7 +35,7 @@ module.exports = function(router, database) {
   });
 
   router.get('/orders', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -70,7 +70,7 @@ module.exports = function(router, database) {
 
   // Change menu (privileged access)
   router.post('/menu', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     //! Privileged account check
     // if (username !== 'PLACEHOLDER FOR privileged ACC') {
@@ -94,7 +94,7 @@ module.exports = function(router, database) {
 
   // Change menu item (privileged access)
   router.post('/menu/:id', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     //! Privileged account check
     // if (username !== 1) {
@@ -119,7 +119,7 @@ module.exports = function(router, database) {
 
   // Delete menu item (privileged access)
   router.post('/menu/:id/delete', (req, res) => {
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     //! Privileged account check
     // if (username !== 1) {
