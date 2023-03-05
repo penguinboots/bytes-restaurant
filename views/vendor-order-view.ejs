@@ -48,7 +48,6 @@
           <th>STATUS</th>
           <th>ACTIONS</th>
         </tr>
-        <% for (let order of orders) { %>
         <tr>
           <td><%= String(order.customer_id).padStart(4, '0') %></td>
           <td>$<%= order.total / 100%></td>
@@ -74,14 +73,11 @@
           <td><%= order.status %></td>
           <td>
             <% if (order.status === "Pending") { %>
-            <button>
-              ACCEPT
-            </button>
-              REJECT
-            </button>
+            <button>ACCEPT</button>
+            <button>REJECT</button>
+            <% } %>
           </td>
         </tr>
-        <% } %>
       </table>
     </section>
   </body>
