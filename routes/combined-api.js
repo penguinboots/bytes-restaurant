@@ -105,18 +105,23 @@ module.exports = function(router, database) {
       });
   });
 
-  // // Purging cart
-  // router.post('/cart/delete', (req, res) => {
+  // Purging cart
+  router.post('/cart/delete', async (req, res) => {
+    try {
+      const cart = await database.getCartItemsbyUserID(req.cookies["userId"]);
 
-  //   // Loop through each of the items and zero their quantiies
-  //   database.getCartItemsbyUserID(req.cookies["userId"])
-  //     .then(cart => {
-  //       for (let cart_item of cart) {
-  //         database.updateCartItems({req.cookies["userId"], cart_item})
-  //       }
-  //     });
+      const promises = cart.map(cart_item => {
+        return database.updateCartItems({user_id: req.cookies["userId"], item_id: cart_item.item_id}, {quantity: 0});
+      });
 
-  // });
+      await Promise.all(promises);
+      res.status(200).redirect('back');
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error purging cart.");
+    }
+  });
 
   return router;
 
