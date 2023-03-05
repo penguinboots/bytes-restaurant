@@ -66,8 +66,10 @@ $(document).ready(() => {
     const $container = $(".cart-items-container");
     $container.empty();
     for (const item of cart) {
-      const oneItem = createCartElement(item);
-      $container.append(oneItem);
+      if (item.quantity !== 0){
+        const oneItem = createCartElement(item);
+        $container.append(oneItem);
+      }
     }
     $container.append(createSubtotal(cart));
   };
