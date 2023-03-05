@@ -30,47 +30,41 @@
 
     <script src="/vendor/jquery-3.0.0.js"></script>
     <script defer src="/scripts/app.js"></script>
-
   </head>
 
   <body>
     <%- include('./partials/_header.ejs') %>
     <main>
-      <h1>ALL ORDERS</h1>
+      <h2>ALL ORDERS</h2>
     </main>
     <section class="card" id="orders-v">
       <table>
         <tr>
-          <th>Order ID</th>
-          <th>Customer ID</th>
-          <th>Total</th>
-          <th>Placed At</th>
-          <th>Completed At</th>
-          <th>Status</th>
+          <th>ORDER ID</th>
+          <th>CUSTOMER ID</th>
+          <th>TOTAL</th>
+          <th>PLACED</th>
+          <th>COMPLETED</th>
+          <th>STATUS</th>
         </tr>
         <% for (let order of orders) { %>
         <tr>
           <td>
-            <a href="/management/orders/:<%= order.id %>"><%= order.id %></a>
+            <a href="/management/orders/:<%= order.id %>"><%= String(order.id).padStart(4,'0') %></a>
           </td>
-          <td><%= order.customer_id %></td>
+          <td><%= String(order.customer_id).padStart(4, '0') %></td>
           <td>$<%= order.total / 100%></td>
-          <td>
-            <%=order.created_at.getFullYear() %>-<%=order.created_at.getMonth()
-            < 10? '0':''%><%=order.created_at.getMonth()
-            %>-<%=order.created_at.getDate() < 10?
-            '0':''%><%=order.created_at.getDate() %>
-            <%=order.created_at.getHours() < 10?
-            '0':''%><%=order.created_at.getHours()
-            %>:<%=order.created_at.getMinutes() < 10?
-            '0':''%><%=order.created_at.getMinutes() %>
+          <td class="date">
+            <%=order.created_at.getFullYear()
+            %>-<%=String(order.created_at.getMonth()).padStart(2,
+            '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
+            <%=String(order.created_at.getHours()).padStart(2,
+            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
           </td>
           <% if (order.status === "Completed") { %>
-          <td>
-            <%=order.completed_at.getHours() < 10?
-            '0':''%><%=order.completed_at.getHours()
-            %>:<%=order.completed_at.getMinutes() < 10?
-            '0':''%><%=order.completed_at.getMinutes() %>
+          <td class="date">
+            <%= String(order.completed_at.getHours()).padStart(2,'0') %>:<%=
+            String(order.completed_at.getMinutes()).padStart(2,'0') %>
           </td>
           <% } else { %>
           <td></td>

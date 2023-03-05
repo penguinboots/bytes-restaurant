@@ -329,3 +329,24 @@ body {
     padding-bottom: 12px;
   }
 }
+
+#orders-v {
+  min-width: 600px;
+  padding-top: 36px;
+  padding-bottom: 60px;
+  table {
+    width: 95%;
+    th {
+      font-size: 22px;
+      font-weight: normal;
+    }
+    td {
+      text-align: center;
+      padding-top: 12px;
+    }
+  }
+
+  .date {
+    font-size: 14px;
+  }
+}
