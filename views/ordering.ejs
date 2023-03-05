@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Quicksand:wght@300&display=swap"
       rel="stylesheet"
     />
 
@@ -41,7 +41,7 @@
       <section class="order-menu">
         <table>
           <tr>
-            <h2>MENU</h2>
+            <h2><i class="fa-solid fa-utensils"></i> MENU</h2>
           </tr>
           <% for (let item of menu) { %>
           <form class="form-add-item">
@@ -60,9 +60,11 @@
               <input name="itemId" value="<%= item.id %>" type="hidden" />
               <input name="itemName" value="<%= item.name %>" type="hidden" />
               <input name="itemPrice" value="<%= item.price %>" type="hidden" />
-              <td><button class="add-item" type="submit">
-                <span><i class="fa-solid fa-plus"></i></span> <span>ADD</span>
-              </button></td>
+              <td>
+                <button class="add-item" type="submit">
+                  <i class="fa-solid fa-plus"></i> ADD
+                </button>
+              </td>
             </tr>
           </form>
           <% } %>
@@ -71,7 +73,7 @@
 
       <section class="cart">
         <div class="cart-header">
-          <h2>CART</h2>
+          <h2><i class="fa-solid fa-cart-shopping"></i> CART</h2>
           <form action="api/cart/delete" method="POST">
             <button class="empty-cart" type="submit">Remove All</button>
           </form>

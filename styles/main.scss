@@ -157,7 +157,7 @@ body {
     }
     .item-desc {
       padding-left: 12px;
-      font-family: Helvetica;
+      font-family: 'Quicksand';
       width: 85%;
     }
 
@@ -254,6 +254,10 @@ body {
             justify-content: space-between;
             align-items: center;
             align-self: right;
+            .count {
+              width: 18px;
+              text-align: center;
+            }
             button {
               width: 20px;
               height: 20px;
@@ -266,6 +270,10 @@ body {
               font-size: 20px;
               color: #202020;
               cursor: pointer;
+            }
+
+            button:hover {
+              background-color: $hover-col;
             }
           }
           .remove-item {
