@@ -59,7 +59,7 @@
       <section class="cart">
         <div class="cart-header">
           <h1>Cart</h1>
-          <form action="api/cart/delete" method="POST">
+          <form action="/api/cart/delete" method="POST">
             <button class="empty-cart" type="submit">Remove All</button>
           </form>
         </div>
@@ -79,14 +79,14 @@
                 <div class="count">2</div>
                 <button class="incQ">+</button>
               </div>
-              <form action="api/cart" method="POST">
+              <form action="/api/cart" method="POST">
                 <button class="remove-item" type="submit">Remove</button>
               </form>
             </div>
           </article>
         </div>
 
-        <form method="POST" action="api/orders">
+        <form method="POST" action="/api/orders">
           <button id="place-order" type="submit">
             <span>PLACE ORDER</span>
           </button>
