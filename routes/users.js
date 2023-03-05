@@ -110,52 +110,50 @@ module.exports = function(router, database) {
 
   });
 
-  // // Create an order
-  // router.post('/orders', async (req, res) => {
-  //   const username = req.cookies["userId"];
+  // Create an order
+  router.post('/orders', async (req, res) => {
+    const userId = req.cookies["userId"];
 
-  //   // if (!username) {
-  //   //   res
-  //   //     .status(401)
-  //   //     .send("No currently logged in user detected");
-  //   //   return;
-  //   // }
+    // if (!username) {
+    //   res
+    //     .status(401)
+    //     .send("No currently logged in user detected");
+    //   return;
+    // }
 
-  //   try {
+    try {
 
-  //     let cart = await database.getCartItemsbyUserID(req.cookies["userId"]);
+      let cart = await database.getCartItemsbyUserID(req.cookies["userId"]);
 
-  //     //* Calculating cart total (see if val can be passed from FE)
-  //     const total = cart.reduce((accumulator, val["total"]) => accumulator + val["total"], 0);
-  //     console.log(total);
-  //     res.send(`total: ${total}`);
-  //     return;
+      //* Calculating cart total (see if val can be passed from FE)
+      const total = cart.reduce((accumulator, val) => accumulator + (val["price"] * val["quantity"]), 0);
+      
 
-  //     //* Create an order retrieving it's order id (order placed status)
+      //* Create an order retrieving it's order id (order placed status)
 
-  //     await 
+      const order_id = await database.createOrder({customer_id: userId, status: 1, total: total});
 
-  //     // Send text to resto about order
+      // Send text to resto about order
 
-  //     //* Using the order id, insert the cart items into order_items
+      //* Using the order id, insert the cart items into order_items
 
-  //     // Purge the cart
+      // Purge the cart
 
-  //       database.addOrder({ ...req.body })
-  //         .then(order => res.send(order))
-  //         .catch(e => {
-  //           console.error(e);
-  //           res.send(e);
-  //         });
+        database.addOrder({ ...req.body })
+          .then(order => res.send(order))
+          .catch(e => {
+            console.error(e);
+            res.send(e);
+          });
 
-  //   } catch (err) {
+    } catch (err) {
 
-  //     console.error(err);
-  //     res.status(500);
+      console.error(err);
+      res.status(500);
 
-  //   }
+    }
 
-  // });
+  });
 
   // Get user orders
   router.get('/orders', (req, res) => {
