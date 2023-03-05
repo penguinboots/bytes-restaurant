@@ -77,4 +77,17 @@ const updateCartItems = (conditions, data) => {
     .then(data => data.rows[0]);
 };
 
-module.exports = { getCartItemsbyUserID, createCartItem, updateCartItems, getQuantityInCart };
+const updateCartQuantities = (params) => {
+  const dataTuples = params.map((k) => `(${k.quantity}, ${k.item_id}, ${k.user_id})`);
+  const val = dataTuples.join(',');
+  let queryString = `UPDATE cart_items c
+    set quantity = c1.quantity
+    from ( values `;
+  queryString += val;
+  queryString += `) as c1 (quantity, item_id, user_id )
+    where c.item_id = c1.item_id and c1.user_id = c.user_id`;
+  return db.query(queryString)
+    .then(data => data.rows);
+};
+
+module.exports = { getCartItemsbyUserID, createCartItem, updateCartItems, getQuantityInCart, updateCartQuantities };
