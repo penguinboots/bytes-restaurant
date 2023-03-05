@@ -108,7 +108,7 @@ $(document).ready(() => {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
-    $.post("/api/cart/mod", serializedData)
+    $.post("/api/cart/decrease", serializedData)
       .then(() => {
         loadCart();
       });
@@ -118,7 +118,7 @@ $(document).ready(() => {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
-    $.post("/api/cart/mod", serializedData)
+    $.post("/api/cart/increase", serializedData)
       .then(() => {
         loadCart();
       });
@@ -128,7 +128,7 @@ $(document).ready(() => {
     event.preventDefault();
     const serializedData = $(this).serialize();
 
-    $.post("/api/cart/mod", serializedData)
+    $.post("/api/cart/remove", serializedData)
       .then(() => {
         loadCart();
       });
