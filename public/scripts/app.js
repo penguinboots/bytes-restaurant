@@ -65,13 +65,42 @@ $(document).ready(() => {
   const renderCart = function(cart) {
     const $container = $(".cart-items-container");
     $container.empty();
+
+    if (emptyCart(cart)) {
+      $container.append(emptyMessage());
+    }
+
     for (const item of cart) {
       if (item.quantity !== 0) {
         const oneItem = createCartElement(item);
         $container.append(oneItem);
       }
     }
+
     $container.append(createSubtotal(cart));
+  };
+
+  // count total items in cart
+  const emptyCart = function(cart) {
+    let count = 0;
+    for (const item of cart) {
+      if (item.quantity) {
+        count += item.quantity;
+      }
+    }
+    if (!count) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  // generate empty cart message
+  const emptyMessage = () => {
+    return $(`
+    <i class="fa-solid fa-cart-shopping"></i>
+    <h2 class="empty-message">YOUR CART IS EMPTY!</h2>
+    `);
   };
 
   // get request to /cart, render cart on success
