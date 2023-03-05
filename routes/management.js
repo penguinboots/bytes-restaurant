@@ -51,10 +51,11 @@ module.exports = function(router, database) {
     //   return;
     // }
 
-    database.getAllOrders()
+    database.getOrders()
       .then(orders => {
         const templateVars = {
-          orders
+          orders,
+          user
         };
         res.render("vendor-orders", templateVars);
         return;

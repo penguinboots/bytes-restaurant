@@ -27,24 +27,35 @@
     <div class="right-nav">
       <% if (!user) { %>
       <form method="POST" action="/login/1">
-        <button id="login" type="submit">
+        <button id="login-v" type="submit">
           <span><i class="fa-sharp fa-solid fa-user"></i></span>
-          <span>LOG IN VENDOR</span>
+          <span>VENDOR LOGIN</span>
         </button>
       </form>
       <form method="POST" action="/login/2">
-        <button id="login" type="submit">
+        <button id="login-c" type="submit">
           <span><i class="fa-sharp fa-solid fa-user"></i></span>
-          <span>LOG IN CUSTOMER</span>
+          <span>CUSTOMER LOGIN</span>
         </button>
       </form>
       <% } else { %>
+      <% if (user === "1") { %>
+      <h3>WELCOME BACK, ROBOT OVERLORD!</h3>
       <form method="POST" action="/logout">
         <button id="logout" type="submit">
           <span><i class="fa-sharp fa-solid fa-user"></i></span>
           <span>LOG OUT</span>
         </button>
       </form>
+      <% } else { %>
+      <h3>WELCOME BACK, FRIEND!</h3>
+      <form method="POST" action="/logout">
+        <button id="logout" type="submit">
+          <span><i class="fa-sharp fa-solid fa-user"></i></span>
+          <span>LOG OUT</span>
+        </button>
+      </form>
+      <% } %>
       <% } %>
     </div>
   </nav>

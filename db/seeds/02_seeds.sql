@@ -29,11 +29,10 @@ VALUES
 -- Seed data for status table
 INSERT INTO status (status)
 VALUES
-('Placed'),
-('Accepted'),
-('Preparing'),
-('Ready'),
-('Completed');
+('Pending'),
+('In Progress'),
+('Completed'),
+('Rejected');
 
 -- Seed data for cart_items table
 INSERT INTO cart_items (item_id, user_id, quantity)
@@ -60,7 +59,7 @@ VALUES
 (6, 2, 599, '2022-02-25 20:21:22', NULL, NULL, NULL),
 (7, 3, 1399, '2022-02-26 22:23:24', NULL, NULL, NULL),
 (8, 4, 899, '2022-02-27 00:00:00', NULL, NULL, NULL),
-(9, 5, 499, '2022-02-28 12:00:00', NULL, NULL, NULL),
+(9, 3, 499, '2022-02-28 12:00:00', NULL, NULL, NULL),
 (10, 1, 1099, '2022-03-01 18:00:00', NULL, NULL, NULL);
 
 -- order_items table
