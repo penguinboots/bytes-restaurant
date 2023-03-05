@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Quicksand:wght@300&display=swap"
       rel="stylesheet"
     />
 
@@ -39,21 +39,20 @@
     </header>
     <main>
       <h2>Our Menu</h2>
-      <table>
-        <tr>
-          <th scope="col">X</th>
-          <th scope="col">Y</th>
-          <th scope="col">Z</th>
-        </tr>
-        <!-- accepts array of order objects containing order_id, placed_at, status -->
-        <% for (let item of menu) { %>
-        <tr>
-          <td><%= item.name %></td>
-          <td><%= item.description %></td>
-          <td><%= item.price %></td>
-        </tr>
-        <% } %>
-      </table>
+      <section class="menu" id="view-menu">
+        <table>
+          <!-- accepts array of order objects containing order_id, placed_at, status -->
+          <% for (let item of menu) { %>
+          <tr>
+            <td>
+              <div class="item-title"><%= item.name %></div>
+              <div class="item-desc"><%= item.description %></div>
+            </td>
+            <td>$<%= item.price / 100%></td>
+          </tr>
+          <% } %>
+        </table>
+      </section>
     </main>
   </body>
 </html>
