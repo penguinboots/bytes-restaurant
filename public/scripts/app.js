@@ -61,17 +61,47 @@ $(document).ready(() => {
   };
 
   // given array of items, append generated article element to cart-items-container
+  // if cart is empty, display cart-empty message
   // append subtotal of cart items
   const renderCart = function(cart) {
     const $container = $(".cart-items-container");
     $container.empty();
-    for (const item of cart) {
-      if (item.quantity !== 0) {
-        const oneItem = createCartElement(item);
-        $container.append(oneItem);
+    if (emptyCart(cart)) {
+      $container.append(emptyMessage());
+    } else {
+      for (const item of cart) {
+        if (item.quantity !== 0) {
+          const oneItem = createCartElement(item);
+          $container.append(oneItem);
+        }
       }
     }
     $container.append(createSubtotal(cart));
+  };
+
+  // return true if cart is empty
+  const emptyCart = function(cart) {
+    let count = 0;
+    for (const item of cart) {
+      if (item.quantity) {
+        count += item.quantity;
+      }
+    }
+    if (!count) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  // generate empty cart message
+  const emptyMessage = () => {
+    return $(`
+    <div class="cart-image">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <h2 class="empty-message">YOUR CART IS EMPTY</h2>
+    </div>
+    `);
   };
 
   // get request to /cart, render cart on success
