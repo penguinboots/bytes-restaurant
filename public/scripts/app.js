@@ -52,9 +52,9 @@ $(document).ready(() => {
     }
 
     const subtotalElement = $(`
-    <article class="subtotal">
-      <div>Subtotal: $${subtotal.toFixed(2)}</div>
-    </article>
+    <div class="subtotal">
+      SUBTOTAL: $${subtotal.toFixed(2)}
+    </div>
     `);
 
     return subtotalElement;
