@@ -78,7 +78,12 @@
             <button class="empty-cart" type="submit">Remove All</button>
           </form>
         </div>
-        <div class="cart-items-container"></div>
+        <div class="cart-items-container">
+          <div class="cart-image">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <h2 class="empty-message">YOUR CART IS EMPTY</h2>
+          </div>
+        </div>
         <form method="POST" action="api/orders">
           <button id="place-order" type="submit">
             <span>PLACE ORDER</span>
