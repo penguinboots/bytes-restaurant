@@ -15,7 +15,8 @@ module.exports = {
   getOrdersbyCustomerId,
   createCartItem,
   updateCartItems,
-  getQuantityInCart
+  getQuantityInCart,
+  getCartItemsbyUserID
 };
 
 

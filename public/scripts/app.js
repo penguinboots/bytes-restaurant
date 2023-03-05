@@ -40,14 +40,11 @@ $(document).ready(() => {
   };
 
   // get request to /cart, render cart on success
-  const loadCart = function(cart_item) {
+  const loadCart = function() {
     $.ajax({
       url: '/api/cart',
       method: 'GET',
       success: (cart) => {
-        if (cart_item) {
-          cart.push(cart_item);
-        }
         renderCart(cart);
       },
       error: (error) => {
@@ -63,10 +60,8 @@ $(document).ready(() => {
     const serializedData = $(this).serialize();
 
     $.post("/api/cart/add", serializedData)
-      .then((cart_item) => {
-
-        console.log("data sent");
-        loadCart(cart_item);
+      .then(() => {
+        loadCart();
       });
   });
 });
