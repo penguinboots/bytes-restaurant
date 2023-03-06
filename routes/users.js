@@ -140,7 +140,7 @@ module.exports = function(router, database) {
       });
 
       await Promise.all(promises);
-      res.status(200).redirect('back');
+      res.status(200).redirect(`/user/orders/${order.id}`);
 
     } catch (err) {
 
