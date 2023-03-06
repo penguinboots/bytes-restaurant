@@ -40,16 +40,13 @@
     <section class="card">
       <table>
         <tr>
-          <th>CUSTOMER ID</th>
           <th>TOTAL</th>
           <th>PLACED</th>
           <th>ACCEPTED</th>
           <th>COMPLETED</th>
           <th>STATUS</th>
-          <th>ACTIONS</th>
         </tr>
         <tr>
-          <td><%= String(order.customer_id).padStart(4, '0') %></td>
           <td>$<%= order.total / 100%></td>
           <td class="date">
             <%=order.created_at.getFullYear()
@@ -72,18 +69,14 @@
           </td>
           <td><%= order.status %></td>
         </tr>
+
         <% for (let item of orderItems) { %>
         <tr>
           <td><%= item.name %></td>
           <td><%= item.quantity %></td>
+          <td>$<%= (item.price / 100 * item.quantity).toFixed(2)%></td>
         </tr>
         <% } %>
-        <tr>
-          <% if (order.status === "Pending") { %>
-          <td><button>ACCEPT</button></td>
-          <td><button>REJECT</button></td>
-          <% } %>
-        </tr>
       </table>
     </section>
   </body>
