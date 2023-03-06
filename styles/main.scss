@@ -46,7 +46,10 @@ body {
 .text-container {
   width: 60%;
   background: rgba(53, 49, 46, 0.8);
-  padding-bottom: 120px;
+  padding-top: 36px;
+  padding-bottom: 72px;
+  margin: 60px;
+  border-radius: 36px;
 
   img {
     width: 100%;
@@ -64,13 +67,33 @@ body {
   }
 }
 
-.home {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url(../images/ph-robot.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: local;
+.bg-banner {
+  position: fixed;
+  z-index: -1;
+  opacity: 80%;
+  img {
+    max-width: 100%;
+  }
+}
 
+#bg-menu {
+  width: 80%;
+  min-width: 1500px;
+  top: 0px;
+  right: -50px;
+}
+
+#left-stack {
+  position: fixed;
+  z-index: -1;
+  top: 130px;
+  left: 130px;
+  img {
+    width: 50%;
+  }
+}
+
+.home {
   h1 {
     margin: 0px;
     margin-top: 60px;
@@ -85,6 +108,9 @@ body {
       0px -2px 0px $shadow-col, 0px 2px 0px $shadow-col;
   }
   button {
+    align-items: center;
+    justify-content: center;
+
     background-color: white;
     color: #57514c;
     border: 2px solid $base-col;
@@ -100,16 +126,7 @@ body {
 
   button:hover {
     background-color: $hover-col;
-  }
-}
-
-.left-stack {
-  position: fixed;
-  z-index: -1;
-  top: 130px;
-  left: 130px;
-  img {
-    width: 50%;
+    cursor: pointer;
   }
 }
 
