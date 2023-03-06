@@ -71,12 +71,18 @@
             <% } %>
           </td>
           <td><%= order.status %></td>
-          <td>
-            <% if (order.status === "Pending") { %>
-            <button>ACCEPT</button>
-            <button>REJECT</button>
-            <% } %>
-          </td>
+        </tr>
+        <% for (let item of orderItems) { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.quantity %></td>
+        </tr>
+        <% } %>
+        <tr>
+          <% if (order.status === "Pending") { %>
+          <td><button>ACCEPT</button></td>
+          <td><button>REJECT</button></td>
+          <% } %>
         </tr>
       </table>
     </section>
