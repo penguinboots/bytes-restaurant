@@ -1,6 +1,10 @@
 
 const bcrypt = require('bcrypt');
 
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
+
 module.exports = function(router, database) {
 
   // Create a new user
@@ -127,7 +131,7 @@ module.exports = function(router, database) {
 
       //* Filter zero quantity items in cart
       let filtered_cart = cart.filter(cart_item => cart_item.quantity > 0);
-    
+
       //TODO: Twilio integration here
 
       //* Using the order id, insert the cart items into order_items
@@ -140,6 +144,20 @@ module.exports = function(router, database) {
       });
 
       await Promise.all(promises);
+
+      // twillio notifications
+      database.getUser(userId)
+        .then(user => {
+          console.log(user);
+          client.messages
+            .create({
+              body: `Hello ${user[0].name}! Order #${order["id"]} is accepted. Your estimated pickup time is 20 mins`,
+              to: '+16478297424', // change to users[0].phone_number Text this number
+              from: '+15674093873', // twillio's number
+            })
+            .then(message => console.log(message.sid));
+        });
+
       res.status(200).redirect('back');
 
     } catch (err) {
