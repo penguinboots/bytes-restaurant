@@ -77,7 +77,7 @@ module.exports = function(router, database) {
 
       //!placeholder queries for db
       const order = await database.getOrderById(req.params.id);
-      const order_items = await database.getOrderItems(req.params.id);
+      const order_items = await database.getOrderItemsByOrderId(req.params.id);
 
       const templateVars = {
         user,

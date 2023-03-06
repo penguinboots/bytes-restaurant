@@ -95,4 +95,4 @@ const updateOrders = (conditions, data) => {
 };
 
 
-module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders };
+module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById};

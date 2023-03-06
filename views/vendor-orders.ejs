@@ -51,7 +51,7 @@
         <% for (let order of orders) { %>
         <tr>
           <td>
-            <a href="/management/orders/:<%= order.id %>"
+            <a href="/management/orders/<%= order.id %>"
               ><%= String(order.id).padStart(4,'0') %></a
             >
           </td>
