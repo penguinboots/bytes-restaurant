@@ -159,7 +159,7 @@ module.exports = function(router, database) {
     //   return;
     // }
 
-    database.getUserOrders(user)
+    database.getOrdersbyCustomerId(user)
       .then(orders => {
         const templateVars = {
           user, orders
