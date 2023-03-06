@@ -26,8 +26,17 @@ const getOrdersMenu = (customerId) => {
 // GET /orders/users
 
 const getOrdersbyCustomerId = (customerId) => {
-  const queryString = `SELECT * FROM orders WHERE customer_id = $1;`;
+  const queryString = `SELECT * FROM orders JOIN status ON orders.status = status.id WHERE customer_id = $1;`;
   const values = [customerId];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+// GET /orders/users
+
+const getOrderById = (order_id) => {
+  const queryString = `SELECT * FROM orders WHERE id = $1;`;
+  const values = [order_id];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
@@ -86,4 +95,4 @@ const updateOrders = (conditions, data) => {
 };
 
 
-module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders };
+module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById};

@@ -76,13 +76,11 @@ module.exports = function(router, database) {
     try {
 
       //!placeholder queries for db
-      const order = await database.getOrderById(req.params.id);
-      const order_items = await database.getOrderItems(req.params.id);
 
       const templateVars = {
         user,
-        order,
-        order_items
+        order: await database.getOrderById(req.params.id),
+        order_items: await database.getOrderItemsByOrderId(req.params.id),
       };
 
       res.render("vendor-order-view", templateVars);

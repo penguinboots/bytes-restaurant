@@ -110,43 +110,44 @@ module.exports = function(router, database) {
 
   });
 
-  // Get user orders
-  router.post('/orders', (req, res) => {
-    const username = req.cookies["userId"];
-
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
-
-    database.getAllUserOrders(username)
-      .then(order => res.send(order))
-      .catch(e => {
-        console.error(e);
-        res.send(e);
-      });
-
-  });
-
   // Create an order
-  router.post('/orders', (req, res) => {
-    const username = req.cookies["userId"];
+  router.post('/orders', async (req, res) => {
 
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
+    const userId = req.cookies["userId"];
 
-    database.addOrder({ ...req.body })
-      .then(order => res.send(order))
-      .catch(e => {
-        console.error(e);
-        res.send(e);
+    try {
+
+      let cart = await database.getCartItemsbyUserID(userId);
+
+      //* Calculating cart total (see if val can be passed from FE)
+      const total = cart.reduce((accumulator, val) => accumulator + (val["price"] * val["quantity"]), 0);
+
+      //* Create an order, retrieving it's order id (order pending status)
+      const order = await database.createOrder({ customer_id: userId, status: 1, total: total });
+
+      //* Filter zero quantity items in cart
+      let filtered_cart = cart.filter(cart_item => cart_item.quantity > 0);
+    
+      //TODO: Twilio integration here
+
+      //* Using the order id, insert the cart items into order_items
+      //! placeholder query, actual name/implementation may vary
+      const order_items = await database.createOrderItems({ order_id: order["id"], cart: filtered_cart });
+
+      //* Purge the cart
+      const promises = cart.map(cart_item => {
+        return database.updateCartItems({ user_id: userId, item_id: cart_item.item_id }, { quantity: 0 });
       });
+
+      await Promise.all(promises);
+      res.status(200).redirect('back');
+
+    } catch (err) {
+
+      console.error(err);
+      res.status(500);
+
+    }
 
   });
 
@@ -161,7 +162,7 @@ module.exports = function(router, database) {
     //   return;
     // }
 
-    database.getUserOrders(user)
+    database.getOrdersbyCustomerId(user)
       .then(orders => {
         const templateVars = {
           user, orders
