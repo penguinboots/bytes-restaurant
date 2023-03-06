@@ -77,18 +77,21 @@ module.exports = function(router, database) {
 
       //!placeholder queries for db
 
+      const order = await database.getOrderById(req.params.id);
+      const orderItems = await database.getOrderItemsByOrderId(req.params.id);
+
       const templateVars = {
         user,
-        order: await database.getOrderById(req.params.id),
-        orderItems: await database.getOrderItemsByOrderId(req.params.id),
+        order,
+        orderItems,
       };
 
       const dateString = templateVars.order.created_at;
       const dateObject = new Date(dateString);
-      const total = Number(templateVars.order.total);
+      // const total = Number(templateVars.order.total);
+      // templateVars.order.total = total;
       templateVars.order.created_at = dateObject;
-      templateVars.order.total = total;
-      
+
       // res.send(templateVars.order);
       // return;
 
