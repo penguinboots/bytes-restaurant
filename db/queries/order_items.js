@@ -20,7 +20,9 @@ const createOrderItems = (params) => {
 
 const getOrderItemsByOrderId = (order_id) => {
   const queryString = `
-    SELECT * FROM order_items WHERE order_id = $1;
+    SELECT * FROM order_items
+    JOIN menu_items ON menu_items.id = order_items.menu_items_id
+    WHERE order_id = $1;
   `;
   const values = [order_id];
   return db.query(queryString, values)

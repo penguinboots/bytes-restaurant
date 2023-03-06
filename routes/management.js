@@ -80,8 +80,17 @@ module.exports = function(router, database) {
       const templateVars = {
         user,
         order: await database.getOrderById(req.params.id),
-        order_items: await database.getOrderItemsByOrderId(req.params.id),
+        orderItems: await database.getOrderItemsByOrderId(req.params.id),
       };
+
+      const dateString = templateVars.order.created_at;
+      const dateObject = new Date(dateString);
+      const total = Number(templateVars.order.total);
+      templateVars.order.created_at = dateObject;
+      templateVars.order.total = total;
+      
+      // res.send(templateVars.order);
+      // return;
 
       res.render("vendor-order-view", templateVars);
 
