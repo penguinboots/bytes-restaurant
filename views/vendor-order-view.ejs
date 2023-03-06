@@ -37,7 +37,7 @@
     <main>
       <h2>ORDER <%= String(order.id).padStart(4,'0') %></h2>
     </main>
-    <section class="card">
+    <section class="card" id="orders-v">
       <table>
         <tr>
           <th>CUSTOMER ID</th>
@@ -72,19 +72,39 @@
           </td>
           <td><%= order.status %></td>
         </tr>
+      </table>
+      <table>
+        <tr>
+          <td>ORDER ITEMS</td>
+        </tr>
         <% for (let item of orderItems) { %>
         <tr>
           <td><%= item.name %></td>
           <td><%= item.quantity %></td>
         </tr>
         <% } %>
-        <tr>
-          <% if (order.status === "Pending") { %>
-          <td><button>ACCEPT</button></td>
-          <td><button>REJECT</button></td>
-          <% } %>
-        </tr>
       </table>
+      <% if (order.status === 1) { %>
+      <form>
+        <span>TIME TO PICKUP:</span>
+        <select name="est-time">
+          <option value="5">5 minutes</option>
+          <option value="10">10 minutes</option>
+          <option value="15">15 minutes</option>
+          <option value="20">20 minutes</option>
+          <option value="25">25 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="35">35 minutes</option>
+          <option value="40">40 minutes</option>
+          <option value="45">45 minutes</option>
+          <option value="50">50 minutes</option>
+          <option value="55">55 minutes</option>
+          <option value="60">60 minutes</option>
+        </select>
+        <button method="submit" action="/management/orders/<%= order.id %>/accept">ACCEPT</button>
+      </form>
+      <button method="submit" action="/management/orders/<%= order.id %>/reject">REJECT</button>
+      <% } %>
     </section>
   </body>
 </html>
