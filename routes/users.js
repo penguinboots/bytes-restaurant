@@ -123,13 +123,16 @@ module.exports = function(router, database) {
       const total = cart.reduce((accumulator, val) => accumulator + (val["price"] * val["quantity"]), 0);
 
       //* Create an order, retrieving it's order id (order pending status)
-      const order = await database.createOrder({customer_id: userId, status: 1, total: total});
+      const order = await database.createOrder({ customer_id: userId, status: 1, total: total });
 
+      //* Filter zero quantity items in cart
+      let filtered_cart = cart.filter(cart_item => cart_item.quantity > 0);
+    
       //TODO: Twilio integration here
 
       //* Using the order id, insert the cart items into order_items
       //! placeholder query, actual name/implementation may vary
-      await database.createOrderItems(order["id"], cart);
+      const order_items = await database.createOrderItems({ order_id: order["id"], cart: filtered_cart });
 
       //* Purge the cart
       const promises = cart.map(cart_item => {
