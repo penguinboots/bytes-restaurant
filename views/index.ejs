@@ -35,12 +35,16 @@
   <body class="home">
     <%- include('./partials/_header.ejs') %>
     <header></header>
+    <div class="bg-banner"><img src="./images/ph-robot-2.png"/></div>
     <main>
       <h1>BYTES</h1>
       <h2>for when a nibble just isn't enough</h2>
       <h2>**</h2>
-
-      <button>ORDER NOW</button>
+      <% if (user === "1") { %>
+      <a href="/management/orders"><button>VIEW ORDERS</button></a>
+      <% } else { %>
+      <a href="/user/ordering"><button>ORDER NOW</button></a>
+      <% } %>
     </main>
   </body>
 </html>
