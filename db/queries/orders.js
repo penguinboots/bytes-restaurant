@@ -38,7 +38,7 @@ const getOrderById = (order_id) => {
   const queryString = `SELECT * FROM orders WHERE id = $1;`;
   const values = [order_id];
   return db.query(queryString, values)
-    .then(data => data.rows);
+    .then(data => data.rows[0]);
 };
 
 /** POST /orders from cart_items

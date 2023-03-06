@@ -80,7 +80,7 @@ module.exports = function(router, database) {
       const templateVars = {
         user,
         order: await database.getOrderById(req.params.id),
-        order_items: await database.getOrderItemsByOrderId(req.params.id),
+        orderItems: await database.getOrderItemsByOrderId(req.params.id),
       };
 
       res.render("vendor-order-view", templateVars);
