@@ -112,7 +112,7 @@ module.exports = function(router, database) {
 
   // Create an order
   router.post('/orders', async (req, res) => {
-    
+
     const userId = req.cookies["userId"];
 
     try {
@@ -121,9 +121,8 @@ module.exports = function(router, database) {
 
       //* Calculating cart total (see if val can be passed from FE)
       const total = cart.reduce((accumulator, val) => accumulator + (val["price"] * val["quantity"]), 0);
-      
 
-      //* Create an order retrieving it's order id (order placed status)
+      //* Create an order, retrieving it's order id (order pending status)
       const order_id = await database.createOrder({customer_id: userId, status: 1, total: total});
 
       //TODO: Twilio integration here
