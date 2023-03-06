@@ -70,36 +70,27 @@ module.exports = function(router, database) {
   });
 
   // Render specific order page
-  router.get('/orders/:id', (req, res) => {
+  router.get('/orders/:id', async (req, res) => {
     const user = req.cookies["userId"];
 
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
-    //! Privileged account check
-    // if (username !== 'PRIV USER') {
-    //   res
-    //       .status(403)
-    //       .send("The current user does not have access to the requested resource!");
-    //   return;
-    // }
-    //!placeholder query for db
-    database.getOrderById(req.params.id)
-      .then(order => {
-        const templateVars = {
-          user,
-          order
-        };
-        res.render("vendor-order-view", templateVars);
-        return;
-      })
-      .catch(e => {
-        console.error(e);
-        res.send(e);
-      });
+    try {
+
+      //!placeholder queries for db
+      const order = await database.getOrderById(req.params.id);
+      const order_items = await database.getOrderItems(req.params.id);
+
+      const templateVars = {
+        user,
+        order,
+        order_items
+      };
+
+      res.render("vendor-order-view", templateVars);
+
+    } catch (err) {
+      console.error(err);
+      res.status(500);
+    }
 
 
 
