@@ -97,7 +97,45 @@ module.exports = function(router, database) {
       res.status(500);
     }
 
+  });
 
+  // Accept an order, setting the pick-up time
+  router.post('/orders/:id/accept', async (req, res) => {
+
+    try {
+
+      //!placeholder queries for db
+
+      const orderId = req.params.id;
+      const estimatedTime = req.body;
+
+      await database.acceptOrder(orderId, estimatedTime);
+
+      res.status(200).redirect('/management/orders');
+      
+    } catch (err) {
+      console.error(err);
+      res.status(500);
+    }
+
+  });
+
+  // Accept an order, setting the pick-up time
+  router.post('/orders/:id/reject', async (req, res) => {
+
+    try {
+
+      //!placeholder queries for db
+
+      const orderId = req.params.id;
+      await database.rejectOrder(orderId);
+
+      res.status(200).redirect('/management/orders');
+      
+    } catch (err) {
+      console.error(err);
+      res.status(500);
+    }
 
   });
 
