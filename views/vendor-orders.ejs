@@ -34,6 +34,7 @@
 
   <body>
     <%- include('./partials/_header.ejs') %>
+    <header></header>
     <main>
       <h2>ALL ORDERS</h2>
     </main>
@@ -50,7 +51,9 @@
         <% for (let order of orders) { %>
         <tr>
           <td>
-            <a href="/management/orders/:<%= order.id %>"><%= String(order.id).padStart(4,'0') %></a>
+            <a href="/management/orders/:<%= order.id %>"
+              ><%= String(order.id).padStart(4,'0') %></a
+            >
           </td>
           <td><%= String(order.customer_id).padStart(4, '0') %></td>
           <td>$<%= order.total / 100%></td>
