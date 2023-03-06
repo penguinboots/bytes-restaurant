@@ -65,8 +65,6 @@ module.exports = function(router, database) {
         res.send(e);
       });
 
-
-
   });
 
   // Render specific order page
