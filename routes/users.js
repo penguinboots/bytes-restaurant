@@ -112,39 +112,33 @@ module.exports = function(router, database) {
 
   // Create an order
   router.post('/orders', async (req, res) => {
+    
     const userId = req.cookies["userId"];
-
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
 
     try {
 
-      let cart = await database.getCartItemsbyUserID(req.cookies["userId"]);
+      let cart = await database.getCartItemsbyUserID(userId);
 
       //* Calculating cart total (see if val can be passed from FE)
       const total = cart.reduce((accumulator, val) => accumulator + (val["price"] * val["quantity"]), 0);
       
 
       //* Create an order retrieving it's order id (order placed status)
-
       const order_id = await database.createOrder({customer_id: userId, status: 1, total: total});
 
-      // Send text to resto about order
+      //TODO: Twilio integration here
 
       //* Using the order id, insert the cart items into order_items
+      //! placeholder query, actual name/implementation may vary
+      await database.createOrderItems(order_id, cart);
 
-      // Purge the cart
+      //* Purge the cart
+      const promises = cart.map(cart_item => {
+        return database.updateCartItems({ user_id: userId, item_id: cart_item.item_id }, { quantity: 0 });
+      });
 
-        database.addOrder({ ...req.body })
-          .then(order => res.send(order))
-          .catch(e => {
-            console.error(e);
-            res.send(e);
-          });
+      await Promise.all(promises);
+      res.status(200).redirect('back');
 
     } catch (err) {
 
