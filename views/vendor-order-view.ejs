@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>All Orders</title>
+    <title>Order Details</title>
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -34,27 +34,21 @@
 
   <body>
     <%- include('./partials/_header.ejs') %>
-    <header></header>
     <main>
-      <h2>ALL ORDERS</h2>
+      <h2>ORDER <%= String(order.id).padStart(4,'0') %></h2>
     </main>
-    <section class="card" id="orders-v">
+    <section class="card">
       <table>
         <tr>
-          <th>ORDER ID</th>
           <th>CUSTOMER ID</th>
           <th>TOTAL</th>
           <th>PLACED</th>
+          <th>ACCEPTED</th>
           <th>COMPLETED</th>
           <th>STATUS</th>
+          <th>ACTIONS</th>
         </tr>
-        <% for (let order of orders) { %>
         <tr>
-          <td>
-            <a href="/management/orders/:<%= order.id %>"
-              ><%= String(order.id).padStart(4,'0') %></a
-            >
-          </td>
           <td><%= String(order.customer_id).padStart(4, '0') %></td>
           <td>$<%= order.total / 100%></td>
           <td class="date">
@@ -64,17 +58,32 @@
             <%=String(order.created_at.getHours()).padStart(2,
             '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
           </td>
-          <% if (order.status === "Completed") { %>
           <td class="date">
-            <%= String(order.completed_at.getHours()).padStart(2,'0') %>:<%=
-            String(order.completed_at.getMinutes()).padStart(2,'0') %>
+            <% if (order.accepted_at) { %>
+            <%=String(order.created_at.getHours()).padStart(2,
+            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            <% } %>
           </td>
-          <% } else { %>
-          <td></td>
-          <% } %>
+          <td class="date">
+            <% if (order.completed_at) { %>
+            <%=String(order.created_at.getHours()).padStart(2,
+            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            <% } %>
+          </td>
           <td><%= order.status %></td>
         </tr>
+        <% for (let item of orderItems) { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.quantity %></td>
+        </tr>
         <% } %>
+        <tr>
+          <% if (order.status === "Pending") { %>
+          <td><button>ACCEPT</button></td>
+          <td><button>REJECT</button></td>
+          <% } %>
+        </tr>
       </table>
     </section>
   </body>

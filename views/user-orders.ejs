@@ -35,27 +35,47 @@
   <body>
     <%- include('./partials/_header.ejs') %>
     <header>
-      <!-- image header here -->
     </header>
     <main>
-      <h2>My Orders</h2>
+      <h2>MY ORDERS</h2>
+    </main>
+    <section class="card" id="orders-v">
       <table>
         <tr>
-          <th scope="col">Order ID</th>
-          <th scope="col">Placed</th>
-          <th scope="col">Total</th>
-          <th scope="col">Status</th>
+          <th>ORDER ID</th>
+          <th>TOTAL</th>
+          <th>PLACED</th>
+          <th>COMPLETED</th>
+          <th>STATUS</th>
         </tr>
-        <!-- accepts array of order objects containing order_id, placed_at, status -->
-        <% for (let order in orders) { %>
+        <% for (let order of orders) { %>
         <tr>
-          <td><a href="/orders/<%= order.id %>"></a><%= order.id %></td>
-          <td><%= order.placed_at %></td>
-          <td><%= order.total%></td>
+          <td>
+            <a href="/user/orders/:<%= order.id %>"
+              ><%= String(order.id).padStart(4,'0') %></a
+            >
+          </td>
+          <td><%= String(order.customer_id).padStart(4, '0') %></td>
+          <td>$<%= order.total / 100%></td>
+          <td class="date">
+            <%=order.created_at.getFullYear()
+            %>-<%=String(order.created_at.getMonth()).padStart(2,
+            '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
+            <%=String(order.created_at.getHours()).padStart(2,
+            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+          </td>
+          <% if (order.status === "Completed") { %>
+          <td class="date">
+            <%= String(order.completed_at.getHours()).padStart(2,'0') %>:<%=
+            String(order.completed_at.getMinutes()).padStart(2,'0') %>
+          </td>
+          <% } else { %>
+          <td></td>
+          <% } %>
           <td><%= order.status %></td>
         </tr>
         <% } %>
       </table>
-    </main>
+    </section>
   </body>
 </html>

@@ -69,6 +69,33 @@ module.exports = function(router, database) {
 
   });
 
+  // Render specific order page
+  router.get('/orders/:id', async (req, res) => {
+    const user = req.cookies["userId"];
+
+    try {
+
+      //!placeholder queries for db
+      const order = await database.getOrderById(req.params.id);
+      const order_items = await database.getOrderItems(req.params.id);
+
+      const templateVars = {
+        user,
+        order,
+        order_items
+      };
+
+      res.render("vendor-order-view", templateVars);
+
+    } catch (err) {
+      console.error(err);
+      res.status(500);
+    }
+
+
+
+  });
+
   // Change menu (privileged access)
   router.post('/menu', (req, res) => {
     const username = req.cookies["userId"];
