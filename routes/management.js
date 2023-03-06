@@ -83,6 +83,15 @@ module.exports = function(router, database) {
         orderItems: await database.getOrderItemsByOrderId(req.params.id),
       };
 
+      const dateString = templateVars.order.created_at;
+      const dateObject = new Date(dateString);
+      // const total = Number(templateVars.order.total);
+      // templateVars.order.total = total;
+      templateVars.order.created_at = dateObject;
+
+      // res.send(templateVars.order);
+      // return;
+
       res.render("vendor-order-view", templateVars);
 
     } catch (err) {
