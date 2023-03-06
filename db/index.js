@@ -1,9 +1,9 @@
 //? I realize this is a crude solution for getting the queries and connection together, but it's just to get a test run going
 const { getUsers } = require('./queries/users');
 const { getFullMenu, getMenu, createMenu, updateMenu } = require('./queries/menu');
-const { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders } = require('./queries/orders');
+const { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById } = require('./queries/orders');
 const { getCartItemsbyUserID, createCartItem, updateCartItems, getQuantityInCart, updateCartQuantities } = require('./queries/cart_items');
-const { createOrderItems } = require('./queries/order_items');
+const { createOrderItems, getOrderItemsByOrderId } = require('./queries/order_items');
 
 module.exports = {
   getUsers,
@@ -16,10 +16,12 @@ module.exports = {
   getOrdersbyCustomerId,
   createOrder,
   updateOrders,
+  getOrderById,
   getCartItemsbyUserID,
   createCartItem,
   updateCartItems,
   getQuantityInCart,
   updateCartQuantities,
   createOrderItems,
+  getOrderItemsByOrderId,
 };

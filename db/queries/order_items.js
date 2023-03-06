@@ -18,4 +18,13 @@ const createOrderItems = (params) => {
     .then(data => data.rows);
 };
 
-module.exports = { createOrderItems };
+const getOrderItemsByOrderId = (order_id) => {
+  const queryString = `
+    SELECT * FROM order_items WHERE order_id = $1;
+  `;
+  const values = [order_id];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+module.exports = { createOrderItems, getOrderItemsByOrderId };

@@ -32,6 +32,15 @@ const getOrdersbyCustomerId = (customerId) => {
     .then(data => data.rows);
 };
 
+// GET /orders/users
+
+const getOrderById = (order_id) => {
+  const queryString = `SELECT * FROM orders WHERE id = $1;`;
+  const values = [order_id];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
 /** POST /orders from cart_items
  * params: {
  *  customer_id: cart_items.user_id
@@ -86,4 +95,4 @@ const updateOrders = (conditions, data) => {
 };
 
 
-module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders };
+module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById};
