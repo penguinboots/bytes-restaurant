@@ -1,8 +1,5 @@
 const db = require('../connection');
-
-const Utils = {};
-Utils.isObject = x => x !== null && typeof x === "object";
-Utils.isObjEmpty = obj => Utils.isObject(obj) && Object.keys(obj).length === 0;
+const Utils = require('../helpers/utils');
 
 // GET /orders
 const getOrders = () => {
@@ -46,7 +43,7 @@ const getOrderById = (order_id) => {
   WHERE orders.id = $1;`;
   const values = [order_id];
   return db.query(queryString, values)
-    .then(data => data.rows);
+    .then(data => data.rows[0]);
 };
 
 /** POST /orders from cart_items

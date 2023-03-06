@@ -36,46 +36,47 @@
     <%- include('./partials/_header.ejs') %>
     <header></header>
     <main>
+    <div class="bg-banner" id="stack-right"><img src="../images/ph-stack-bg.png" /></div>
       <h2>ALL ORDERS</h2>
-    </main>
-    <section class="card" id="orders-v">
-      <table>
-        <tr>
-          <th>ORDER ID</th>
-          <th>CUSTOMER ID</th>
-          <th>TOTAL</th>
-          <th>PLACED</th>
-          <th>COMPLETED</th>
-          <th>STATUS</th>
-        </tr>
-        <% for (let order of orders) { %>
-        <tr>
-          <td>
-            <a href="/management/orders/<%= order.id %>"
-              ><%= String(order.id).padStart(4,'0') %></a
-            >
-          </td>
-          <td><%= String(order.customer_id).padStart(4, '0') %></td>
-          <td>$<%= order.total / 100%></td>
-          <td class="date">
-            <%=order.created_at.getFullYear()
-            %>-<%=String(order.created_at.getMonth()).padStart(2,
-            '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
-          </td>
-          <% if (order.status === "Completed") { %>
-          <td class="date">
-            <%= String(order.completed_at.getHours()).padStart(2,'0') %>:<%=
-            String(order.completed_at.getMinutes()).padStart(2,'0') %>
-          </td>
-          <% } else { %>
-          <td></td>
+      <section class="card" id="orders-v">
+        <table>
+          <tr>
+            <th>ORDER ID</th>
+            <th>CUSTOMER ID</th>
+            <th>TOTAL</th>
+            <th>PLACED</th>
+            <th>COMPLETED</th>
+            <th>STATUS</th>
+          </tr>
+          <% for (let order of orders) { %>
+          <tr>
+            <td>
+              <a href="/management/orders/<%= order.id %>"
+                ><%= String(order.id).padStart(4,'0') %></a
+              >
+            </td>
+            <td><%= String(order.customer_id).padStart(4, '0') %></td>
+            <td>$<%= order.total / 100%></td>
+            <td class="date">
+              <%=order.created_at.getFullYear()
+              %>-<%=String(order.created_at.getMonth()).padStart(2,
+              '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
+              <%=String(order.created_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            </td>
+            <% if (order.status === "Completed") { %>
+            <td class="date">
+              <%= String(order.completed_at.getHours()).padStart(2,'0') %>:<%=
+              String(order.completed_at.getMinutes()).padStart(2,'0') %>
+            </td>
+            <% } else { %>
+            <td></td>
+            <% } %>
+            <td><%= order.status %></td>
+          </tr>
           <% } %>
-          <td><%= order.status %></td>
-        </tr>
-        <% } %>
-      </table>
-    </section>
+        </table>
+      </section>
+    </main>
   </body>
 </html>
