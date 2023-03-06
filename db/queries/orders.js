@@ -26,7 +26,7 @@ const getOrdersMenu = (customerId) => {
 // GET /orders/users
 
 const getOrdersbyCustomerId = (customerId) => {
-  const queryString = `SELECT * FROM orders WHERE customer_id = $1;`;
+  const queryString = `SELECT * FROM orders JOIN status ON orders.status = status.id WHERE customer_id = $1;`;
   const values = [customerId];
   return db.query(queryString, values)
     .then(data => data.rows);
