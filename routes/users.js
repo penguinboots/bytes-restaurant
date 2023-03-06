@@ -176,6 +176,34 @@ module.exports = function(router, database) {
 
   });
 
+  // Get specifc user order
+  router.get('/orders/:id', async (req, res) => {
+    const user = req.cookies["userId"];
+
+    try {
+
+      //!placeholder queries for db
+
+      const templateVars = {
+        user,
+        order: await database.getOrderById(req.params.id),
+        orderItems: await database.getOrderItemsByOrderId(req.params.id),
+      };
+
+      const dateString = templateVars.order.created_at;
+      const dateObject = new Date(dateString);
+      templateVars.order.created_at = dateObject;
+
+      res.render("user-order-view", templateVars);
+
+    } catch (err) {
+      console.error(err);
+      res.status(500);
+    }
+
+
+  });
+
   // Adding to cart
   router.post('/cart', (req, res) => {
     database.addToCart(req.cookies["userId"])
