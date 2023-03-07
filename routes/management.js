@@ -114,7 +114,7 @@ module.exports = function(router, database) {
 
       await database.acceptOrder(orderId, estimatedEndTime);
 
-      res.status(200).redirect('/management/orders');
+      res.status(200).redirect('back');
 
     } catch (err) {
       console.error(err);
@@ -134,7 +134,7 @@ module.exports = function(router, database) {
       const orderId = req.params.id;
       await database.rejectOrder(orderId);
 
-      res.status(200).redirect('/management/orders');
+      res.status(200).redirect('back');
 
     } catch (err) {
       console.error(err);
