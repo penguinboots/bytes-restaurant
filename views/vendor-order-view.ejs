@@ -85,7 +85,7 @@
         <% } %>
       </table>
       <% if (order.status === 'Pending') { %>
-      <form>
+      <form method="POST" action="/management/orders/<%= order.id %>/accept">
         <span>TIME TO PICKUP:</span>
         <select name="est-time">
           <option value="5">5 minutes</option>
@@ -101,9 +101,9 @@
           <option value="55">55 minutes</option>
           <option value="60">60 minutes</option>
         </select>
-        <button method="submit" action="/management/orders/<%= order.id %>/accept">ACCEPT</button>
+        <button method="POST" action="/management/orders/<%= order.id %>/accept">ACCEPT</button>
       </form>
-      <button method="submit" action="/management/orders/<%= order.id %>/reject">REJECT</button>
+      <button method="POST" action="/management/orders/<%= order.id %>/reject">REJECT</button>
       <% } %>
     </section>
   </body>
