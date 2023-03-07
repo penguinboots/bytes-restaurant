@@ -2,7 +2,7 @@ module.exports = function(router, database) {
 
   router.get('/menu', (req, res) => {
 
-    const username = req.cookies["username"];
+    const username = req.cookies["userId"];
 
     // if (!username) {
     //   res
@@ -104,15 +104,18 @@ module.exports = function(router, database) {
 
     try {
 
-      //!placeholder queries for db
-
       const orderId = req.params.id;
-      const estimatedTime = req.body;
+      const estimatedTime = req.body["est-time"];
 
-      await database.acceptOrder(orderId, estimatedTime);
+      // Calculate estimated end time
+      const now = new Date();
+      let estimatedEndTime = new Date(now.getTime() + (estimatedTime * 60000));
+      estimatedEndTime = estimatedEndTime.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
+
+      await database.acceptOrder(orderId, estimatedEndTime);
 
       res.status(200).redirect('/management/orders');
-      
+
     } catch (err) {
       console.error(err);
       res.status(500);
@@ -120,7 +123,8 @@ module.exports = function(router, database) {
 
   });
 
-  // Accept an order, setting the pick-up time
+
+  // Reject an order
   router.post('/orders/:id/reject', async (req, res) => {
 
     try {
@@ -131,7 +135,7 @@ module.exports = function(router, database) {
       await database.rejectOrder(orderId);
 
       res.status(200).redirect('/management/orders');
-      
+
     } catch (err) {
       console.error(err);
       res.status(500);

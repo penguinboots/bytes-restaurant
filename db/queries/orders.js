@@ -40,6 +40,14 @@ const acceptOrder = (orderId, estimatedTime) => {
     .then(data => data.rows);
 };
 
+const rejectOrder = (orderId) => {
+
+  const queryString = `UPDATE orders SET status = 4 WHERE id = $1 RETURNING *;`;
+  const values = [orderId];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
 // GET /orders/users
 
 const getOrderById = (order_id) => {
@@ -109,4 +117,4 @@ const updateOrders = (conditions, data) => {
 };
 
 
-module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById, acceptOrder };
+module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById, acceptOrder, rejectOrder };
