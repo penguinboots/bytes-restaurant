@@ -143,6 +143,31 @@ module.exports = function(router, database) {
 
   });
 
+  // Mark an order as complete, notify guest 
+  router.post('/orders/:id/complete', async (req, res) => {
+
+    try {
+
+      const orderId = req.params.id;
+
+      // Calculate & format completed time
+      const now = new Date();
+      let completedTime = now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
+
+      //!placeholder db query
+      await database.completeOrder(orderId, completedTime);
+
+      //TODO: Twilio client notification
+
+      res.status(200).redirect('back');
+
+    } catch (err) {
+      console.error(err);
+      res.status(500);
+    }
+
+  });
+
   // Change menu (privileged access)
   router.post('/menu', (req, res) => {
     const username = req.cookies["username"];

@@ -48,6 +48,16 @@ const rejectOrder = (orderId) => {
     .then(data => data.rows);
 };
 
+const completeOrder = (orderId, completedTime) => {
+
+  const queryString = `UPDATE orders SET status = 3, completed_at = $1 WHERE id = $2 RETURNING *;`;
+  const values = [orderId, completedTime];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+
+
 // GET /orders/users
 
 const getOrderById = (order_id) => {
