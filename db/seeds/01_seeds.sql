@@ -118,3 +118,15 @@ FROM orders o
 LEFT JOIN order_items oi ON o.id = oi.order_id
 CROSS JOIN menu_items m
 WHERE oi.order_id IS NULL AND o.id <= 23;
+
+-- Correcting the totals to the orders by calculating them
+UPDATE orders 
+SET total = (
+  SELECT SUM(price * quantity) 
+  FROM order_items 
+  JOIN menu_items ON order_items.menu_items_id = menu_items.id 
+  WHERE order_items.order_id = orders.id
+) 
+WHERE EXISTS (
+  SELECT * FROM order_items WHERE order_id = orders.id
+);
