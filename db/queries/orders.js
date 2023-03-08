@@ -33,7 +33,6 @@ const getOrdersbyCustomerId = (customerId) => {
 
 const acceptOrder = (orderId, estimatedTime) => {
 
-  const now = new Date();
   const queryString = `UPDATE orders SET estimated_end_time = NOW() + $1, accepted_at = NOW(), status = 2 WHERE id = $2 RETURNING *;`;
   const values = [estimatedTime, orderId];
   return db.query(queryString, values)
