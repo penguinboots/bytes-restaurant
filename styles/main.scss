@@ -417,6 +417,13 @@ body {
   button:hover {
     background-color: $hover-col;
   }
+  .pickup {
+    width: 160px;
+    height: 56px;
+    border-radius: 28px;
+
+    font-size: 20px;
+  }
   td {
     padding: 3px !important;
   }
