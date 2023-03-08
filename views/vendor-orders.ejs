@@ -36,9 +36,11 @@
     <%- include('./partials/_header.ejs') %>
     <header></header>
     <main>
-    <div class="bg-banner" id="stack-right"><img src="../images/ph-stack-bg.png" /></div>
+      <div class="bg-banner" id="stack-right">
+        <img src="../images/ph-stack-bg.png" />
+      </div>
       <h2>ALL ORDERS</h2>
-      <section class="card" id="orders-v">
+      <section class="order-card">
         <table>
           <tr>
             <th>ORDER ID</th>
@@ -57,22 +59,47 @@
             </td>
             <td><%= String(order.customer_id).padStart(4, '0') %></td>
             <td>$<%= order.total / 100%></td>
-            <td class="date">
-              <%=order.created_at.getFullYear()
-              %>-<%=String(order.created_at.getMonth()).padStart(2,
-              '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
-              <%=String(order.created_at.getHours()).padStart(2,
-              '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            <!-- PLACED (PENDING) -->
+            <td>
+              <div class="date">
+                <%=order.created_at.getFullYear()
+                %>-<%=String(order.created_at.getMonth() + 1).padStart(2,
+                '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
+              </div>
+              <div class="time">
+                <%=String(order.created_at.getHours()).padStart(2,
+                '0')%>:<%=String(order.created_at.getMinutes()).padStart(2,
+                '0')%>
+              </div>
             </td>
-            <% if (order.status === "Completed") { %>
-            <td class="date">
-              <%= String(order.completed_at.getHours()).padStart(2,'0') %>:<%=
-              String(order.completed_at.getMinutes()).padStart(2,'0') %>
+            <!-- COMPLETED -->
+            <td>
+              <% if (order.completed_at) { %>
+              <div class="date">
+                <%=order.completed_at.getFullYear()
+                %>-<%=String(order.completed_at.getMonth() + 1).padStart(2,
+                '0')%>-<%=String(order.completed_at.getDate()).padStart(2,
+                '0')%>
+              </div>
+              <div class="time">
+                <%=String(order.completed_at.getHours()).padStart(2,
+                '0')%>:<%=String(order.completed_at.getMinutes()).padStart(2,
+                '0')%>
+              </div>
+              <% } %>
             </td>
-            <% } else { %>
-            <td></td>
-            <% } %>
-            <td><%= order.status %></td>
+            <!-- ORDER STATUS -->
+            <td>
+              <div><%= order.status %></div>
+              <% if (order.status === "In Progress" && order.estimated_end_time)
+              { %>
+              <div class="time">
+                Est: <%=String(order.estimated_end_time.getHours()).padStart(2,
+                '0')%>:<%=String(order.estimated_end_time.getMinutes()).padStart(2,
+                '0')%>
+              </div>
+              <% } %>
+            </td>
           </tr>
           <% } %>
         </table>
