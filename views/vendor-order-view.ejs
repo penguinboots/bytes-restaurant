@@ -93,7 +93,8 @@
           <!-- STATUS -->
           <td>
             <div><%= order.status %></div>
-            <% if (order.status === "In Progress" && order.estimated_end_time) { %>
+            <% if (order.status === "In Progress" && order.estimated_end_time) {
+            %>
             <div class="time">
               Est: <%=String(order.estimated_end_time.getHours()).padStart(2,
               '0')%>:<%=String(order.estimated_end_time.getMinutes()).padStart(2,
@@ -118,35 +119,40 @@
         </tr>
       </table>
       <% if (order.status === "Pending") { %>
-      <form class="vendor-actions">
-        <span>TIME TO PICKUP:</span>
-        <select name="est-time">
-          <option value="5">5 minutes</option>
-          <option value="10">10 minutes</option>
-          <option value="15">15 minutes</option>
-          <option value="20">20 minutes</option>
-          <option value="25">25 minutes</option>
-          <option value="30">30 minutes</option>
-          <option value="35">35 minutes</option>
-          <option value="40">40 minutes</option>
-          <option value="45">45 minutes</option>
-          <option value="50">50 minutes</option>
-          <option value="55">55 minutes</option>
-          <option value="60">60 minutes</option>
-        </select>
-        <button
-          method="POST"
-          action="/management/orders/<%= order.id %>/accept"
-        >
-          ACCEPT
-        </button>
-        <button
-          method="POST"
-          action="/management/orders/<%= order.id %>/reject"
-        >
-          REJECT
-        </button>
-      </form>
+      <table class="vendor-actions">
+        <td>
+          <form
+            method="POST"
+            action="/management/orders/<%= order.id %>/accept"
+          >
+            <span>TIME TO PICKUP:</span>
+            <select name="est-time">
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="20">20 minutes</option>
+              <option value="25">25 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="35">35 minutes</option>
+              <option value="40">40 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="50">50 minutes</option>
+              <option value="55">55 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+            <button method="submit">ACCEPT</button>
+          </form>
+        </td>
+        <td>
+          <form
+            class="form-inline"
+            method="POST"
+            action="/management/orders/<%= order.id %>/reject"
+          >
+            <button method="submit">REJECT</button>
+          </form>
+        </td>
+      </table>
       <% } %>
     </section>
   </body>
