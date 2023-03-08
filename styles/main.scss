@@ -417,4 +417,7 @@ body {
   button:hover {
     background-color: $hover-col;
   }
+  td {
+    padding: 3px !important;
+  }
 }
