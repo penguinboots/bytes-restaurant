@@ -119,7 +119,7 @@ module.exports = function(router, database) {
 
       // get order and user details to send to twillio
       const order = await database.getOrderById(req.params.id);
-      const users = await database.getUser(userID);
+      const users = await database.getUser(order.customer_id);
       notifications(users[0], order, estimatedTime);
 
       res.status(200).redirect('back');
