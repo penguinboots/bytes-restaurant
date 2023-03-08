@@ -58,7 +58,7 @@
               >
             </td>
             <td><%= String(order.customer_id).padStart(4, '0') %></td>
-            <td>$<%= order.total / 100%></td>
+            <td>$<%= (order.total / 100).toFixed(2)%></td>
             <!-- PLACED (PENDING) -->
             <td>
               <div class="date">

@@ -47,7 +47,7 @@
           <th>STATUS</th>
         </tr>
         <tr>
-          <td>$<%= order.total / 100%></td>
+          <td>$<%= (order.total / 100).toFixed(2) %></td>
           <!-- PLACED (PENDING) -->
           <td>
             <div class="date">
@@ -112,7 +112,7 @@
         </tr>
         <% } %>
         <tr>
-          <td colspan="3" class="total">TOTAL: $<%= order.total / 100%></td>
+          <td colspan="3" class="total">TOTAL: $<%= (order.total / 100).toFixed(2)%></td>
         </tr>
       </table>
     </section>
