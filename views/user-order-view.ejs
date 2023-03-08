@@ -90,14 +90,14 @@
             </div>
           </td>
           <!-- STATUS -->
-          <td><%= order.status %></td>
-          <% if (order.status === "In Progress" && order.estimated_end_time) {
-          %>
-          <div class="time">
-            Est: <%=String(order.estimated_end_time.getHours()).padStart(2,
-            '0')%>:<%=String(order.estimated_end_time.getMinutes()).padStart(2,
-            '0')%> <% } %>
-          </div>
+          <td>
+            <%= order.status %> <% if (order.status === "In Progress") { %>
+            <div class="time">
+              Est: <%=String(order.estimated_end_time.getHours()).padStart(2,
+              '0')%>:<%=String(order.estimated_end_time.getMinutes()).padStart(2,
+              '0')%> <% } %>
+            </div>
+          </td>
         </tr>
       </table>
       <table class="order-items">
