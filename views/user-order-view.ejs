@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>Order Details</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png" />
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,8 +38,8 @@
     <main>
       <h2>ORDER <%= String(order.id).padStart(4,'0') %></h2>
     </main>
-    <section class="card">
-      <table>
+    <section class="order-card">
+      <table class="order-details">
         <tr>
           <th>TOTAL</th>
           <th>PLACED</th>
@@ -47,36 +48,73 @@
           <th>STATUS</th>
         </tr>
         <tr>
-          <td>$<%= order.total / 100%></td>
-          <td class="date">
-            <%=order.created_at.getFullYear()
-            %>-<%=String(order.created_at.getMonth()).padStart(2,
-            '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+          <td>$<%= (order.total / 100).toFixed(2) %></td>
+          <!-- PLACED (PENDING) -->
+          <td>
+            <div class="date">
+              <%=order.created_at.getFullYear()
+              %>-<%=String(order.created_at.getMonth() + 1).padStart(2,
+              '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
+            </div>
+            <div class="time">
+              <%=String(order.created_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            </div>
           </td>
-          <td class="date">
+          <!-- ACCEPTED (IN PROGRESS) -->
+          <td>
             <% if (order.accepted_at) { %>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
-            <% } %>
+            <div class="date">
+              <%=order.accepted_at.getFullYear()
+              %>-<%=String(order.accepted_at.getMonth() + 1).padStart(2,
+              '0')%>-<%=String(order.accepted_at.getDate()).padStart(2, '0')%>
+            </div>
+            <div class="time">
+              <%=String(order.accepted_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.accepted_at.getMinutes()).padStart(2,
+              '0')%> <% } %>
+            </div>
           </td>
-          <td class="date">
-            <% if (order.completed_at) { %>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
-            <% } %>
+          <!-- COMPLETED -->
+          <td>
+            <div class="time">
+              <% if (order.completed_at) { %>
+              <div class="date">
+                <%=order.completed_at.getFullYear()
+                %>-<%=String(order.completed_at.getMonth() + 1).padStart(2,
+                '0')%>-<%=String(order.completed_at.getDate()).padStart(2,
+                '0')%>
+              </div>
+              <%=String(order.completed_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.completed_at.getMinutes()).padStart(2,
+              '0')%> <% } %>
+            </div>
           </td>
-          <td><%= order.status %></td>
+          <!-- STATUS -->
+          <td>
+            <%= order.status %> <% if (order.status === "In Progress") { %>
+            <div class="time">
+              Est: <%=String(order.estimated_end_time.getHours()).padStart(2,
+              '0')%>:<%=String(order.estimated_end_time.getMinutes()).padStart(2,
+              '0')%> <% } %>
+            </div>
+          </td>
         </tr>
-
+      </table>
+      <table class="order-items">
+        <tr>
+          <th colspan="3">ORDER ITEMS</th>
+        </tr>
         <% for (let item of orderItems) { %>
         <tr>
           <td><%= item.name %></td>
-          <td><%= item.quantity %></td>
+          <td class="quantity"><%= item.quantity %></td>
           <td>$<%= (item.price / 100 * item.quantity).toFixed(2)%></td>
         </tr>
         <% } %>
+        <tr>
+          <td colspan="3" class="total">TOTAL: $<%= (order.total / 100).toFixed(2)%></td>
+        </tr>
       </table>
     </section>
   </body>

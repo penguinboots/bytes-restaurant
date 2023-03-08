@@ -359,23 +359,76 @@ body {
   }
 }
 
-#orders-v {
-  min-width: 600px;
+.order-card {
+  @extend .card;
+  min-width: 800px;
   padding-top: 36px;
   padding-bottom: 60px;
+  text-align: center;
+
   table {
-    width: 95%;
     th {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: normal;
+      padding: 12px;
     }
     td {
-      text-align: center;
-      padding-top: 12px;
+      padding: 12px;
     }
   }
 
   .date {
-    font-size: 14px;
+    font-size: 12px;
+  }
+}
+
+.order-details {
+  width: 95%;
+  min-width: 80%;
+}
+
+.order-items {
+  margin-top: 24px;
+  min-width: 250px;
+  td {
+    padding: 0;
+    text-align: left;
+  }
+  .quantity {
+    width: 48px;
+    text-align: right;
+  }
+  border: 1px solid;
+
+  .total {
+    text-align: center;
+  }
+}
+
+.vendor-actions {
+  margin-top: 24px;
+  font-size: 20px;
+  button {
+    width: 96px;
+    height: 36px;
+    border-radius: 18px;
+
+    font-size: 18px;
+
+    cursor: pointer;
+    color: $base-col;
+  }
+  button:hover {
+    background-color: $hover-col;
+  }
+  .pickup {
+    width: 160px;
+    height: 56px;
+    border-radius: 28px;
+
+    font-size: 20px;
+  }
+  td {
+    padding: 3px !important;
   }
 }

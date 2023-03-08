@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>Order Details</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png" />
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,8 +38,8 @@
     <main>
       <h2>ORDER <%= String(order.id).padStart(4,'0') %></h2>
     </main>
-    <section class="card">
-      <table>
+    <section class="order-card">
+      <table class="order-details">
         <tr>
           <th>CUSTOMER ID</th>
           <th>TOTAL</th>
@@ -46,45 +47,121 @@
           <th>ACCEPTED</th>
           <th>COMPLETED</th>
           <th>STATUS</th>
-          <th>ACTIONS</th>
         </tr>
         <tr>
           <td><%= String(order.customer_id).padStart(4, '0') %></td>
-          <td>$<%= order.total / 100%></td>
-          <td class="date">
-            <%=order.created_at.getFullYear()
-            %>-<%=String(order.created_at.getMonth()).padStart(2,
-            '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+          <td>$<%= (order.total / 100).toFixed(2) %></td>
+          <!-- PLACED (PENDING)-->
+          <td>
+            <div class="date">
+              <%=order.created_at.getFullYear()
+              %>-<%=String(order.created_at.getMonth() + 1).padStart(2,
+              '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
+            </div>
+            <div class="time">
+              <%=String(order.created_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            </div>
           </td>
-          <td class="date">
+          <!-- ACCEPTED (IN PROGRESS) -->
+          <td>
             <% if (order.accepted_at) { %>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
-            <% } %>
+            <div class="date">
+              <%=order.accepted_at.getFullYear()
+              %>-<%=String(order.accepted_at.getMonth() + 1).padStart(2,
+              '0')%>-<%=String(order.accepted_at.getDate()).padStart(2, '0')%>
+            </div>
+            <div class="time">
+              <%=String(order.accepted_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.accepted_at.getMinutes()).padStart(2,
+              '0')%> <% } %>
+            </div>
           </td>
-          <td class="date">
+          <!-- COMPLETED -->
+          <td>
             <% if (order.completed_at) { %>
-            <%=String(order.created_at.getHours()).padStart(2,
-            '0')%>:<%=String(order.created_at.getMinutes()).padStart(2, '0')%>
+            <div class="date">
+              <%=order.completed_at.getFullYear()
+              %>-<%=String(order.completed_at.getMonth() + 1).padStart(2,
+              '0')%>-<%=String(order.completed_at.getDate()).padStart(2, '0')%>
+            </div>
+            <div class="time">
+              <%=String(order.completed_at.getHours()).padStart(2,
+              '0')%>:<%=String(order.completed_at.getMinutes()).padStart(2,
+              '0')%> <% } %>
+            </div>
+          </td>
+          <!-- STATUS -->
+          <td>
+            <div><%= order.status %></div>
+            <% if (order.status === "In Progress" && order.estimated_end_time) {
+            %>
+            <div class="time">
+              Est: <%=String(order.estimated_end_time.getHours()).padStart(2,
+              '0')%>:<%=String(order.estimated_end_time.getMinutes()).padStart(2,
+              '0')%>
+            </div>
             <% } %>
           </td>
-          <td><%= order.status %></td>
+        </tr>
+      </table>
+      <table class="order-items">
+        <tr>
+          <th colspan="2">ORDER ITEMS</th>
         </tr>
         <% for (let item of orderItems) { %>
         <tr>
+          <td class="quantity"><%= item.quantity %></td>
           <td><%= item.name %></td>
-          <td><%= item.quantity %></td>
         </tr>
         <% } %>
         <tr>
-          <% if (order.status === "Pending") { %>
-          <td><button>ACCEPT</button></td>
-          <td><button>REJECT</button></td>
-          <% } %>
+          <td colspan="2" class="total">TOTAL: $<%= (order.total / 100).toFixed(2)%></td>
         </tr>
       </table>
+      <% if (order.status === "Pending") { %>
+      <table class="vendor-actions">
+        <td>
+          <form
+            method="POST"
+            action="/management/orders/<%= order.id %>/accept"
+          >
+            <span>TIME TO PICKUP:</span>
+            <select name="est-time">
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="20">20 minutes</option>
+              <option value="25">25 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="35">35 minutes</option>
+              <option value="40">40 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="50">50 minutes</option>
+              <option value="55">55 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+            <button method="submit">ACCEPT</button>
+          </form>
+        </td>
+        <td>
+          <form
+            method="POST"
+            action="/management/orders/<%= order.id %>/reject"
+          >
+            <button method="submit">REJECT</button>
+          </form>
+        </td>
+      </table>
+      <% } %>
+      <% if (order.status === "In Progress") { %>
+      <form class="vendor-actions"
+        method="POST"
+        action="/management/orders/<%= order.id %>/complete"
+      >
+        <button class="pickup" method="submit">READY FOR PICKUP</button>
+      </form>
+      <% } %>
     </section>
   </body>
 </html>
