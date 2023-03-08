@@ -146,7 +146,7 @@ module.exports = function(router, database) {
       // get order and user details to send to twillio
       const order = await database.getOrderById(req.params.id);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Great news, your order (#${order.id}) has been accepted! We're so excited for you to try out your delicious meal. Your estimated pickup time is ${estimatedTime}, so please come by at your convenience. If you have any special requests or concerns, don't hesitate to let us know. Our team is dedicated to making your experience as enjoyable as possible. Thanks for choosing us, and we can't wait to see you soon!`;
+      const message = `Hello ${users[0].name}! Thanks for ordering from Bytes! Your order (#${order.id} has been accepted. Your estimated pickup time is ${estimatedTime}.`;
 
       notifications(users[0], message);
 
@@ -173,7 +173,7 @@ module.exports = function(router, database) {
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hi ${users[0].name}! We're sorry to let you know that we had to reject your order (#${order.id}) due to some unforeseen circumstances. But don't worry, we're here to help. If you have any questions or concerns, please don't hesitate to give us a call at xxx-xxx-xxx. We'll be happy to provide you with all the information you need and work with you to find a solution that meets your needs. Thanks for your understanding and cooperation, and we hope to hear from you soon!`;
+      const message = `Hello ${users[0].name}! Your order #${order.id} was rejected. Please contact our store at xxx-xxx-xxx for further information.`;
 
       notifications(users[0], message);
       res.status(200).redirect('back');
@@ -203,8 +203,8 @@ module.exports = function(router, database) {
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hi ${users[0].name}! Just letting you know that your order (#${order.id}) is now complete and ready for pickup. We can't wait for you to try it out! Please come to the pickup area whenever you're ready, and our team will be happy to assist you. Thanks for choosing us and have a great day!`;
-      
+      const message = `Hello ${users[0].name}! Your order (#${order.id}) is completed and ready for pickup.`;
+
       notifications(users[0], message);
 
       res.status(200).redirect('back');
