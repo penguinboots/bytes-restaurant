@@ -7,10 +7,10 @@ const client = require('twilio')(accountSid, authToken);
 * order: { order details}
 * estimatedEndTime: { from vendor input }
 */
-module.exports = function(user, order, estimatedEndTime) {
+module.exports = function(user, message) {
   client.messages
     .create({
-      body: `Hello ${user.name}! Order #${order.id} is accepted. Your estimated pickup time is ${estimatedEndTime} mins`,
+      body: message,
       to: `+1${user.phone_number}`, // Text this number
       from: '+15674093873', // twillio's number
     })
