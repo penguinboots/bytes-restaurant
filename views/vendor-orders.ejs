@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>All Orders</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png" />
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -58,7 +59,7 @@
               >
             </td>
             <td><%= String(order.customer_id).padStart(4, '0') %></td>
-            <td>$<%= order.total / 100%></td>
+            <td>$<%= (order.total / 100).toFixed(2)%></td>
             <!-- PLACED (PENDING) -->
             <td>
               <div class="date">
