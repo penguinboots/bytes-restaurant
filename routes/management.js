@@ -86,19 +86,12 @@ module.exports = function(router, database) {
       // const total = Number(templateVars.order.total);
       // templateVars.order.total = total;
       // Formatting timestamps appropriately
-      templateVars.order.created_at = new Date(templateVars.order.created_at);
+      const formatDate = (dateString) => dateString ? new Date(dateString) : null;
 
-      if (templateVars.order.completed_at) {
-        templateVars.order.completed_at = new Date(templateVars.order.completed_at);
-      }
-
-      if (templateVars.order.estimated_end_time) {
-        templateVars.order.estimated_end_time = new Date(templateVars.order.estimated_end_time);
-      }
-
-      if (templateVars.order.accepted_at) {
-        templateVars.order.accepted_at = new Date(templateVars.order.accepted_at);
-      }
+      templateVars.order.created_at = formatDate(templateVars.order?.created_at);
+      templateVars.order.completed_at = formatDate(templateVars.order?.completed_at);
+      templateVars.order.estimated_end_time = formatDate(templateVars.order?.estimated_end_time);
+      templateVars.order.accepted_at = formatDate(templateVars.order?.accepted_at);
 
       // res.send(templateVars.order);
       // return;
