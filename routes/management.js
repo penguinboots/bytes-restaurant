@@ -81,11 +81,22 @@ module.exports = function(router, database) {
         orderItems: await database.getOrderItemsByOrderId(req.params.id),
       };
 
-      const dateString = templateVars.order.created_at;
-      const dateObject = new Date(dateString);
       // const total = Number(templateVars.order.total);
       // templateVars.order.total = total;
-      templateVars.order.created_at = dateObject;
+      // Formatting timestamps appropriately
+      templateVars.order.created_at = new Date(templateVars.order.created_at);
+
+      if (templateVars.order.completed_at) {
+        templateVars.order.completed_at = new Date(templateVars.order.completed_at);
+      }
+
+      if (templateVars.order.estimated_end_time) {
+        templateVars.order.estimated_end_time = new Date(templateVars.order.estimated_end_time);
+      }
+
+      if (templateVars.order.accepted_at) {
+        templateVars.order.accepted_at = new Date(templateVars.order.accepted_at);
+      }
 
       // res.send(templateVars.order);
       // return;
@@ -99,20 +110,36 @@ module.exports = function(router, database) {
 
   });
 
+  // Helper for db timestamp formatting
+  // function formatDateForPostgres(date) {
+  //   const timeZoneOffset = date.getTimezoneOffset();
+  //   const timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffset) / 60);
+  //   const timeZoneOffsetMinutes = Math.abs(timeZoneOffset) % 60;
+  //   const timeZoneOffsetString = (timeZoneOffset < 0 ? '+' : '-') +
+  //     (timeZoneOffsetHours < 10 ? '0' : '') + timeZoneOffsetHours +
+  //     ':' +
+  //     (timeZoneOffsetMinutes < 10 ? '0' : '') + timeZoneOffsetMinutes;
+
+  //   const timestamp = date.toLocaleString('en-US', { timeZoneName: 'short' })
+  //     .replace(/, /g, ' ')
+  //     .replace(/(AM|PM)$/, '$1 ') + timeZoneOffsetString;
+  //   return timestamp.replace(' ', 'T');
+  // }
+
   // Accept an order, setting the pick-up time
   router.post('/orders/:id/accept', async (req, res) => {
 
     try {
 
       const orderId = req.params.id;
-      const estimatedTime = req.body["est-time"];
+      const estimatedTime = `${req.body["est-time"]} minutes`;
 
       // Calculate estimated end time
-      const now = new Date();
-      let estimatedEndTime = new Date(now.getTime() + (estimatedTime * 60000));
-      estimatedEndTime = estimatedEndTime.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
+      // const now = new Date();
+      // now.setMinutes(now.getMinutes() + estimatedTime);
+      // let estimatedEndTime = formatDateForPostgres(now);
 
-      await database.acceptOrder(orderId, estimatedEndTime);
+      await database.acceptOrder(orderId, estimatedTime);
 
       res.status(200).redirect('back');
 
@@ -150,12 +177,12 @@ module.exports = function(router, database) {
 
       const orderId = req.params.id;
 
-      // Calculate & format completed time
-      const now = new Date();
-      let completedTime = now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
+      // // Calculate & format completed time
+      // const now = new Date();
+      // let completedTime = now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
 
       //!placeholder db query
-      await database.completeOrder(orderId, completedTime);
+      await database.completeOrder(orderId);
 
       //TODO: Twilio client notification
 

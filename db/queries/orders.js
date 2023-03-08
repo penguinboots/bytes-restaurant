@@ -34,8 +34,8 @@ const getOrdersbyCustomerId = (customerId) => {
 const acceptOrder = (orderId, estimatedTime) => {
 
   const now = new Date();
-  const queryString = `UPDATE orders SET estimated_end_time = $1, accepted_at = $2, status = 2 WHERE id = $3 RETURNING *;`;
-  const values = [estimatedTime, now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' '), orderId];
+  const queryString = `UPDATE orders SET estimated_end_time = NOW() + $1, accepted_at = NOW(), status = 2 WHERE id = $2 RETURNING *;`;
+  const values = [estimatedTime, orderId];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
@@ -50,8 +50,8 @@ const rejectOrder = (orderId) => {
 
 const completeOrder = (orderId, completedTime) => {
 
-  const queryString = `UPDATE orders SET status = 3, completed_at = $2 WHERE id = $1 RETURNING *;`;
-  const values = [orderId, completedTime];
+  const queryString = `UPDATE orders SET status = 3, completed_at = NOW() WHERE id = $1 RETURNING *;`;
+  const values = [orderId];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
