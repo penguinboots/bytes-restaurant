@@ -145,7 +145,6 @@
         </td>
         <td>
           <form
-            class="form-inline"
             method="POST"
             action="/management/orders/<%= order.id %>/reject"
           >
@@ -153,6 +152,14 @@
           </form>
         </td>
       </table>
+      <% } %>
+      <% if (order.status === "In Progress") { %>
+      <form class="vendor-actions"
+        method="POST"
+        action="/management/orders/<%= order.id %>/complete"
+      >
+        <button class="pickup" method="submit">READY FOR PICKUP</button>
+      </form>
       <% } %>
     </section>
   </body>
