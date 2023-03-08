@@ -132,7 +132,7 @@ module.exports = function(router, database) {
 
       //* Using the order id, insert the cart items into order_items
       //! placeholder query, actual name/implementation may vary
-      const order_items = await database.createOrderItems({ order_id: order["id"], cart: filtered_cart });
+      await database.createOrderItems({ order_id: order["id"], cart: filtered_cart });
 
       //* Purge the cart
       const promises = cart.map(cart_item => {

@@ -31,6 +31,33 @@ const getOrdersbyCustomerId = (customerId) => {
     .then(data => data.rows);
 };
 
+const acceptOrder = (orderId, estimatedTime) => {
+
+  const now = new Date();
+  const queryString = `UPDATE orders SET estimated_end_time = $1, accepted_at = $2, status = 2 WHERE id = $3 RETURNING *;`;
+  const values = [estimatedTime, now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' '), orderId];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+const rejectOrder = (orderId) => {
+
+  const queryString = `UPDATE orders SET status = 4 WHERE id = $1 RETURNING *;`;
+  const values = [orderId];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+const completeOrder = (orderId, completedTime) => {
+
+  const queryString = `UPDATE orders SET status = 3, completed_at = $1 WHERE id = $2 RETURNING *;`;
+  const values = [orderId, completedTime];
+  return db.query(queryString, values)
+    .then(data => data.rows);
+};
+
+
+
 // GET /orders/users
 
 const getOrderById = (order_id) => {
@@ -100,4 +127,4 @@ const updateOrders = (conditions, data) => {
 };
 
 
-module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById};
+module.exports = { getOrders, getOrdersMenu, getOrdersbyCustomerId, createOrder, updateOrders, getOrderById, acceptOrder, rejectOrder };
