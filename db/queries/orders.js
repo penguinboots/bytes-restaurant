@@ -34,8 +34,8 @@ const getOrdersbyCustomerId = (customerId) => {
 const acceptOrder = (orderId, estimatedTime) => {
 
   const now = new Date();
-  const queryString = `UPDATE orders SET estimated_end_time = $1, accepted_at = $2, status = 2 WHERE id = $3 RETURNING *;`;
-  const values = [estimatedTime, now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' '), orderId];
+  const queryString = `UPDATE orders SET estimated_end_time = NOW() + $1, accepted_at = NOW(), status = 2 WHERE id = $2 RETURNING *;`;
+  const values = [estimatedTime, orderId];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
@@ -50,8 +50,8 @@ const rejectOrder = (orderId) => {
 
 const completeOrder = (orderId, completedTime) => {
 
-  const queryString = `UPDATE orders SET status = 3, completed_at = $2 WHERE id = $1 RETURNING *;`;
-  const values = [orderId, completedTime];
+  const queryString = `UPDATE orders SET status = 3, completed_at = NOW() WHERE id = $1 RETURNING *;`;
+  const values = [orderId];
   return db.query(queryString, values)
     .then(data => data.rows);
 };
@@ -60,15 +60,15 @@ const completeOrder = (orderId, completedTime) => {
 
 // GET /orders/users
 
-const getOrderById = (order_id) => {
-  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total,
+const getOrderById = (orderId) => {
+  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total, 
   orders.created_at AS created_at, orders.accepted_at AS accepted_at, orders.estimated_end_time AS estimated_end_time, orders.completed_at AS completed_at,
   menu_items.name AS name, menu_items.price AS price, order_items.quantity AS quantity FROM orders
   JOIN order_items ON orders.id = order_items.order_id
   JOIN menu_items ON order_items.menu_items_id = menu_items.id
   JOIN status ON status.id = orders.status
   WHERE orders.id = $1;`;
-  const values = [order_id];
+  const values = [orderId];
   return db.query(queryString, values)
     .then(data => data.rows[0]);
 };

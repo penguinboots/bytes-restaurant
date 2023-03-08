@@ -83,11 +83,22 @@ module.exports = function(router, database) {
         orderItems: await database.getOrderItemsByOrderId(req.params.id),
       };
 
-      const dateString = templateVars.order.created_at;
-      const dateObject = new Date(dateString);
       // const total = Number(templateVars.order.total);
       // templateVars.order.total = total;
-      templateVars.order.created_at = dateObject;
+      // Formatting timestamps appropriately
+      templateVars.order.created_at = new Date(templateVars.order.created_at);
+
+      if (templateVars.order.completed_at) {
+        templateVars.order.completed_at = new Date(templateVars.order.completed_at);
+      }
+
+      if (templateVars.order.estimated_end_time) {
+        templateVars.order.estimated_end_time = new Date(templateVars.order.estimated_end_time);
+      }
+
+      if (templateVars.order.accepted_at) {
+        templateVars.order.accepted_at = new Date(templateVars.order.accepted_at);
+      }
 
       // res.send(templateVars.order);
       // return;
@@ -101,25 +112,41 @@ module.exports = function(router, database) {
 
   });
 
+  // Helper for db timestamp formatting
+  // function formatDateForPostgres(date) {
+  //   const timeZoneOffset = date.getTimezoneOffset();
+  //   const timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffset) / 60);
+  //   const timeZoneOffsetMinutes = Math.abs(timeZoneOffset) % 60;
+  //   const timeZoneOffsetString = (timeZoneOffset < 0 ? '+' : '-') +
+  //     (timeZoneOffsetHours < 10 ? '0' : '') + timeZoneOffsetHours +
+  //     ':' +
+  //     (timeZoneOffsetMinutes < 10 ? '0' : '') + timeZoneOffsetMinutes;
+
+  //   const timestamp = date.toLocaleString('en-US', { timeZoneName: 'short' })
+  //     .replace(/, /g, ' ')
+  //     .replace(/(AM|PM)$/, '$1 ') + timeZoneOffsetString;
+  //   return timestamp.replace(' ', 'T');
+  // }
+
   // Accept an order, setting the pick-up time
   router.post('/orders/:id/accept', async (req, res) => {
 
     try {
 
       const orderId = req.params.id;
-      const estimatedTime = req.body["est-time"];
+      const estimatedTime = `${req.body["est-time"]} minutes`;
 
       // Calculate estimated end time
-      const now = new Date();
-      let estimatedEndTime = new Date(now.getTime() + (estimatedTime * 60000));
-      estimatedEndTime = estimatedEndTime.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
+      // const now = new Date();
+      // now.setMinutes(now.getMinutes() + estimatedTime);
+      // let estimatedEndTime = formatDateForPostgres(now);
 
-      await database.acceptOrder(orderId, estimatedEndTime);
+      await database.acceptOrder(orderId, estimatedTime);
 
       // get order and user details to send to twillio
       const order = await database.getOrderById(req.params.id);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Order#${order.id} is accepted. Your estimated pickup time is ${estimatedTime} mins.`;
+      const message = `Hello ${users[0].name}! Great news, your order (#${order.id}) has been accepted! We're so excited for you to try out your delicious meal. Your estimated pickup time is ${estimatedTime}, so please come by at your convenience. If you have any special requests or concerns, don't hesitate to let us know. Our team is dedicated to making your experience as enjoyable as possible. Thanks for choosing us, and we can't wait to see you soon!`;
 
       notifications(users[0], message);
 
@@ -146,7 +173,7 @@ module.exports = function(router, database) {
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Your order#${order.id} is rejected. Please contact our store xxx-xxx-xxx for further information.`;
+      const message = `Hi ${users[0].name}! We're sorry to let you know that we had to reject your order (#${order.id}) due to some unforeseen circumstances. But don't worry, we're here to help. If you have any questions or concerns, please don't hesitate to give us a call at xxx-xxx-xxx. We'll be happy to provide you with all the information you need and work with you to find a solution that meets your needs. Thanks for your understanding and cooperation, and we hope to hear from you soon!`;
 
       notifications(users[0], message);
       res.status(200).redirect('back');
@@ -165,19 +192,19 @@ module.exports = function(router, database) {
 
       const orderId = req.params.id;
 
-      // Calculate & format completed time
-      const now = new Date();
-      let completedTime = now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
+      // // Calculate & format completed time
+      // const now = new Date();
+      // let completedTime = now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
 
       //!placeholder db query
-      await database.completeOrder(orderId, completedTime);
+      await database.completeOrder(orderId);
 
       //TODO: Twilio client notification
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Your order#${order.id} is completed and ready for pickup.`;
-
+      const message = `Hi ${users[0].name}! Just letting you know that your order (#${order.id}) is now complete and ready for pickup. We can't wait for you to try it out! Please come to the pickup area whenever you're ready, and our team will be happy to assist you. Thanks for choosing us and have a great day!`;
+      
       notifications(users[0], message);
 
       res.status(200).redirect('back');

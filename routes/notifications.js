@@ -11,8 +11,8 @@ module.exports = function(user, message) {
   client.messages
     .create({
       body: message,
-      to: `+1${user.phone_number}`, // Text this number
-      from: '+15674093873', // twillio's number
+      to: process.env.CLIENT_NUMBER, // Text this number
+      from: process.env.TWILIO_NUM, // twillio's number
     })
     .then(message => console.log(message.sid));
 };
