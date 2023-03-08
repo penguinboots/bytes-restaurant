@@ -1,3 +1,5 @@
+const notifications = require('./notifications');
+
 module.exports = function(router, database) {
 
   router.get('/menu', (req, res) => {
@@ -106,6 +108,7 @@ module.exports = function(router, database) {
 
       const orderId = req.params.id;
       const estimatedTime = req.body["est-time"];
+      const userID = req.cookies["userId"];
 
       // Calculate estimated end time
       const now = new Date();
@@ -113,6 +116,11 @@ module.exports = function(router, database) {
       estimatedEndTime = estimatedEndTime.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
 
       await database.acceptOrder(orderId, estimatedEndTime);
+
+      // get order and user details to send to twillio
+      const order = await database.getOrderById(req.params.id);
+      const users = await database.getUser(userID);
+      notifications(users[0], order, estimatedTime);
 
       res.status(200).redirect('back');
 
@@ -143,7 +151,7 @@ module.exports = function(router, database) {
 
   });
 
-  // Mark an order as complete, notify guest 
+  // Mark an order as complete, notify guest
   router.post('/orders/:id/complete', async (req, res) => {
 
     try {
