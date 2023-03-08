@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>My Orders</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png" />
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -56,7 +57,7 @@
                 ><%= String(order.id).padStart(4,'0') %></a
               >
             </td>
-            <td>$<%= order.total / 100%></td>
+            <td>$<%= (order.total / 100).toFixed(2)%></td>
             <!-- PLACED (PENDING) -->
             <td>
               <div class="date">

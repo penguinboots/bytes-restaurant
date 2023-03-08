@@ -23,7 +23,7 @@ const getOrdersMenu = (customerId) => {
 // GET /orders/users
 
 const getOrdersbyCustomerId = (customerId) => {
-  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total, 
+  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total,
   orders.created_at AS created_at, orders.accepted_at AS accepted_at, orders.estimated_end_time AS estimated_end_time, orders.completed_at AS completed_at
    FROM orders JOIN status ON orders.status = status.id WHERE customer_id = $1;`;
   const values = [customerId];
@@ -50,8 +50,13 @@ const rejectOrder = (orderId) => {
 
 const completeOrder = (orderId, completedTime) => {
 
+<<<<<<< HEAD
   const queryString = `UPDATE orders SET status = 3, completed_at = NOW() WHERE id = $1 RETURNING *;`;
   const values = [orderId];
+=======
+  const queryString = `UPDATE orders SET status = 3, completed_at = $2 WHERE id = $1 RETURNING *;`;
+  const values = [orderId, completedTime];
+>>>>>>> 670bbd17c1fba37d1330b265b062720155d8665b
   return db.query(queryString, values)
     .then(data => data.rows);
 };
@@ -60,8 +65,13 @@ const completeOrder = (orderId, completedTime) => {
 
 // GET /orders/users
 
+<<<<<<< HEAD
 const getOrderById = (orderId) => {
   const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total, 
+=======
+const getOrderById = (order_id) => {
+  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total,
+>>>>>>> 670bbd17c1fba37d1330b265b062720155d8665b
   orders.created_at AS created_at, orders.accepted_at AS accepted_at, orders.estimated_end_time AS estimated_end_time, orders.completed_at AS completed_at,
   menu_items.name AS name, menu_items.price AS price, order_items.quantity AS quantity FROM orders
   JOIN order_items ON orders.id = order_items.order_id

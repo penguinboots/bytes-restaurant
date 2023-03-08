@@ -1,3 +1,5 @@
+const notifications = require('./notifications');
+
 module.exports = function(router, database) {
 
   router.get('/menu', (req, res) => {
@@ -141,6 +143,13 @@ module.exports = function(router, database) {
 
       await database.acceptOrder(orderId, estimatedTime);
 
+      // get order and user details to send to twillio
+      const order = await database.getOrderById(req.params.id);
+      const users = await database.getUser(order.customer_id);
+      const message = `Hello ${users[0].name}! Order#${order.id} is accepted. Your estimated pickup time is ${estimatedTime} mins.`;
+
+      notifications(users[0], message);
+
       res.status(200).redirect('back');
 
     } catch (err) {
@@ -161,6 +170,12 @@ module.exports = function(router, database) {
       const orderId = req.params.id;
       await database.rejectOrder(orderId);
 
+      // twillio
+      const order = await database.getOrderById(orderId);
+      const users = await database.getUser(order.customer_id);
+      const message = `Hello ${users[0].name}! Your order#${order.id} is rejected. Please contact our store xxx-xxx-xxx for further information.`;
+
+      notifications(users[0], message);
       res.status(200).redirect('back');
 
     } catch (err) {
@@ -170,7 +185,7 @@ module.exports = function(router, database) {
 
   });
 
-  // Mark an order as complete, notify guest 
+  // Mark an order as complete, notify guest
   router.post('/orders/:id/complete', async (req, res) => {
 
     try {
@@ -185,6 +200,12 @@ module.exports = function(router, database) {
       await database.completeOrder(orderId);
 
       //TODO: Twilio client notification
+      // twillio
+      const order = await database.getOrderById(orderId);
+      const users = await database.getUser(order.customer_id);
+      const message = `Hello ${users[0].name}! Your order#${order.id} is completed and ready for pickup.`;
+
+      notifications(users[0], message);
 
       res.status(200).redirect('back');
 
