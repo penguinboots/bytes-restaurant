@@ -111,3 +111,10 @@ VALUES
 (10, 6, 9),
 (10, 9, 1);
 
+-- Add random order_items to rows in the orders table that have no associated order_items
+INSERT INTO order_items (order_id, menu_items_id, quantity)
+SELECT o.id, m.id, FLOOR(RANDOM() * 5) + 1
+FROM orders o
+LEFT JOIN order_items oi ON o.id = oi.order_id
+CROSS JOIN menu_items m
+WHERE oi.order_id IS NULL AND o.id <= 23;
