@@ -52,7 +52,7 @@
           <td>
             <div class="date">
               <%=order.created_at.getFullYear()
-              %>-<%=String(order.created_at.getMonth()).padStart(2,
+              %>-<%=String(order.created_at.getMonth() + 1).padStart(2,
               '0')%>-<%=String(order.created_at.getDate()).padStart(2, '0')%>
             </div>
             <div class="time">
@@ -65,7 +65,7 @@
             <% if (order.accepted_at) { %>
             <div class="date">
               <%=order.accepted_at.getFullYear()
-              %>-<%=String(order.accepted_at.getMonth() + ).padStart(2,
+              %>-<%=String(order.accepted_at.getMonth() + 1).padStart(2,
               '0')%>-<%=String(order.accepted_at.getDate()).padStart(2, '0')%>
             </div>
             <div class="time">
