@@ -83,7 +83,7 @@ module.exports = function(router, database) {
       // get order and user details to send to twillio
       const order = await database.getOrderById(req.params.id);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello 🤖! Thanks for ordering from Bytes! Order #${order.id} is now being prepared. Your estimated pickup time is in ${estimatedTime}.`;
+      const message = `Hello 🤖! Thanks for ordering from Bytes! Order #${String(order.id).padStart(4, '0')} is now being prepared. Your estimated pickup time is in ${estimatedTime}.`;
 
       notifications(users[0], message);
 
@@ -108,7 +108,7 @@ module.exports = function(router, database) {
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello 🤖! Order #${order.id} was rejected. Please contact the restaurant at xxx-xxx-xxx for further information.`;
+      const message = `Hello 🤖! Order #${String(order.id).padStart(4, '0')} was rejected. Please contact the restaurant at xxx-xxx-xxx for further information.`;
 
       notifications(users[0], message);
       res.status(200).redirect('back');
@@ -133,7 +133,7 @@ module.exports = function(router, database) {
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello 🤖! Order #${order.id} is ready for pickup.`;
+      const message = `Hello 🤖! Order #${String(order.id).padStart(4, '0')} is ready for pickup.`;
 
       notifications(users[0], message);
 
