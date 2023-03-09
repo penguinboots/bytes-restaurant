@@ -6,21 +6,6 @@ module.exports = function(router, database) {
 
     const username = req.cookies["userId"];
 
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
-
-    //! Privileged account check
-    // if (username !== 'PRIV USER') {
-    //   res
-    //       .status(403)
-    //       .send("The current user does not have access to the requested resource!");
-    //       return;
-    // }
-
     database.getFullMenu()
       .then(menu => {
         const templateVars = {
@@ -38,20 +23,6 @@ module.exports = function(router, database) {
 
   router.get('/orders', (req, res) => {
     const user = req.cookies["userId"];
-
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
-    //! Privileged account check
-    // if (username !== 'PRIV USER') {
-    //   res
-    //       .status(403)
-    //       .send("The current user does not have access to the requested resource!");
-    //   return;
-    // }
 
     database.getOrders()
       .then(orders => {
@@ -75,16 +46,12 @@ module.exports = function(router, database) {
 
     try {
 
-      //!placeholder queries for db
-
       const templateVars = {
         user,
         order: await database.getOrderById(req.params.id),
         orderItems: await database.getOrderItemsByOrderId(req.params.id),
       };
 
-      // const total = Number(templateVars.order.total);
-      // templateVars.order.total = total;
       // Formatting timestamps appropriately
       const formatDate = (dateString) => dateString ? new Date(dateString) : null;
 
@@ -92,9 +59,6 @@ module.exports = function(router, database) {
       templateVars.order.completed_at = formatDate(templateVars.order?.completed_at);
       templateVars.order.estimated_end_time = formatDate(templateVars.order?.estimated_end_time);
       templateVars.order.accepted_at = formatDate(templateVars.order?.accepted_at);
-
-      // res.send(templateVars.order);
-      // return;
 
       res.render("vendor-order-view", templateVars);
 
@@ -105,21 +69,6 @@ module.exports = function(router, database) {
 
   });
 
-  // Helper for db timestamp formatting
-  // function formatDateForPostgres(date) {
-  //   const timeZoneOffset = date.getTimezoneOffset();
-  //   const timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffset) / 60);
-  //   const timeZoneOffsetMinutes = Math.abs(timeZoneOffset) % 60;
-  //   const timeZoneOffsetString = (timeZoneOffset < 0 ? '+' : '-') +
-  //     (timeZoneOffsetHours < 10 ? '0' : '') + timeZoneOffsetHours +
-  //     ':' +
-  //     (timeZoneOffsetMinutes < 10 ? '0' : '') + timeZoneOffsetMinutes;
-
-  //   const timestamp = date.toLocaleString('en-US', { timeZoneName: 'short' })
-  //     .replace(/, /g, ' ')
-  //     .replace(/(AM|PM)$/, '$1 ') + timeZoneOffsetString;
-  //   return timestamp.replace(' ', 'T');
-  // }
 
   // Accept an order, setting the pick-up time
   router.post('/orders/:id/accept', async (req, res) => {
@@ -129,17 +78,12 @@ module.exports = function(router, database) {
       const orderId = req.params.id;
       const estimatedTime = `${req.body["est-time"]} minutes`;
 
-      // Calculate estimated end time
-      // const now = new Date();
-      // now.setMinutes(now.getMinutes() + estimatedTime);
-      // let estimatedEndTime = formatDateForPostgres(now);
-
       await database.acceptOrder(orderId, estimatedTime);
 
       // get order and user details to send to twillio
       const order = await database.getOrderById(req.params.id);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Thanks for ordering from Bytes! Your order (#${order.id} has been accepted. Your estimated pickup time is ${estimatedTime}.`;
+      const message = `Hello ${users[0].name}! Thanks for ordering from Bytes! Your order (#${order.id}) has been accepted. Your estimated pickup time is ${estimatedTime}.`;
 
       notifications(users[0], message);
 
@@ -158,15 +102,13 @@ module.exports = function(router, database) {
 
     try {
 
-      //!placeholder queries for db
-
       const orderId = req.params.id;
       await database.rejectOrder(orderId);
 
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Your order #${order.id} was rejected. Please contact our store at xxx-xxx-xxx for further information.`;
+      const message = `Hello ${users[0].name}! Your order (#${order.id}) was rejected. Please contact our store at xxx-xxx-xxx for further information.`;
 
       notifications(users[0], message);
       res.status(200).redirect('back');
@@ -185,11 +127,6 @@ module.exports = function(router, database) {
 
       const orderId = req.params.id;
 
-      // // Calculate & format completed time
-      // const now = new Date();
-      // let completedTime = now.toISOString().replace(/\.\d+Z$/, '').replace('T', ' ');
-
-      //!placeholder db query
       await database.completeOrder(orderId);
 
       //TODO: Twilio client notification
@@ -211,14 +148,7 @@ module.exports = function(router, database) {
 
   // Change menu (privileged access)
   router.post('/menu', (req, res) => {
-    const username = req.cookies["username"];
-
-    //! Privileged account check
-    // if (username !== 'PLACEHOLDER FOR privileged ACC') {
-    //   res
-    //     .status(403)
-    //     .send("The current user does not have access to the requested resource!");
-    // }
+    const user = req.cookies["userId"];
 
     database.updateMenu({ ...req.body })
       .then(menu => {
@@ -235,15 +165,7 @@ module.exports = function(router, database) {
 
   // Change menu item (privileged access)
   router.post('/menu/:id', (req, res) => {
-    const username = req.cookies["username"];
-
-    //! Privileged account check
-    // if (username !== 1) {
-    //   res
-    //     .status(403)
-    //     .send("The current user does not have access to the requested resource!");
-    //   return;
-    // }
+    const user = req.cookies["userId"];
 
     database.updateMenuItem({ ...req.body, menu_item_id: req.params.id })
       .then(menu_item => {
@@ -260,15 +182,7 @@ module.exports = function(router, database) {
 
   // Delete menu item (privileged access)
   router.post('/menu/:id/delete', (req, res) => {
-    const username = req.cookies["username"];
-
-    //! Privileged account check
-    // if (username !== 1) {
-    //   res
-    //     .status(403)
-    //     .send("The current user does not have access to the requested resource!");
-    //   return;
-    // }
+    const user = req.cookies["userId"];
 
     database.deleteMenuItem({ ...req.body, menu_item_id: req.params.id })
       .then(menu_item => {
