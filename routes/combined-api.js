@@ -1,11 +1,3 @@
-const getItemById = function(itemId, database) {
-  database.getMenu(itemId)
-    .then(menu_item => menu_item)
-    .catch(e => {
-      console.error(e);
-      res.send(e);
-    });
-};
 
 module.exports = function(router, database) {
 
@@ -89,7 +81,6 @@ module.exports = function(router, database) {
 
         if (quantity === 0) {
           // Update existing zeroed cart item with 1
-          // The update function is not passing in the userId in the DB for some reason
           database.updateCartItems({ user_id: userId, item_id: req.body.itemId, }, { quantity: 1 });
           ++constructed_cart_item.quantity;
           res.send(constructed_cart_item);
