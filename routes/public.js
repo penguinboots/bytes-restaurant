@@ -9,6 +9,27 @@ module.exports = function(router, database) {
     };
     res.render('index', templateVars);
   });
+
+  // Create a new user
+  router.post('/', (req, res) => {
+    const user = req.body;
+    user.password = bcrypt.hashSync(user.password, 12);
+    database.addUser(user)
+      .then(user => {
+
+        //TODO: revisit handling this error
+        if (!user) {
+          res
+            .status(500)
+            .send("User creation unsuccessful");
+          return;
+        }
+        // // req.session.username = user.id;
+
+        res.send("User successfully created!");
+      })
+      .catch(e => res.send(e));
+  });
   
   router.get('/menu', (req, res) => {
   

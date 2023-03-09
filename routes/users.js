@@ -2,27 +2,6 @@ const bcrypt = require('bcrypt');
 
 module.exports = function(router, database) {
 
-  // Create a new user
-  router.post('/', (req, res) => {
-    const user = req.body;
-    user.password = bcrypt.hashSync(user.password, 12);
-    database.addUser(user)
-      .then(user => {
-
-        //TODO: revisit handling this error
-        if (!user) {
-          res
-            .status(500)
-            .send("User creation unsuccessful");
-          return;
-        }
-        // // req.session.username = user.id;
-
-        res.send("User successfully created!");
-      })
-      .catch(e => res.send(e));
-  });
-
   /**
    * Check if a user exists with a given username and password
    * @param {String} email
@@ -49,7 +28,6 @@ module.exports = function(router, database) {
             .send("User doesn't exist!");
           return;
         }
-        // req.session.username = user.id;
         res.cookie('username', user.id);
 
         res.send({ user: { name: user.name, email: user.email, id: user.id } });
@@ -58,7 +36,6 @@ module.exports = function(router, database) {
   });
 
   router.post('/logout', (req, res) => {
-    // req.session.username = null;
     res.clearCookie('username');
     res.send({});
   });
@@ -66,13 +43,6 @@ module.exports = function(router, database) {
   // Get all orders
   router.get('/:id/orders', (req, res) => {
     const username = req.cookies["userId"];
-
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
 
     database.getAllUserOrders(username)()
       .then(orders => {
@@ -118,7 +88,7 @@ module.exports = function(router, database) {
 
       let cart = await database.getCartItemsbyUserID(userId);
 
-      //* Calculating cart total (see if val can be passed from FE)
+      //* Calculating cart total
       const total = cart.reduce((accumulator, val) => accumulator + (val["price"] * val["quantity"]), 0);
 
       //* Create an order, retrieving it's order id (order pending status)
@@ -127,10 +97,8 @@ module.exports = function(router, database) {
       //* Filter zero quantity items in cart
       let filtered_cart = cart.filter(cart_item => cart_item.quantity > 0);
     
-      //TODO: Twilio integration here
+      //TODO: Twilio integration here (prompting restaurant of order, obtaining est time)
 
-      //* Using the order id, insert the cart items into order_items
-      //! placeholder query, actual name/implementation may vary
       await database.createOrderItems({ order_id: order["id"], cart: filtered_cart });
 
       //* Purge the cart
@@ -154,13 +122,6 @@ module.exports = function(router, database) {
   router.get('/orders', (req, res) => {
     const user = req.cookies["userId"];
 
-    // if (!username) {
-    //   res
-    //     .status(401)
-    //     .send("No currently logged in user detected");
-    //   return;
-    // }
-
     database.getOrdersbyCustomerId(user)
       .then(orders => {
         const templateVars = {
@@ -180,8 +141,6 @@ module.exports = function(router, database) {
     const user = req.cookies["userId"];
 
     try {
-
-      //!placeholder queries for db
 
       const templateVars = {
         user,
