@@ -46,10 +46,15 @@ const widgetApiRoutes = require('./routes/widgets-api');
 const userRoutes = require('./routes/users');
 const managementRoutes = require('./routes/management');
 const apiRoutes = require('./routes/combined-api');
+const publicRoutes = require('./routes/public');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
+const publicRouter = express.Router();
+publicRoutes(publicRouter, database);
+app.use('/', publicRouter);
+
 const userRouter = express.Router();
 userRoutes(userRouter, database);
 app.use('/user', userRouter);
@@ -78,69 +83,6 @@ const testCart = [];
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
-app.get('/', (req, res) => {
-
-  const user = req.cookies["userId"];
-
-  const templateVars = {
-    user
-  };
-  res.render('index', templateVars);
-});
-
-//TODO: to be refactored -- testing purposes only
-
-app.get('/menu', (req, res) => {
-
-  const user = req.cookies["userId"];
-
-  database.getFullMenu()
-    .then(menu => {
-
-      const templateVars = {
-        menu: menu, user: user
-      };
-      res.render("menu", templateVars);
-    })
-    .catch(e => {
-      console.error(e);
-      res.send(e);
-    });
-
-});
-
-app.get('/about', (req, res) => {
-
-  const user = req.cookies["userId"];
-
-  const templateVars = {
-    user
-  };
-
-  res.render('about', templateVars);
-
-});
-
-app.post('/login/1', (req, res) => {
-
-  res.cookie('userId', 1);
-  res.redirect('/');
-
-});
-
-app.post('/login/2', (req, res) => {
-
-  res.cookie('userId', 2);
-  res.redirect('/');
-
-});
-
-app.post('/logout', (req, res) => {
-
-  res.clearCookie('userId');
-  res.redirect('/');
-
-});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
