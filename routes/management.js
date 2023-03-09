@@ -139,7 +139,7 @@ module.exports = function(router, database) {
       // get order and user details to send to twillio
       const order = await database.getOrderById(req.params.id);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Thanks for ordering from Bytes! Your order (#${order.id} has been accepted. Your estimated pickup time is ${estimatedTime}.`;
+      const message = `Hello ${users[0].name}! Thanks for ordering from Bytes! Your order (#${order.id}) has been accepted. Your estimated pickup time is ${estimatedTime}.`;
 
       notifications(users[0], message);
 
@@ -166,7 +166,7 @@ module.exports = function(router, database) {
       // twillio
       const order = await database.getOrderById(orderId);
       const users = await database.getUser(order.customer_id);
-      const message = `Hello ${users[0].name}! Your order #${order.id} was rejected. Please contact our store at xxx-xxx-xxx for further information.`;
+      const message = `Hello ${users[0].name}! Your order (#${order.id}) was rejected. Please contact our store at xxx-xxx-xxx for further information.`;
 
       notifications(users[0], message);
       res.status(200).redirect('back');
