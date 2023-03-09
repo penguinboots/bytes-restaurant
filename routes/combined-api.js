@@ -193,9 +193,8 @@ module.exports = function(router, database) {
 
       const item_id = req.body["cartItemId"];
       let menu_id;
-      let quantity;
-
       // Try to get the menu item id to streamline this process
+
       const cart_items = await database.getCartItemsbyUserID(req.cookies["userId"]);
 
       console.log(cart_items);
