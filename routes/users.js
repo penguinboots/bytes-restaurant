@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const notifications = require('./notifications');
 
 module.exports = function(router, database) {
 
@@ -96,7 +97,7 @@ module.exports = function(router, database) {
 
       //* Filter zero quantity items in cart
       let filtered_cart = cart.filter(cart_item => cart_item.quantity > 0);
-    
+
       //TODO: Twilio integration here (prompting restaurant of order, obtaining est time)
 
       await database.createOrderItems({ order_id: order["id"], cart: filtered_cart });
@@ -107,6 +108,8 @@ module.exports = function(router, database) {
       });
 
       await Promise.all(promises);
+      const message = `Order #${order.id} created with total: $${(order.total / 100).toFixed(2)}`;
+      notifications(undefined, message);
       res.status(200).redirect(`/user/orders/${order.id}`);
 
     } catch (err) {
