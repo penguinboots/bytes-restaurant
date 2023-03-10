@@ -94,7 +94,7 @@ module.exports = function(router, database) {
         twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')}  has been accepted, with completion time: ${vendorOrderResponse.estimatedTime}`);
         await database.acceptOrder(vendorOrderResponse.orderId, vendorOrderResponse.estimatedTime);
         res.status(200).type('text/xml').send(twiml.toString());
-        console.log("I get here at least!");
+      
         let acceptanceMessage = `Hello 🤖! Thanks for ordering from Bytes! Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} is now being prepared. Your estimated pickup time is in ${vendorOrderResponse.estimatedTime}.`;
         await notifications(null, acceptanceMessage);
 
