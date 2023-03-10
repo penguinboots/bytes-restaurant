@@ -1,4 +1,5 @@
 const notifications = require('./notifications');
+const { MessagingResponse } = require('twilio').twiml;
 
 module.exports = function(router, database) {
 
@@ -65,6 +66,57 @@ module.exports = function(router, database) {
     } catch (err) {
       console.error(err);
       res.status(500);
+    }
+
+  });
+
+  // Process a submitted order via sms to either accept or reject it
+  router.post('/orders/process/sms', async (req, res) => {
+
+    const twiml = new MessagingResponse();
+
+    try {
+
+      //* Obtaining the desired action from vendor
+      let receivedText = req.body.Body;
+
+      const vendorOrderResponseArray = receivedText.split("E");
+
+      if (vendorOrderResponseArray.length !== 2) {
+        throw new Error('Error: improperly formatted text please use the fromat: `<ordernumber>E<time in minutes>`');
+      }
+
+      const vendorOrderResponse = { orderId: Number(vendorOrderResponseArray[0]), estimatedTime: `${vendorOrderResponseArray[1]} minutes` };
+
+      if (Number(vendorOrderResponse.estimatedTime.split(" ")[0]) !== 0) {
+
+        //* Acceptance route
+        twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')}  has been accepted, with completion time: ${vendorOrderResponse.estimatedTime}`);
+        await database.acceptOrder(vendorOrderResponse.orderId, vendorOrderResponse.estimatedTime);
+        res.status(200).type('text/xml').send(twiml.toString());
+        console.log("I get here at least!");
+        let acceptanceMessage = `Hello 🤖! Thanks for ordering from Bytes! Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} is now being prepared. Your estimated pickup time is in ${vendorOrderResponse.estimatedTime}.`;
+        await notifications(null, acceptanceMessage);
+
+        return;
+
+      }
+
+      //* Rejection route
+      twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} has been rejected, ${vendorOrderResponse.estimatedTime.split(" ")[0]}`);
+
+      await database.rejectOrder(vendorOrderResponse.orderId);
+
+      let rejectionMessage = `Hello 🤖! Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} was rejected. Please contact the restaurant at xxx-xxx-xxx for further information.`;
+      await notifications(null, rejectionMessage);
+
+      res.status(200).type('text/xml').send(twiml.toString());
+
+      return;
+
+    } catch (err) {
+      console.error(err);
+      notifications(null, `error: ${err}`);
     }
 
   });
