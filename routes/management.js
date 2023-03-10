@@ -103,7 +103,7 @@ module.exports = function(router, database) {
       }
 
       //* Rejection route
-      twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} has been rejected, ${vendorOrderResponse.estimatedTime.split(" ")[0]}`);
+      twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} has been rejected`);
 
       await database.rejectOrder(vendorOrderResponse.orderId);
 
