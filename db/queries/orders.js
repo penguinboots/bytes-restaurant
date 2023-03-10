@@ -23,9 +23,20 @@ const getOrdersMenu = (customerId) => {
 // GET /orders/users
 
 const getOrdersbyCustomerId = (customerId) => {
-  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total,
-  orders.created_at AS created_at, orders.accepted_at AS accepted_at, orders.estimated_end_time AS estimated_end_time, orders.completed_at AS completed_at
-   FROM orders JOIN status ON orders.status = status.id WHERE customer_id = $1;`;
+  const queryString = `
+  SELECT orders.id AS id,
+    orders.customer_id AS customer_id,
+    status.status AS status,
+    orders.total AS total,
+    orders.created_at AS created_at,
+    orders.accepted_at AS accepted_at,
+    orders.estimated_end_time AS estimated_end_time,
+    orders.completed_at AS completed_at
+  FROM orders
+  JOIN status ON orders.status = status.id
+  WHERE customer_id = $1
+  ORDER BY status.id ASC, created_at DESC;`;
+
   const values = [customerId];
   return db.query(queryString, values)
     .then(data => data.rows);
