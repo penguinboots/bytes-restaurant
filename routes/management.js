@@ -83,7 +83,7 @@ module.exports = function(router, database) {
       const vendorOrderResponseArray = receivedText.split("E");
 
       if (vendorOrderResponseArray.length !== 2) {
-        throw new Error('Error: improperly formatted text please use the fromat: `<ordernumber>E<time in minutes>`');
+        throw new Error('improperly formatted text please use the fromat: `<ordernumber>E<time in minutes>`');
       }
 
       const vendorOrderResponse = { orderId: Number(vendorOrderResponseArray[0]), estimatedTime: `${vendorOrderResponseArray[1]} minutes` };
@@ -116,7 +116,7 @@ module.exports = function(router, database) {
 
     } catch (err) {
       console.error(err);
-      notifications(null, `error: ${err}`);
+      notifications(null, `${err}`);
     }
 
   });
