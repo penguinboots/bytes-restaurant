@@ -5,7 +5,7 @@ const Utils = require('../helpers/utils');
 const getOrders = () => {
   return db.query(`SELECT orders.id, orders.customer_id, status.status as status, total, created_at, accepted_at, estimated_end_time, completed_at FROM orders
   JOIN status ON orders.status = status.id
-  ORDER BY status.id ASC;`)
+  ORDER BY status.id ASC, created_at DESC;`)
     .then(data => data.rows);
 };
 
@@ -60,7 +60,7 @@ const completeOrder = (orderId, completedTime) => {
 // GET /orders/users
 
 const getOrderById = (orderId) => {
-  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total, 
+  const queryString = `SELECT orders.id AS id, orders.customer_id AS customer_id, status.status AS status, orders.total AS total,
   orders.created_at AS created_at, orders.accepted_at AS accepted_at, orders.estimated_end_time AS estimated_end_time, orders.completed_at AS completed_at,
   menu_items.name AS name, menu_items.price AS price, order_items.quantity AS quantity FROM orders
   JOIN order_items ON orders.id = order_items.order_id
