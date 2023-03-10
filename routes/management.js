@@ -83,7 +83,7 @@ module.exports = function(router, database) {
       const vendorOrderResponseArray = receivedText.split("E");
 
       if (vendorOrderResponseArray.length !== 2) {
-        throw new Error('Error: improperly formatted text please use the fromat: `<ordernumber>E<time in minutes>`');
+        throw new Error('improperly formatted text please use the fromat: `<ordernumber>E<time in minutes>`');
       }
 
       const vendorOrderResponse = { orderId: Number(vendorOrderResponseArray[0]), estimatedTime: `${vendorOrderResponseArray[1]} minutes` };
@@ -94,7 +94,7 @@ module.exports = function(router, database) {
         twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')}  has been accepted, with completion time: ${vendorOrderResponse.estimatedTime}`);
         await database.acceptOrder(vendorOrderResponse.orderId, vendorOrderResponse.estimatedTime);
         res.status(200).type('text/xml').send(twiml.toString());
-        console.log("I get here at least!");
+      
         let acceptanceMessage = `Hello 🤖! Thanks for ordering from Bytes! Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} is now being prepared. Your estimated pickup time is in ${vendorOrderResponse.estimatedTime}.`;
         await notifications(null, acceptanceMessage);
 
@@ -103,7 +103,7 @@ module.exports = function(router, database) {
       }
 
       //* Rejection route
-      twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} has been rejected, ${vendorOrderResponse.estimatedTime.split(" ")[0]}`);
+      twiml.message(`Order #${String(vendorOrderResponse.orderId).padStart(4, '0')} has been rejected`);
 
       await database.rejectOrder(vendorOrderResponse.orderId);
 
@@ -116,7 +116,7 @@ module.exports = function(router, database) {
 
     } catch (err) {
       console.error(err);
-      notifications(null, `error: ${err}`);
+      notifications(null, `${err}`);
     }
 
   });
