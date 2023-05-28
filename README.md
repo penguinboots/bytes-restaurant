@@ -31,6 +31,8 @@ A web app for a fictional robot-themed restaurant! Customers are able to place t
 
 <sup>🎵🎶 <sub>When</sub> <sup>a</sup> <sub>grid's</sub> <sup>misaligned,</sup> <sub>with</sub> <sup>a</sup> <sub>like</sub> <sup>one</sup> <sub>behind,</sub> <sup>that's</sup> <sub>a</sub> <sup>Moiré.</sup> 🎶🎵</sup>
 
+<sup>🎵🎶 Remove any background pattern distortion by opening in full size! 🎵🎶</sup>
+
 #### Home
 ![Home](docs/99-home.png)
 
